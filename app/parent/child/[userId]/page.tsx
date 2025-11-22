@@ -2,7 +2,10 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
-import { prisma } from '@/lib/prisma'
+
+// ============================================================================
+// Types
+// ============================================================================
 
 type User = {
   id: string
@@ -12,12 +15,39 @@ type User = {
   role?: string
 }
 
-type ChildInfo = {
+type SubjectStats = {
+  subject: 'MATHS' | 'ENGLISH' | 'VR' | 'NVR'
+  minutesThisWeek: number
+  sessionsThisWeek: number
+  avgAccuracyThisWeek: number
+}
+
+type RecentSession = {
+  id: string
+  gameType: string
+  subject: string
+  accuracy: number
+  duration: number
+  playedAt: string
+  starsEarned: number
+}
+
+type ChildDetailResponse = {
   id: string
   name: string
   avatar: string | null
-  parentId: string | null
+  minutesThisWeek: number
+  sessionsThisWeek: number
+  avgAccuracyThisWeek: number
+  currentStreakDays: number
+  rewardsThisWeekPence: number
+  subjectStats: SubjectStats[]
+  recentSessions: RecentSession[]
 }
+
+// ============================================================================
+// Component
+// ============================================================================
 
 export default function ChildDetailPage() {
   const router = useRouter()
@@ -25,7 +55,7 @@ export default function ChildDetailPage() {
   const userId = params.userId as string
 
   const [parent, setParent] = useState<User | null>(null)
-  const [child, setChild] = useState<ChildInfo | null>(null)
+  const [childDetail, setChildDetail] = useState<ChildDetailResponse | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -46,34 +76,58 @@ export default function ChildDetailPage() {
       return
     }
 
-    // Fetch child info and verify ownership
-    fetchChildInfo(parsedUser.id)
+    // Fetch child details
+    fetchChildDetails(parsedUser.id)
   }, [router, userId])
 
-  const fetchChildInfo = async (parentId: string) => {
+  const fetchChildDetails = async (parentId: string) => {
     try {
       setLoading(true)
 
-      // Fetch child info
-      const res = await fetch(`/api/users/${userId}`)
+      const res = await fetch(`/api/parent/child/${userId}?parentId=${parentId}`)
       if (!res.ok) {
-        throw new Error('Child not found')
+        throw new Error('Failed to fetch child details')
       }
 
-      const childData = await res.json()
-
-      // Verify this child belongs to the logged-in parent
-      if (childData.parentId !== parentId) {
-        setError('You do not have permission to view this child\'s details.')
-        return
-      }
-
-      setChild(childData)
+      const data = await res.json()
+      setChildDetail(data)
     } catch (err) {
       setError('Failed to load child details.')
-      console.error('Error fetching child info:', err)
+      console.error('Error fetching child details:', err)
     } finally {
       setLoading(false)
+    }
+  }
+
+  // Format helpers
+  const formatMinutes = (minutes: number): string => {
+    if (minutes < 60) return `${minutes}m`
+    const hours = Math.floor(minutes / 60)
+    const mins = minutes % 60
+    return mins > 0 ? `${hours}h ${mins}m` : `${hours}h`
+  }
+
+  const formatPounds = (pence: number): string => {
+    return `£${(pence / 100).toFixed(2)}`
+  }
+
+  const formatDate = (isoString: string): string => {
+    const date = new Date(isoString)
+    return date.toLocaleDateString('en-GB', {
+      day: 'numeric',
+      month: 'short',
+      hour: '2-digit',
+      minute: '2-digit'
+    })
+  }
+
+  const getSubjectIcon = (subject: string): string => {
+    switch (subject) {
+      case 'MATHS': return '🔢'
+      case 'ENGLISH': return '📚'
+      case 'VR': return '💭'
+      case 'NVR': return '🧩'
+      default: return '📝'
     }
   }
 
@@ -85,7 +139,7 @@ export default function ChildDetailPage() {
     )
   }
 
-  if (error || !child) {
+  if (error || !childDetail) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-2xl p-8 shadow-xl max-w-md">
@@ -105,7 +159,7 @@ export default function ChildDetailPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-8">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
           <button
@@ -117,33 +171,133 @@ export default function ChildDetailPage() {
 
           <div className="bg-white rounded-2xl p-8 shadow-lg">
             <div className="flex items-center gap-6">
-              <div className="text-7xl">{child.avatar || '👤'}</div>
+              <div className="text-7xl">{childDetail.avatar || '👤'}</div>
               <div>
-                <h1 className="text-4xl font-bold text-gray-800 mb-2">{child.name}</h1>
+                <h1 className="text-4xl font-bold text-gray-800 mb-2">{childDetail.name}</h1>
                 <p className="text-gray-600 text-lg">Detailed performance statistics</p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Coming Soon Placeholder */}
-        <div className="bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100 rounded-2xl p-12 text-center shadow-lg">
-          <div className="text-8xl mb-6">🚀</div>
-          <h2 className="text-3xl font-bold text-gray-800 mb-4">Coming Soon!</h2>
-          <p className="text-gray-700 text-lg mb-6">
-            Detailed stats for {child.name} are on the way.
-          </p>
-          <div className="text-left max-w-md mx-auto bg-white/50 backdrop-blur-sm rounded-xl p-6">
-            <h3 className="font-bold text-gray-800 mb-3">Future features:</h3>
-            <ul className="space-y-2 text-gray-700">
-              <li>📊 Subject-by-subject breakdown</li>
-              <li>📈 Progress graphs over time</li>
-              <li>🎯 Strengths and areas for improvement</li>
-              <li>🏆 Achievement timeline</li>
-              <li>📅 Weekly/monthly comparisons</li>
-              <li>💡 Personalized recommendations</li>
-            </ul>
+        {/* Weekly Summary Cards */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">This Week</h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6">
+            <div className="bg-white rounded-2xl p-6 shadow-lg">
+              <div className="text-3xl mb-2">⏱️</div>
+              <div className="text-2xl font-bold text-gray-800">{formatMinutes(childDetail.minutesThisWeek)}</div>
+              <div className="text-sm text-gray-600">Practice Time</div>
+            </div>
+
+            <div className="bg-white rounded-2xl p-6 shadow-lg">
+              <div className="text-3xl mb-2">📊</div>
+              <div className="text-2xl font-bold text-gray-800">{childDetail.sessionsThisWeek}</div>
+              <div className="text-sm text-gray-600">Sessions</div>
+            </div>
+
+            <div className="bg-white rounded-2xl p-6 shadow-lg">
+              <div className="text-3xl mb-2">🎯</div>
+              <div className="text-2xl font-bold text-gray-800">{childDetail.avgAccuracyThisWeek}%</div>
+              <div className="text-sm text-gray-600">Avg Accuracy</div>
+            </div>
+
+            <div className="bg-white rounded-2xl p-6 shadow-lg">
+              <div className="text-3xl mb-2">🔥</div>
+              <div className="text-2xl font-bold text-gray-800">{childDetail.currentStreakDays}</div>
+              <div className="text-sm text-gray-600">Day Streak</div>
+            </div>
+
+            <div className="bg-white rounded-2xl p-6 shadow-lg">
+              <div className="text-3xl mb-2">💰</div>
+              <div className="text-2xl font-bold text-gray-800">{formatPounds(childDetail.rewardsThisWeekPence)}</div>
+              <div className="text-sm text-gray-600">Rewards</div>
+            </div>
           </div>
+        </div>
+
+        {/* Subject Breakdown */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">By Subject This Week</h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {childDetail.subjectStats.map((subjectStat) => (
+              <div key={subjectStat.subject} className="bg-white rounded-2xl p-6 shadow-lg">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="text-4xl">{getSubjectIcon(subjectStat.subject)}</div>
+                  <h3 className="text-xl font-bold text-gray-800">{subjectStat.subject}</h3>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-600">Time:</span>
+                    <span className="text-sm font-bold text-gray-800">{formatMinutes(subjectStat.minutesThisWeek)}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-600">Sessions:</span>
+                    <span className="text-sm font-bold text-gray-800">{subjectStat.sessionsThisWeek}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-600">Accuracy:</span>
+                    <span className="text-sm font-bold text-gray-800">{subjectStat.avgAccuracyThisWeek}%</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Recent Sessions */}
+        <div>
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">Recent Sessions</h2>
+
+          {childDetail.recentSessions.length === 0 ? (
+            <div className="bg-white rounded-2xl p-12 text-center shadow-lg">
+              <div className="text-6xl mb-4">📝</div>
+              <h3 className="text-2xl font-bold text-gray-800 mb-2">No sessions yet</h3>
+              <p className="text-gray-600">Sessions will appear here once {childDetail.name} starts playing.</p>
+            </div>
+          ) : (
+            <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-gradient-to-r from-purple-50 to-pink-50">
+                    <tr>
+                      <th className="px-6 py-4 text-left text-sm font-bold text-gray-700">Date & Time</th>
+                      <th className="px-6 py-4 text-left text-sm font-bold text-gray-700">Game</th>
+                      <th className="px-6 py-4 text-left text-sm font-bold text-gray-700">Subject</th>
+                      <th className="px-6 py-4 text-left text-sm font-bold text-gray-700">Duration</th>
+                      <th className="px-6 py-4 text-left text-sm font-bold text-gray-700">Accuracy</th>
+                      <th className="px-6 py-4 text-left text-sm font-bold text-gray-700">Stars</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    {childDetail.recentSessions.map((session, idx) => (
+                      <tr key={session.id} className={idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                        <td className="px-6 py-4 text-sm text-gray-700">{formatDate(session.playedAt)}</td>
+                        <td className="px-6 py-4 text-sm font-medium text-gray-800">{session.gameType}</td>
+                        <td className="px-6 py-4 text-sm text-gray-700">
+                          <span className="inline-flex items-center gap-1">
+                            {getSubjectIcon(session.subject)} {session.subject}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-700">{formatMinutes(Math.round(session.duration / 60))}</td>
+                        <td className="px-6 py-4 text-sm">
+                          <span className={`font-bold ${session.accuracy >= 90 ? 'text-green-600' : session.accuracy >= 70 ? 'text-blue-600' : 'text-gray-600'}`}>
+                            {session.accuracy}%
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-700">
+                          <span className="inline-flex items-center gap-1">
+                            ⭐ {session.starsEarned}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

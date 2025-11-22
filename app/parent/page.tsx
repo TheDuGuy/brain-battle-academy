@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import SwitchToChildButton from '@/components/SwitchToChildButton'
 
 // ============================================================================
 // Types
@@ -251,12 +252,18 @@ export default function ParentDashboard() {
                     </div>
                   </div>
 
-                  {/* View Details Button */}
-                  <Link href={`/parent/child/${child.id}`}>
-                    <button className="w-full mt-6 px-4 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-semibold hover:shadow-lg transition-all">
-                      View Details →
-                    </button>
-                  </Link>
+                  {/* Action Buttons */}
+                  <div className="mt-6 space-y-3">
+                    {/* Switch to Child View */}
+                    <SwitchToChildButton child={{ id: child.id, name: child.name, avatar: child.avatar }} />
+
+                    {/* View Details */}
+                    <Link href={`/parent/child/${child.id}`}>
+                      <button className="w-full px-4 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-semibold hover:shadow-lg transition-all">
+                        View Details →
+                      </button>
+                    </Link>
+                  </div>
                 </div>
               ))}
             </div>
