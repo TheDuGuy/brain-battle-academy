@@ -49,14 +49,29 @@ async function main() {
     },
   })
 
-  console.log({ parent, santi, william })
+  // Create admin user (global oversight)
+  const admin = await prisma.user.upsert({
+    where: { name: 'Admin' },
+    update: {},
+    create: {
+      name: 'Admin',
+      email: 'admin@brainbattle.com',
+      password: await bcrypt.hash('admin123', 10),
+      color: '#7C3AED',
+      avatar: '🧠',
+      role: 'ADMIN',
+    },
+  })
+
+  console.log({ parent, santi, william, admin })
 
   // Summary
   console.log('\n✅ Seed complete!')
   console.log('Created users:')
-  console.log('  - Santi / santi123')
-  console.log('  - William / william123')
-  console.log('  - Parent / parent123')
+  console.log('  - Santi / santi123 (player)')
+  console.log('  - William / william123 (player)')
+  console.log('  - Parent / parent123 (parent)')
+  console.log('  - Admin / admin123 (admin)')
   console.log('\nYou can now log in with any of these accounts.')
 }
 

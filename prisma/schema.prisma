@@ -17,7 +17,7 @@ model User {
   password      String
   avatar        String?
   color         String    @default("#9333EA")
-  role          String    @default("PLAYER") // PLAYER or PARENT
+  role          String    @default("PLAYER") // PLAYER, PARENT, or ADMIN
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 

@@ -43,7 +43,9 @@ export default function LoginPage() {
       localStorage.setItem('user', JSON.stringify(data.user))
 
       // Redirect based on user role
-      if (data.user.role === 'PARENT') {
+      if (data.user.role === 'ADMIN') {
+        router.push('/admin')
+      } else if (data.user.role === 'PARENT') {
         router.push('/parent')
       } else {
         router.push('/dashboard')
