@@ -253,12 +253,23 @@ interface PlayerStats {
   accuracy: number
 }
 
+// Recommended games for quick access
+const RECOMMENDED_GAME_IDS = ['quick-fire', 'synonym-finder', 'word-codes']
+
+// Helper to get recommended games across all subjects
+function getRecommendedGames(): GameCard[] {
+  const allGames = [...mathsGames, ...englishGames, ...verbalReasoningGames, ...nonVerbalReasoningGames]
+  return allGames.filter(game => RECOMMENDED_GAME_IDS.includes(game.id))
+}
+
 export default function DashboardPage() {
   const [user, setUser] = useState<User | null>(null)
   const [stats, setStats] = useState({ totalStars: 0, earnings: 0, weekEarnings: 0, streak: 0 })
   const [leaderboard, setLeaderboard] = useState<PlayerStats[]>([])
   const [loading, setLoading] = useState(true)
   const router = useRouter()
+
+  const recommendedGames = getRecommendedGames()
 
   useEffect(() => {
     const userData = localStorage.getItem('user')
@@ -345,6 +356,48 @@ export default function DashboardPage() {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-8">
+        {/* Today's Mission Card */}
+        <div className="mb-8">
+          <div className="bg-gradient-to-br from-purple-500 via-pink-500 to-rose-500 rounded-3xl p-8 shadow-2xl border-2 border-white/20">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+              <div className="flex-1">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="text-5xl">🎯</span>
+                  <h2 className="text-3xl font-bold text-white">Today&apos;s Mission</h2>
+                </div>
+                <p className="text-white/95 text-lg mb-6">
+                  Play 15 minutes of any game and try to hit 90% accuracy in at least one session.
+                </p>
+
+                <div className="space-y-3 mb-6">
+                  {/* Daily play status */}
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">{stats.streak > 0 ? '✅' : '⭕'}</span>
+                    <span className="text-white/90 font-medium">
+                      {stats.streak > 0 ? 'Daily play done' : 'Play 15 minutes today'}
+                    </span>
+                  </div>
+
+                  {/* Accuracy status - TODO: Track daily accuracy */}
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">⭕</span>
+                    <span className="text-white/90 font-medium">
+                      Aim for 90%+ accuracy once today
+                    </span>
+                  </div>
+                </div>
+
+                <Link href="/game/quick-fire">
+                  <button className="bg-white text-purple-600 px-8 py-4 rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl hover:scale-105 transition-all">
+                    Continue Today&apos;s Mission →
+                  </button>
+                </Link>
+                {/* TODO: Smart game selection based on user's weaknesses/progress */}
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Stats Cards */}
         <div className="grid md:grid-cols-3 gap-6 mb-8">
           {/* Earnings Card */}
@@ -431,30 +484,63 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Weekly Paper Challenge - Unlocked at 7-day streak */}
-        {stats.streak >= 7 && (
-          <div className="mb-8">
+        {/* Weekly Paper Challenge - Locked/Unlocked states */}
+        <div className="mb-8">
+          {stats.streak >= 7 ? (
+            // Unlocked state
             <Link href="/game/weekly-paper">
               <div className="bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-2xl p-8 shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105 cursor-pointer">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                   <div className="flex items-center gap-4">
                     <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-4">
                       <span className="text-6xl">📝</span>
                     </div>
                     <div className="text-white">
                       <h3 className="text-3xl font-bold mb-2">🎉 Weekly Paper Challenge UNLOCKED!</h3>
-                      <p className="text-white/90 text-lg mb-1">You've earned a 7-day streak!</p>
+                      <p className="text-white/90 text-lg mb-1">You&apos;ve earned a 7-day streak!</p>
                       <p className="text-white/80">Complete a mini exam paper with 15 real 11+ questions</p>
                     </div>
                   </div>
-                  <div className="bg-white/20 backdrop-blur-sm rounded-2xl px-6 py-3">
+                  <div className="bg-white/20 backdrop-blur-sm rounded-2xl px-6 py-3 whitespace-nowrap">
                     <p className="text-white text-sm font-semibold">Click to start →</p>
                   </div>
                 </div>
               </div>
             </Link>
-          </div>
-        )}
+          ) : (
+            // Locked state
+            <div className="relative rounded-2xl p-8 shadow-lg overflow-hidden opacity-80 cursor-not-allowed">
+              {/* Gradient background with overlay */}
+              <div className="absolute inset-0 bg-gradient-to-br from-gray-400 via-gray-500 to-gray-600 opacity-60"></div>
+              <div className="absolute inset-0 bg-gray-200/40"></div>
+
+              <div className="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div className="flex items-center gap-4">
+                  <div className="bg-white/30 backdrop-blur-sm rounded-2xl p-4 relative">
+                    <span className="text-6xl opacity-60">📝</span>
+                    <div className="absolute top-2 right-2 bg-gray-700 rounded-full p-1">
+                      <span className="text-xl">🔒</span>
+                    </div>
+                  </div>
+                  <div className="text-gray-700">
+                    <h3 className="text-3xl font-bold mb-2 flex items-center gap-2">
+                      Weekly Paper Challenge
+                      <span className="text-2xl">🔒</span>
+                    </h3>
+                    <p className="text-gray-800 text-lg mb-1 font-medium">Get a 7-day streak to unlock this challenge</p>
+                    <p className="text-gray-600">Complete a mini exam paper with real 11+ questions</p>
+                  </div>
+                </div>
+                <div className="bg-white/30 backdrop-blur-sm rounded-2xl px-6 py-3">
+                  <p className="text-gray-700 font-semibold text-center">
+                    {Math.min(stats.streak, 6)}/7 days
+                  </p>
+                  <p className="text-gray-600 text-xs mt-1">Keep your streak!</p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
 
         {/* Leaderboard Section */}
         <div className="mb-8">
@@ -472,9 +558,10 @@ export default function DashboardPage() {
             </div>
 
             {leaderboard.length === 0 ? (
-              <div className="text-center py-8">
-                <p className="text-amber-700 text-lg font-medium">No players yet!</p>
-                <p className="text-amber-600 text-sm mt-2">Play some games to get on the leaderboard</p>
+              <div className="text-center py-12">
+                <div className="text-7xl mb-4">🏆</div>
+                <h4 className="text-2xl font-bold text-amber-900 mb-2">No players yet</h4>
+                <p className="text-amber-700 text-lg">Play some games to be the first on the leaderboard!</p>
               </div>
             ) : (
               <>
@@ -541,6 +628,65 @@ export default function DashboardPage() {
           </div>
         </div>
 
+        {/* Recommended for Today Section */}
+        <div className="mb-8">
+          <div className="mb-6">
+            <h2 className="text-3xl font-bold text-gray-800 mb-2">Recommended for Today</h2>
+            <p className="text-gray-600">Start with these to complete your mission faster</p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {recommendedGames.map((game) => (
+              <Link
+                key={game.id}
+                href={`/game/${game.id}`}
+                className="group transform hover:scale-105 transition-all"
+              >
+                <div className="bg-gradient-to-br from-white to-purple-50 rounded-2xl shadow-lg hover:shadow-2xl transition-all p-6 border-2 border-purple-200 h-full">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className={`bg-gradient-to-br ${game.color} w-16 h-16 rounded-xl flex items-center justify-center text-4xl shadow-lg group-hover:scale-110 transition-transform`}>
+                      {game.icon}
+                    </div>
+                    <div className="bg-purple-100 px-3 py-1 rounded-full">
+                      <span className="text-purple-700 text-xs font-bold">RECOMMENDED</span>
+                    </div>
+                  </div>
+
+                  <h3 className="text-xl font-bold text-gray-800 mb-2 group-hover:text-purple-600 transition-colors">
+                    {game.name}
+                  </h3>
+
+                  <p className="text-gray-600 text-sm mb-4">
+                    {game.description}
+                  </p>
+
+                  {/* Progress bar - TODO: Use real progress data */}
+                  <div className="mb-4">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-semibold text-gray-600">Progress</span>
+                      <span className="text-xs font-semibold text-purple-600">Level 1</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-1.5">
+                      <div className="bg-gradient-to-r from-purple-500 to-pink-500 h-1.5 rounded-full" style={{ width: '30%' }}></div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2">
+                    {game.topics.slice(0, 2).map((topic) => (
+                      <span
+                        key={topic}
+                        className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-medium"
+                      >
+                        {topic}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+
         {/* Games Section */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-6">
@@ -558,7 +704,7 @@ export default function DashboardPage() {
               <Link
                 key={game.id}
                 href={`/game/${game.id}`}
-                className="group"
+                className="group transform hover:scale-102 transition-all"
               >
                 <div className="bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all p-6 border border-gray-100 h-full">
                   <div className="flex items-start justify-between mb-4">
@@ -580,21 +726,26 @@ export default function DashboardPage() {
                     {game.description}
                   </p>
 
-                  <div className="flex flex-wrap gap-2">
-                    {game.topics.map((topic) => (
+                  {/* Progress indicator - TODO: Use real progress data from stats */}
+                  <div className="mb-4">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-semibold text-gray-500">Progress</span>
+                      <span className="text-xs font-semibold text-blue-600">Level 1</span>
+                    </div>
+                    <div className="w-full bg-slate-100 rounded-full h-1.5">
+                      <div className={`bg-gradient-to-r ${game.color} h-1.5 rounded-full`} style={{ width: '20%' }}></div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {game.topics.slice(0, 3).map((topic) => (
                       <span
                         key={topic}
-                        className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-medium"
+                        className="bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs font-medium"
                       >
                         {topic}
                       </span>
                     ))}
-                  </div>
-
-                  <div className="mt-4 pt-4 border-t border-gray-100">
-                    <span className="text-purple-600 font-semibold text-sm group-hover:text-purple-700">
-                      Start Game →
-                    </span>
                   </div>
                 </div>
               </Link>
@@ -619,7 +770,7 @@ export default function DashboardPage() {
               <Link
                 key={game.id}
                 href={`/game/${game.id}`}
-                className="group"
+                className="group transform hover:scale-102 transition-all"
               >
                 <div className="bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all p-6 border border-gray-100 h-full">
                   <div className="flex items-start justify-between mb-4">
@@ -641,21 +792,26 @@ export default function DashboardPage() {
                     {game.description}
                   </p>
 
-                  <div className="flex flex-wrap gap-2">
-                    {game.topics.map((topic) => (
+                  {/* Progress indicator */}
+                  <div className="mb-4">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-semibold text-gray-500">Progress</span>
+                      <span className="text-xs font-semibold text-indigo-600">Level 1</span>
+                    </div>
+                    <div className="w-full bg-slate-100 rounded-full h-1.5">
+                      <div className={`bg-gradient-to-r ${game.color} h-1.5 rounded-full`} style={{ width: '15%' }}></div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {game.topics.slice(0, 3).map((topic) => (
                       <span
                         key={topic}
-                        className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-medium"
+                        className="bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs font-medium"
                       >
                         {topic}
                       </span>
                     ))}
-                  </div>
-
-                  <div className="mt-4 pt-4 border-t border-gray-100">
-                    <span className="text-purple-600 font-semibold text-sm group-hover:text-purple-700">
-                      Start Game →
-                    </span>
                   </div>
                 </div>
               </Link>
@@ -680,7 +836,7 @@ export default function DashboardPage() {
               <Link
                 key={game.id}
                 href={`/game/${game.id}`}
-                className="group"
+                className="group transform hover:scale-102 transition-all"
               >
                 <div className="bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all p-6 border border-gray-100 h-full">
                   <div className="flex items-start justify-between mb-4">
@@ -702,21 +858,26 @@ export default function DashboardPage() {
                     {game.description}
                   </p>
 
-                  <div className="flex flex-wrap gap-2">
-                    {game.topics.map((topic) => (
+                  {/* Progress indicator */}
+                  <div className="mb-4">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-semibold text-gray-500">Progress</span>
+                      <span className="text-xs font-semibold text-teal-600">Level 1</span>
+                    </div>
+                    <div className="w-full bg-slate-100 rounded-full h-1.5">
+                      <div className={`bg-gradient-to-r ${game.color} h-1.5 rounded-full`} style={{ width: '10%' }}></div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {game.topics.slice(0, 3).map((topic) => (
                       <span
                         key={topic}
-                        className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-medium"
+                        className="bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs font-medium"
                       >
                         {topic}
                       </span>
                     ))}
-                  </div>
-
-                  <div className="mt-4 pt-4 border-t border-gray-100">
-                    <span className="text-purple-600 font-semibold text-sm group-hover:text-purple-700">
-                      Start Game →
-                    </span>
                   </div>
                 </div>
               </Link>
@@ -741,7 +902,7 @@ export default function DashboardPage() {
               <Link
                 key={game.id}
                 href={`/game/${game.id}`}
-                className="group"
+                className="group transform hover:scale-102 transition-all"
               >
                 <div className="bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all p-6 border border-gray-100 h-full">
                   <div className="flex items-start justify-between mb-4">
@@ -763,21 +924,26 @@ export default function DashboardPage() {
                     {game.description}
                   </p>
 
-                  <div className="flex flex-wrap gap-2">
-                    {game.topics.map((topic) => (
+                  {/* Progress indicator */}
+                  <div className="mb-4">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-semibold text-gray-500">Progress</span>
+                      <span className="text-xs font-semibold text-orange-600">Level 1</span>
+                    </div>
+                    <div className="w-full bg-slate-100 rounded-full h-1.5">
+                      <div className={`bg-gradient-to-r ${game.color} h-1.5 rounded-full`} style={{ width: '5%' }}></div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {game.topics.slice(0, 3).map((topic) => (
                       <span
                         key={topic}
-                        className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-medium"
+                        className="bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs font-medium"
                       >
                         {topic}
                       </span>
                     ))}
-                  </div>
-
-                  <div className="mt-4 pt-4 border-t border-gray-100">
-                    <span className="text-purple-600 font-semibold text-sm group-hover:text-purple-700">
-                      Start Game →
-                    </span>
                   </div>
                 </div>
               </Link>
