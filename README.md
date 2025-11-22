@@ -19,35 +19,70 @@ An engaging, gamified 11+ exam preparation platform for kids. Features multiple 
 
 ## Tech Stack
 
-- **Next.js 14** with TypeScript
-- **Prisma 5** with SQLite database
-- **Tailwind CSS** for styling
-- **React** for UI components
+- **Next.js 16** with TypeScript
+- **Prisma 5** with PostgreSQL/SQLite database
+- **Tailwind CSS 4** for styling
+- **React 19** for UI components
+- **bcryptjs** for password hashing
 
 ## Getting Started
+
+### Local Development (SQLite)
 
 1. Install dependencies:
 ```bash
 npm install
 ```
 
-2. Set up the database:
+2. Set up environment variables:
+```bash
+cp .env.example .env
+# Use SQLite for local development (default in .env.example)
+```
+
+3. Set up the database:
+```bash
+npx prisma generate
+npx prisma migrate dev
+npx tsx lib/seed.ts
+```
+
+4. Start the development server:
+```bash
+npm run dev
+```
+
+5. Open http://localhost:3000 in your browser
+
+### Production Setup (PostgreSQL)
+
+1. Create a PostgreSQL database (e.g., on Vercel Postgres, Railway, or Supabase)
+
+2. Update `.env` with your PostgreSQL connection string:
+```bash
+DATABASE_URL="postgresql://user:password@host:5432/database?schema=public"
+```
+
+3. Update `prisma/schema.prisma` to use PostgreSQL:
+```prisma
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+```
+
+4. Run migrations and seed:
 ```bash
 npx prisma migrate dev
 npx tsx lib/seed.ts
 ```
 
-3. Start the development server:
-```bash
-npm run dev
-```
-
-4. Open http://localhost:3000 in your browser
+5. Deploy to your hosting platform (Vercel recommended)
 
 ## Default Users
 
-- **Santi**: Password `santi123`
-- **William**: Password `william123`
+- **Santi**: Username `Santi`, Password `santi123`
+- **William**: Username `William`, Password `william123`
 
 ## Project Structure
 
@@ -75,17 +110,41 @@ brain-battle-academy/
 - 20 questions in 15 minutes
 - Earn £1 for 90%+ accuracy
 
+## Features Implemented
+
+### Authentication & User Management
+- ✅ Database-authenticated login with bcrypt password hashing
+- ✅ User profiles with avatars and colors
+- ✅ Secure session management
+
+### Game System
+- ✅ 21 different game types across all 4 subjects (Maths, English, Verbal Reasoning, Non-Verbal Reasoning)
+- ✅ Quick Fire game with 60-second timer
+- ✅ Multiple choice and text input question types
+- ✅ Progress tracking with saved game states
+- ✅ Interactive cheat sheet for reference
+
+### Progress & Rewards
+- ✅ Automatic session saving to database
+- ✅ Star collection system
+- ✅ Earnings system: £1 for 90%+ accuracy, £1 for 7-day streak
+- ✅ Weekly streak tracking
+- ✅ Real-time leaderboard
+
+### Dashboard
+- ✅ Personal stats (total stars, earnings, current streak)
+- ✅ Leaderboard with all players
+- ✅ Game selection for all subjects
+- ✅ Earnings challenges display
+
 ## Roadmap
 
-- [ ] Add more maths games (Calculator Detective, Quiz Master, etc.)
-- [ ] Implement English & Comprehension section
-- [ ] Add Verbal Reasoning games
-- [ ] Add Non-Verbal Reasoning games
-- [ ] Build leaderboard system
-- [ ] Add achievements and badges
-- [ ] Create parent dashboard
-- [ ] Add streak tracking
-- [ ] Implement session statistics API
+- [ ] Add more question content for each game type
+- [ ] Implement parent dashboard for monitoring
+- [ ] Add achievement badges system
+- [ ] Create weekly/monthly leaderboards
+- [ ] Add practice mode (no timers, no penalties)
+- [ ] Mobile app version
 
 ## Contributing
 

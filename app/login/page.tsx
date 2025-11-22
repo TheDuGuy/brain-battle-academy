@@ -3,26 +3,42 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-const avatars = ['🚀', '⚡', '🎮', '🦸', '🧙', '🐉', '🦄', '🎯', '🏆', '⭐']
-
 export default function LoginPage() {
   const [name, setName] = useState('')
-  const [selectedAvatar, setSelectedAvatar] = useState('🚀')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!name.trim()) return
+    if (!name.trim() || !password.trim()) return
 
-    const user = {
-      id: name.toLowerCase().replace(/\s+/g, '-'),
-      name: name.trim(),
-      avatar: selectedAvatar,
-      color: '#9333EA'
+    setIsLoading(true)
+    setError('')
+
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: name.trim(), password })
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        setError(data.error || 'Login failed')
+        setIsLoading(false)
+        return
+      }
+
+      // Store minimal user info in localStorage for client-side access
+      localStorage.setItem('user', JSON.stringify(data.user))
+      router.push('/dashboard')
+    } catch (err) {
+      setError('An error occurred. Please try again.')
+      setIsLoading(false)
     }
-
-    localStorage.setItem('user', JSON.stringify(user))
-    router.push('/dashboard')
   }
 
   return (
@@ -39,9 +55,15 @@ export default function LoginPage() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
+          {error && (
+            <div className="bg-red-50 border-2 border-red-300 rounded-xl p-4">
+              <p className="text-red-700 text-sm font-medium">{error}</p>
+            </div>
+          )}
+
           <div>
             <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
-              What&apos;s your name?
+              Username
             </label>
             <input
               id="name"
@@ -49,45 +71,42 @@ export default function LoginPage() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all outline-none text-lg text-gray-900 font-semibold bg-white placeholder:text-gray-400"
-              placeholder="Enter your name"
+              disabled={isLoading}
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all outline-none text-lg text-gray-900 font-semibold bg-white placeholder:text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
+              placeholder="Enter your username"
               autoFocus
             />
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-3">
-              Choose your avatar
+            <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2">
+              Password
             </label>
-            <div className="grid grid-cols-5 gap-3">
-              {avatars.map((avatar) => (
-                <button
-                  key={avatar}
-                  type="button"
-                  onClick={() => setSelectedAvatar(avatar)}
-                  className={`text-4xl p-3 rounded-xl transition-all ${
-                    selectedAvatar === avatar
-                      ? 'bg-gradient-to-br from-purple-500 to-pink-500 shadow-lg scale-110'
-                      : 'bg-gray-100 hover:bg-gray-200'
-                  }`}
-                >
-                  {avatar}
-                </button>
-              ))}
-            </div>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              disabled={isLoading}
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all outline-none text-lg text-gray-900 font-semibold bg-white placeholder:text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
+              placeholder="Enter your password"
+            />
           </div>
 
           <button
             type="submit"
-            disabled={!name.trim()}
+            disabled={!name.trim() || !password.trim() || isLoading}
             className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-4 rounded-xl font-bold text-lg hover:from-purple-600 hover:to-pink-600 transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Start Learning!
+            {isLoading ? 'Logging in...' : 'Start Learning!'}
           </button>
         </form>
 
         <div className="mt-6 text-center text-sm text-gray-500">
-          <p>No password needed - just enter your name</p>
+          <p className="mb-2">Test accounts:</p>
+          <p className="font-mono text-xs">Santi / santi123</p>
+          <p className="font-mono text-xs">William / william123</p>
         </div>
       </div>
     </div>

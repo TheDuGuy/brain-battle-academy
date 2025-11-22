@@ -255,8 +255,9 @@ interface PlayerStats {
 
 export default function DashboardPage() {
   const [user, setUser] = useState<User | null>(null)
-  const [stats, setStats] = useState({ totalStars: 0, earnings: 0, streak: 0 })
+  const [stats, setStats] = useState({ totalStars: 0, earnings: 0, weekEarnings: 0, streak: 0 })
   const [leaderboard, setLeaderboard] = useState<PlayerStats[]>([])
+  const [loading, setLoading] = useState(true)
   const router = useRouter()
 
   useEffect(() => {
@@ -264,54 +265,51 @@ export default function DashboardPage() {
     if (!userData) {
       router.push('/')
     } else {
-      setUser(JSON.parse(userData))
-      loadLeaderboard(userData)
+      const parsedUser = JSON.parse(userData)
+      setUser(parsedUser)
+      loadDashboardData(parsedUser.id)
     }
   }, [router])
 
-  const loadLeaderboard = (currentUserData: string) => {
-    const currentUser = JSON.parse(currentUserData)
-
-    // Get all real player stats from localStorage
-    const allPlayers: PlayerStats[] = []
-
-    // Scan localStorage for all player_stats_ entries
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i)
-      if (key && key.startsWith('player_stats_')) {
-        const playerStats = localStorage.getItem(key)
-        if (playerStats) {
-          const stats = JSON.parse(playerStats)
-          // Only include players who have actually played games
-          if (stats.gamesPlayed > 0) {
-            allPlayers.push(stats)
-          }
-        }
+  const loadDashboardData = async (userId: string) => {
+    setLoading(true)
+    try {
+      // Fetch user stats
+      const statsRes = await fetch(`/api/stats/${userId}`)
+      if (statsRes.ok) {
+        const statsData = await statsRes.json()
+        setStats({
+          totalStars: statsData.totalStars || 0,
+          earnings: statsData.totalEarnings || 0,
+          weekEarnings: statsData.weekEarnings || 0,
+          streak: statsData.currentStreak || 0
+        })
       }
-    }
 
-    // If current user doesn't have stats yet, create initial entry
-    const currentUserKey = `player_stats_${currentUser.name.toLowerCase()}`
-    const currentUserStats = localStorage.getItem(currentUserKey)
-    if (!currentUserStats) {
-      const initialStats: PlayerStats = {
-        name: currentUser.name,
-        avatar: currentUser.avatar,
-        totalStars: 0,
-        earnings: 0,
-        gamesPlayed: 0,
-        accuracy: 0
+      // Fetch leaderboard
+      const leaderboardRes = await fetch('/api/leaderboard')
+      if (leaderboardRes.ok) {
+        const leaderboardData = await leaderboardRes.json()
+        setLeaderboard(leaderboardData)
       }
-      localStorage.setItem(currentUserKey, JSON.stringify(initialStats))
-      allPlayers.push(initialStats)
+    } catch (error) {
+      console.error('Failed to load dashboard data:', error)
+    } finally {
+      setLoading(false)
     }
-
-    // Sort by total stars (descending)
-    allPlayers.sort((a, b) => b.totalStars - a.totalStars)
-    setLeaderboard(allPlayers)
   }
 
   if (!user) return null
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-6xl mb-4">🎮</div>
+          <p className="text-xl font-semibold text-gray-700">Loading your academy...</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
@@ -356,7 +354,7 @@ export default function DashboardPage() {
               <span className="text-3xl">💰</span>
             </div>
             <p className="text-4xl font-bold text-amber-500">£{stats.earnings.toFixed(2)}</p>
-            <p className="text-sm text-gray-500 mt-2">This week: £0.00</p>
+            <p className="text-sm text-gray-500 mt-2">This week: £{stats.weekEarnings.toFixed(2)}</p>
           </div>
 
           {/* Stars Card */}

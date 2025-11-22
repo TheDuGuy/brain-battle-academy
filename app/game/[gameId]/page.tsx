@@ -438,15 +438,56 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
     }
   }
 
-  const endGame = () => {
+  const endGame = async () => {
     setGameEnded(true)
     const correct = questions.filter(q => q.isCorrect).length
     const total = questions.filter(q => q.userAnswer).length
     const accuracy = total > 0 ? (correct / total) * 100 : 0
+    const stars = Math.floor((accuracy / 100) * 3)
     setSessionStats({ correct, total, accuracy })
 
-    // Clear saved progress when game ends
+    // Save session to database
     if (user) {
+      try {
+        const duration = hasTimer ? (60 - timeLeft) : null
+        const subject = gameId.includes('quick-fire') || gameId.includes('calculator') ||
+                       gameId.includes('quiz') || gameId.includes('fraction') ||
+                       gameId.includes('power') || gameId.includes('problem')
+                       ? 'Maths'
+                       : gameId.includes('vocabulary') || gameId.includes('synonym') ||
+                         gameId.includes('grammar') || gameId.includes('spelling') ||
+                         gameId.includes('comprehension')
+                       ? 'English'
+                       : gameId.includes('word') || gameId.includes('letter') ||
+                         gameId.includes('code') || gameId.includes('odd') ||
+                         gameId.includes('logic')
+                       ? 'Verbal Reasoning'
+                       : 'Non-Verbal Reasoning'
+
+        const res = await fetch('/api/sessions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId: user.id,
+            gameType: gameId,
+            subject,
+            totalQuestions: total,
+            correctAnswers: correct,
+            accuracy,
+            duration,
+            starsEarned: stars
+          })
+        })
+
+        if (res.ok) {
+          const data = await res.json()
+          console.log('Session saved:', data)
+        }
+      } catch (error) {
+        console.error('Failed to save session:', error)
+      }
+
+      // Clear saved progress when game ends
       localStorage.removeItem(`game_progress_${user.id}_${gameId}`)
     }
   }
