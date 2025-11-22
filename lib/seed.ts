@@ -4,31 +4,7 @@ import bcrypt from 'bcryptjs'
 const prisma = new PrismaClient()
 
 async function main() {
-  const santi = await prisma.user.upsert({
-    where: { name: 'Santi' },
-    update: {},
-    create: {
-      name: 'Santi',
-      password: await bcrypt.hash('santi123', 10),
-      color: '#9333EA',
-      avatar: '🚀',
-      role: 'PLAYER',
-    },
-  })
-
-  const william = await prisma.user.upsert({
-    where: { name: 'William' },
-    update: {},
-    create: {
-      name: 'William',
-      password: await bcrypt.hash('william123', 10),
-      color: '#3B82F6',
-      avatar: '⚡',
-      role: 'PLAYER',
-    },
-  })
-
-  // Optional parent user for future use
+  // Create parent first
   const parent = await prisma.user.upsert({
     where: { name: 'Parent' },
     update: {},
@@ -42,7 +18,38 @@ async function main() {
     },
   })
 
-  console.log({ santi, william, parent })
+  // Create children linked to parent
+  const santi = await prisma.user.upsert({
+    where: { name: 'Santi' },
+    update: {
+      parentId: parent.id,
+    },
+    create: {
+      name: 'Santi',
+      password: await bcrypt.hash('santi123', 10),
+      color: '#9333EA',
+      avatar: '🚀',
+      role: 'PLAYER',
+      parentId: parent.id,
+    },
+  })
+
+  const william = await prisma.user.upsert({
+    where: { name: 'William' },
+    update: {
+      parentId: parent.id,
+    },
+    create: {
+      name: 'William',
+      password: await bcrypt.hash('william123', 10),
+      color: '#3B82F6',
+      avatar: '⚡',
+      role: 'PLAYER',
+      parentId: parent.id,
+    },
+  })
+
+  console.log({ parent, santi, william })
 
   // Summary
   console.log('\n✅ Seed complete!')

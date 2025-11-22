@@ -21,6 +21,11 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
+  // Parent-child relationship
+  parent        User?     @relation("ParentChildren", fields: [parentId], references: [id], onDelete: SetNull)
+  parentId      String?
+  children      User[]    @relation("ParentChildren")
+
   sessions      Session[]
   progress      Progress[]
   achievements  Achievement[]

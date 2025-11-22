@@ -41,7 +41,13 @@ export default function LoginPage() {
 
       // Store minimal user info in localStorage for client-side access
       localStorage.setItem('user', JSON.stringify(data.user))
-      router.push('/dashboard')
+
+      // Redirect based on user role
+      if (data.user.role === 'PARENT') {
+        router.push('/parent')
+      } else {
+        router.push('/dashboard')
+      }
     } catch (err) {
       setError('Connection error. Please check your internet and try again.')
       setIsLoading(false)

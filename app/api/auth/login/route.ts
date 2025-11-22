@@ -32,6 +32,7 @@ export async function POST(request: Request) {
         name: user.name,
         avatar: user.avatar,
         color: user.color,
+        role: user.role,
       },
     })
   } catch (error) {
