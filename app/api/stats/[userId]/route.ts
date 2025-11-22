@@ -26,15 +26,18 @@ export async function GET(
 
     const totalStars = progressRecords.reduce((sum, p) => sum + p.totalStars, 0)
 
-    // Get total earnings
-    const earnings = await prisma.earning.findMany({
+    // Get total earnings from rewards (stored in pence)
+    const rewards = await prisma.reward.findMany({
       where: { userId }
     })
 
-    const totalEarnings = earnings.reduce((sum, e) => sum + e.amount, 0)
-    const weekEarnings = earnings
-      .filter(e => e.weekStart.getTime() === weekStart.getTime())
-      .reduce((sum, e) => sum + e.amount, 0)
+    const totalEarningsPence = rewards.reduce((sum, r) => sum + r.amountPence, 0)
+    const totalEarnings = totalEarningsPence / 100 // Convert to pounds
+
+    const weekEarningsPence = rewards
+      .filter(r => r.weekStart.getTime() === weekStart.getTime())
+      .reduce((sum, r) => sum + r.amountPence, 0)
+    const weekEarnings = weekEarningsPence / 100 // Convert to pounds
 
     // Get current streak
     const streakRecord = await prisma.streak.findUnique({
