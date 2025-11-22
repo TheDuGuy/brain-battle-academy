@@ -49,7 +49,7 @@ export default function LoginPage() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all outline-none text-lg"
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all outline-none text-lg text-gray-900 font-semibold bg-white placeholder:text-gray-400"
               placeholder="Enter your name"
               autoFocus
             />
