@@ -221,6 +221,55 @@ export async function POST(request: Request) {
         createdRewards.push(createdReward)
       }
 
+      // Increment skill level if HIGH_ACCURACY reward was earned
+      const hasAccuracyReward = rewardsResult.newRewards.some(r => r.type === 'HIGH_ACCURACY')
+      if (hasAccuracyReward) {
+        // Find or create Progress for this subject and increment skillLevel
+        const MAX_SKILL_LEVEL = 5
+
+        await tx.progress.upsert({
+          where: {
+            userId_subject_gameType: {
+              userId: validated.userId,
+              subject: validated.subject,
+              gameType: validated.gameId
+            }
+          },
+          update: {
+            skillLevel: {
+              increment: 1
+            }
+          },
+          create: {
+            userId: validated.userId,
+            subject: validated.subject,
+            gameType: validated.gameId,
+            skillLevel: 2, // Start at 2 since they just earned a reward
+            totalStars: 0,
+            gamesPlayed: 0,
+            bestAccuracy: 0
+          }
+        })
+
+        // Cap at MAX_SKILL_LEVEL
+        const progress = await tx.progress.findUnique({
+          where: {
+            userId_subject_gameType: {
+              userId: validated.userId,
+              subject: validated.subject,
+              gameType: validated.gameId
+            }
+          }
+        })
+
+        if (progress && progress.skillLevel > MAX_SKILL_LEVEL) {
+          await tx.progress.update({
+            where: { id: progress.id },
+            data: { skillLevel: MAX_SKILL_LEVEL }
+          })
+        }
+      }
+
       // Update or create progress
       await tx.progress.upsert({
         where: {

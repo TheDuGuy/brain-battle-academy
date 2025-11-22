@@ -252,6 +252,13 @@ export default function ParentDashboard() {
                     </div>
                   </div>
 
+                  {/* Reward explanation */}
+                  <div className="mt-4 bg-emerald-50 rounded-lg p-3 border border-emerald-100">
+                    <p className="text-xs text-emerald-700">
+                      💡 They can earn a £1 bonus for a perfect 20/20 once per week.
+                    </p>
+                  </div>
+
                   {/* Action Buttons */}
                   <div className="mt-6 space-y-3">
                     {/* Switch to Child View */}

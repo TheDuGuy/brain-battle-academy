@@ -58,7 +58,11 @@ export type EvaluateRewardsOutput = {
 
 const TIMEZONE = 'Europe/London'
 const DAILY_COMPLETION_SECONDS = 900 // 15 minutes
-const HIGH_ACCURACY_THRESHOLD = 0.9
+
+// Accuracy reward requirements (tightened to prevent easy £1)
+export const MIN_QUESTIONS_FOR_ACCURACY_REWARD = 20
+export const REQUIRED_ACCURACY_FOR_REWARD = 1.0 // 100%
+
 const STREAK_TARGET_DAYS = 7
 const HIGH_ACCURACY_REWARD_PENCE = 100 // £1
 const STREAK_REWARD_PENCE = 100 // £1
@@ -217,7 +221,7 @@ function hasStreakRewardThisWeek(
  * Evaluate rewards for a new session
  *
  * This is a pure function that implements all reward business logic:
- * - HIGH_ACCURACY: £1 for 90%+ accuracy (once per week)
+ * - HIGH_ACCURACY: £1 for 20/20 questions (100% accuracy, once per week)
  * - STREAK: £1 for 7 consecutive completed days (once per week)
  *
  * @param input - The new session and context (recent sessions, existing rewards)
@@ -231,19 +235,23 @@ export function evaluateRewards(input: EvaluateRewardsInput): EvaluateRewardsOut
   const currentWeekStart = getWeekStart(newSession.endedAt)
 
   // -------------------------------------------------------------------------
-  // 1. Check HIGH_ACCURACY reward
+  // 1. Check HIGH_ACCURACY reward (stricter: requires 20+ questions and 100%)
   // -------------------------------------------------------------------------
   const accuracy = newSession.totalQuestions > 0
     ? newSession.correctAnswers / newSession.totalQuestions
     : 0
 
-  if (accuracy >= HIGH_ACCURACY_THRESHOLD) {
+  const meetsAccuracyRequirements =
+    newSession.totalQuestions >= MIN_QUESTIONS_FOR_ACCURACY_REWARD &&
+    accuracy >= REQUIRED_ACCURACY_FOR_REWARD
+
+  if (meetsAccuracyRequirements) {
     // Check if reward already granted this week
     if (!hasHighAccuracyRewardThisWeek(existingRewards, currentWeekStart)) {
       newRewards.push({
         type: 'HIGH_ACCURACY',
         amountPence: HIGH_ACCURACY_REWARD_PENCE,
-        reason: `Achieved ${Math.round(accuracy * 100)}% accuracy`,
+        reason: `Perfect score: ${newSession.correctAnswers}/${newSession.totalQuestions}`,
         weekStart: currentWeekStart
       })
     }

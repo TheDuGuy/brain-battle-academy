@@ -192,6 +192,7 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
   const config = gameConfig[gameId] || gameConfig['quick-fire']
 
   const [user, setUser] = useState<User | null>(null)
+  const [skillLevel, setSkillLevel] = useState<number>(1)
   const [questions, setQuestions] = useState<GameQuestion[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [userAnswer, setUserAnswer] = useState('')
@@ -217,6 +218,43 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
       setUser(JSON.parse(userData))
     }
   }, [router])
+
+  // Fetch skill level when user is set
+  useEffect(() => {
+    if (user && gameId) {
+      fetchSkillLevel()
+    }
+  }, [user, gameId])
+
+  const fetchSkillLevel = async () => {
+    if (!user) return
+
+    try {
+      // Determine subject based on gameId
+      const subject = gameId.includes('quick-fire') || gameId.includes('calculator') ||
+                     gameId.includes('quiz') || gameId.includes('fraction') ||
+                     gameId.includes('power') || gameId.includes('problem')
+                     ? 'MATHS'
+                     : gameId.includes('vocabulary') || gameId.includes('synonym') ||
+                       gameId.includes('grammar') || gameId.includes('spelling') ||
+                       gameId.includes('comprehension')
+                     ? 'ENGLISH'
+                     : gameId.includes('word') || gameId.includes('letter') ||
+                       gameId.includes('code') || gameId.includes('odd') ||
+                       gameId.includes('logic')
+                     ? 'VR'
+                     : 'NVR'
+
+      const res = await fetch(`/api/progress/${user.id}/${gameId}/${subject}`)
+      if (res.ok) {
+        const data = await res.json()
+        setSkillLevel(data.skillLevel || 1)
+      }
+    } catch (error) {
+      console.error('Failed to fetch skill level:', error)
+      setSkillLevel(1) // Default to level 1 on error
+    }
+  }
 
   // Load saved progress when user is set
   useEffect(() => {
@@ -279,7 +317,8 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
       case 'vocabulary-builder':
         return generateVocabularyQuestion()
       case 'synonym-finder':
-        return generateSynonymQuestion()
+        // Use skill-based difficulty for Synonym Finder
+        return generateSynonymQuestion(skillLevel)
       case 'grammar-guardian':
         return generateGrammarQuestion()
       case 'spelling-ace':
@@ -287,7 +326,8 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
       case 'comprehension-master':
         return generateComprehensionQuestion()
       case 'word-analogies':
-        return generateAnalogyQuestion()
+        // Use skill-based difficulty for Word Analogies (VR)
+        return generateAnalogyQuestion(skillLevel)
       case 'letter-sequences':
         return generateSequenceQuestion()
       case 'word-codes':
@@ -297,7 +337,8 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
       case 'logic-puzzles':
         return generateLogicPuzzleQuestion()
       case 'shape-patterns':
-        return generateShapePatternQuestion()
+        // Use skill-based difficulty for Shape Patterns (NVR)
+        return generateShapePatternQuestion(skillLevel)
       case 'number-sequences':
         return generateNumberSequenceQuestion()
       case 'rotation-patterns':
@@ -306,8 +347,11 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
         return generateShapeCompletionQuestion()
       case 'mirror-images':
         return generateMirrorImageQuestion()
+      case 'quick-fire':
+        // Use skill-based difficulty for Maths Quick Fire
+        return generateQuickFireQuestion(skillLevel)
       default:
-        return generateQuickFireQuestion()
+        return generateQuickFireQuestion(skillLevel)
     }
   }
 
@@ -552,7 +596,7 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="bg-green-100 text-green-700 font-bold w-6 h-6 rounded-full flex items-center justify-center text-sm flex-shrink-0">£</span>
-                  <span className="font-semibold">Get 90%+ accuracy to earn £1!</span>
+                  <span className="font-semibold">Get 20/20 (perfect score) to earn £1!</span>
                 </li>
               </ul>
             </div>

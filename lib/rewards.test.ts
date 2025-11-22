@@ -90,10 +90,10 @@ function sessionOnDay(date: Date, accuracy = 0.8): SessionInput {
 // ============================================================================
 
 describe('HIGH_ACCURACY reward', () => {
-  it('awards £1 for 90% accuracy', () => {
+  it('awards £1 for 20/20 (100% accuracy with 20+ questions)', () => {
     const newSession = createSession({
-      totalQuestions: 10,
-      correctAnswers: 9 // 90%
+      totalQuestions: 20,
+      correctAnswers: 20 // 100%
     })
 
     const result = evaluateRewards({
@@ -105,13 +105,13 @@ describe('HIGH_ACCURACY reward', () => {
     expect(result.newRewards).toHaveLength(1)
     expect(result.newRewards[0].type).toBe('HIGH_ACCURACY')
     expect(result.newRewards[0].amountPence).toBe(100)
-    expect(result.newRewards[0].reason).toContain('90%')
+    expect(result.newRewards[0].reason).toContain('Perfect score: 20/20')
   })
 
-  it('awards £1 for 100% accuracy', () => {
+  it('awards £1 for 25/25 (100% accuracy with more than 20 questions)', () => {
     const newSession = createSession({
-      totalQuestions: 10,
-      correctAnswers: 10 // 100%
+      totalQuestions: 25,
+      correctAnswers: 25 // 100%
     })
 
     const result = evaluateRewards({
@@ -123,12 +123,58 @@ describe('HIGH_ACCURACY reward', () => {
     expect(result.newRewards).toHaveLength(1)
     expect(result.newRewards[0].type).toBe('HIGH_ACCURACY')
     expect(result.newRewards[0].amountPence).toBe(100)
+    expect(result.newRewards[0].reason).toContain('Perfect score: 25/25')
   })
 
-  it('does not award for 89% accuracy', () => {
+  it('does NOT award for 19/19 (less than 20 questions, even with 100%)', () => {
+    const newSession = createSession({
+      totalQuestions: 19,
+      correctAnswers: 19 // 100% but too few questions
+    })
+
+    const result = evaluateRewards({
+      newSession,
+      recentSessions: [],
+      existingRewards: []
+    })
+
+    expect(result.newRewards).toHaveLength(0)
+  })
+
+  it('does NOT award for 10/10 (less than 20 questions)', () => {
+    const newSession = createSession({
+      totalQuestions: 10,
+      correctAnswers: 10 // 100% but only 10 questions
+    })
+
+    const result = evaluateRewards({
+      newSession,
+      recentSessions: [],
+      existingRewards: []
+    })
+
+    expect(result.newRewards).toHaveLength(0)
+  })
+
+  it('does NOT award for 19/20 (95% accuracy with 20+ questions)', () => {
+    const newSession = createSession({
+      totalQuestions: 20,
+      correctAnswers: 19 // 95%, not perfect
+    })
+
+    const result = evaluateRewards({
+      newSession,
+      recentSessions: [],
+      existingRewards: []
+    })
+
+    expect(result.newRewards).toHaveLength(0)
+  })
+
+  it('does NOT award for 90/100 (90% accuracy)', () => {
     const newSession = createSession({
       totalQuestions: 100,
-      correctAnswers: 89 // 89%
+      correctAnswers: 90 // 90%, not perfect
     })
 
     const result = evaluateRewards({
@@ -144,8 +190,8 @@ describe('HIGH_ACCURACY reward', () => {
     const weekStart = getMonday(new Date())
 
     const newSession = createSession({
-      totalQuestions: 10,
-      correctAnswers: 10 // 100%
+      totalQuestions: 20,
+      correctAnswers: 20 // 100% with 20+ questions
     })
 
     // Already received HIGH_ACCURACY this week
@@ -172,8 +218,8 @@ describe('HIGH_ACCURACY reward', () => {
       .toJSDate()
 
     const newSession = createSession({
-      totalQuestions: 10,
-      correctAnswers: 10 // 100%
+      totalQuestions: 20,
+      correctAnswers: 20 // 100% with 20+ questions
     })
 
     // Received reward last week
@@ -432,12 +478,12 @@ describe('Edge cases', () => {
       sessions.push(sessionOnDay(today.minus({ days: i }).toJSDate()))
     }
 
-    // Today: 100% accuracy (HIGH_ACCURACY) + completes 7-day streak (STREAK)
+    // Today: 20/20 perfect score (HIGH_ACCURACY) + completes 7-day streak (STREAK)
     const newSession = createSession({
       startedAt: today.set({ hour: 14, minute: 0 }).toJSDate(),
       endedAt: today.set({ hour: 14, minute: 15 }).toJSDate(),
-      totalQuestions: 10,
-      correctAnswers: 10 // 100%
+      totalQuestions: 20,
+      correctAnswers: 20 // 100% with 20+ questions
     })
 
     const result = evaluateRewards({
@@ -493,17 +539,20 @@ describe('Edge cases', () => {
 // ============================================================================
 
 describe('Realistic user scenarios', () => {
-  it('Week 1: First week, plays 5 days, gets high-accuracy reward', () => {
+  it('Week 1: First week, plays 2 days, gets perfect score', () => {
     const today = DateTime.now().setZone('Europe/London')
     const sessions: SessionInput[] = []
 
-    // Play Mon, Tue, Wed, Fri, Sat (skipped Thu and Sun)
-    // daysAgo: [6, 5, 4, 2, 1] but could vary based on what day today is
-    // Let's play yesterday and 2 days ago to ensure a 2-day streak
+    // Play yesterday with good (but not perfect) accuracy
     sessions.push(sessionOnDay(today.minus({ days: 1 }).toJSDate(), 0.8))
 
-    // Today: 95% accuracy
-    const newSession = sessionOnDay(today.toJSDate(), 0.95)
+    // Today: Perfect 20/20 score
+    const newSession = createSession({
+      startedAt: today.set({ hour: 14, minute: 0 }).toJSDate(),
+      endedAt: today.set({ hour: 14, minute: 15 }).toJSDate(),
+      totalQuestions: 20,
+      correctAnswers: 20 // 100% with 20+ questions
+    })
 
     const result = evaluateRewards({
       newSession,
@@ -513,8 +562,29 @@ describe('Realistic user scenarios', () => {
 
     // Streak = 2 (yesterday and today)
     expect(result.currentStreakDays).toBe(2)
-    // Gets 1 HIGH_ACCURACY reward for today's 95%
+    // Gets 1 HIGH_ACCURACY reward for today's perfect 20/20
     expect(result.newRewards.filter(r => r.type === 'HIGH_ACCURACY')).toHaveLength(1)
+  })
+
+  it('Week 1: Child gets 95% accuracy (no reward)', () => {
+    const today = DateTime.now().setZone('Europe/London')
+
+    // Today: 19/20 (95% - very good but not perfect)
+    const newSession = createSession({
+      startedAt: today.set({ hour: 14, minute: 0 }).toJSDate(),
+      endedAt: today.set({ hour: 14, minute: 15 }).toJSDate(),
+      totalQuestions: 20,
+      correctAnswers: 19 // 95% - not enough
+    })
+
+    const result = evaluateRewards({
+      newSession,
+      recentSessions: [],
+      existingRewards: []
+    })
+
+    // No HIGH_ACCURACY reward for 95%
+    expect(result.newRewards.filter(r => r.type === 'HIGH_ACCURACY')).toHaveLength(0)
   })
 
   it('Committed student: 10-day streak spanning 2 weeks', () => {

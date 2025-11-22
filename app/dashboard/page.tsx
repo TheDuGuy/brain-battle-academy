@@ -22,6 +22,15 @@ interface GameCard {
   topics: string[]
 }
 
+interface GameProgress {
+  gameType: string
+  subject: string
+  gamesPlayed: number
+  bestAccuracy: number
+  totalStars: number
+  skillLevel: number
+}
+
 const mathsGames: GameCard[] = [
   {
     id: 'quick-fire',
@@ -253,23 +262,126 @@ interface PlayerStats {
   accuracy: number
 }
 
-// Recommended games for quick access
-const RECOMMENDED_GAME_IDS = ['quick-fire', 'synonym-finder', 'word-codes']
+interface LastPerfectScore {
+  gameType: string
+  subject: string | null
+  correctAnswers: number
+  totalQuestions: number
+  playedAt: string
+}
 
-// Helper to get recommended games across all subjects
-function getRecommendedGames(): GameCard[] {
-  const allGames = [...mathsGames, ...englishGames, ...verbalReasoningGames, ...nonVerbalReasoningGames]
-  return allGames.filter(game => RECOMMENDED_GAME_IDS.includes(game.id))
+// Helper to get game progress (level and percentage)
+function getGameProgress(
+  gameId: string,
+  subject: string,
+  gameProgressData: GameProgress[]
+): { level: number; percentage: number } {
+  // Normalize subject for matching
+  const normalizedSubject = subject.toUpperCase().replace(/\s/g, '_')
+
+  // Find matching progress record
+  const progress = gameProgressData.find(
+    p => p.gameType === gameId && p.subject.toUpperCase() === normalizedSubject
+  )
+
+  if (!progress || progress.gamesPlayed === 0) {
+    return { level: 1, percentage: 0 }
+  }
+
+  // Use skillLevel as the base level (clamped 1-5)
+  const level = Math.min(Math.max(progress.skillLevel, 1), 5)
+
+  // Calculate percentage based on games played and best accuracy
+  // Simple heuristic: weight games played progress with accuracy
+  const gamesPlayedProgress = Math.min(progress.gamesPlayed / 10, 1) // Normalize to 0-1
+  const accuracyWeight = progress.bestAccuracy // Already 0-1
+  const effectiveProgress = gamesPlayedProgress * accuracyWeight
+  const percentage = Math.round(effectiveProgress * 100)
+
+  return { level, percentage }
+}
+
+// Helper to get recommended games based on progress
+function getRecommendedGames(
+  allGames: GameCard[],
+  gameProgressData: GameProgress[]
+): GameCard[] {
+  // Find games with low plays or low accuracy
+  const gamesWithProgress = allGames.map(game => {
+    const progress = gameProgressData.find(
+      p => p.gameType === game.id &&
+           p.subject.toUpperCase() === game.subject.toUpperCase().replace(/\s/g, '_')
+    )
+    return {
+      game,
+      gamesPlayed: progress?.gamesPlayed || 0,
+      bestAccuracy: progress?.bestAccuracy || 0
+    }
+  })
+
+  // Prioritize games with low plays or low accuracy
+  const recommended = gamesWithProgress
+    .filter(g => g.gamesPlayed < 5 || g.bestAccuracy < 0.7)
+    .sort((a, b) => {
+      // Sort by: fewer plays first, then lower accuracy
+      if (a.gamesPlayed !== b.gamesPlayed) {
+        return a.gamesPlayed - b.gamesPlayed
+      }
+      return a.bestAccuracy - b.bestAccuracy
+    })
+    .map(g => g.game)
+    .slice(0, 3)
+
+  // Fallback to static list if not enough candidates
+  if (recommended.length < 3) {
+    const fallbackIds = ['quick-fire', 'synonym-finder', 'word-codes']
+    const fallback = allGames.filter(g => fallbackIds.includes(g.id))
+    return [...recommended, ...fallback].slice(0, 3)
+  }
+
+  return recommended
+}
+
+// Helper to format game names
+function formatGameName(gameType: string): string {
+  const map: Record<string, string> = {
+    'quick-fire': 'Maths Quick Fire',
+    'synonym-finder': 'Synonym Finder',
+    'quiz-master': 'Quiz Master',
+    'word-codes': 'Word Codes',
+    'calculator-detective': 'Calculator Detective',
+    'power-numbers': 'Power Numbers',
+    'problem-solver': 'Problem Solver',
+    'vocabulary-builder': 'Vocabulary Builder',
+    'grammar-guardian': 'Grammar Guardian',
+    'spelling-ace': 'Spelling Ace',
+    'comprehension-master': 'Comprehension Master',
+    'word-analogies': 'Word Analogies',
+    'letter-sequences': 'Letter Sequences',
+    'odd-one-out': 'Odd One Out',
+    'logic-puzzles': 'Logic Puzzles',
+    'shape-patterns': 'Shape Patterns',
+    'number-sequences': 'Number Sequences',
+    'rotation-patterns': 'Rotation Patterns',
+    'shape-completion': 'Shape Completion',
+    'mirror-images': 'Mirror Images',
+    'fraction-master': 'Fraction Master'
+  }
+  return map[gameType] || gameType
 }
 
 export default function DashboardPage() {
   const [user, setUser] = useState<User | null>(null)
   const [stats, setStats] = useState({ totalStars: 0, earnings: 0, weekEarnings: 0, streak: 0 })
   const [leaderboard, setLeaderboard] = useState<PlayerStats[]>([])
+  const [gameProgress, setGameProgress] = useState<GameProgress[]>([])
+  const [lastPerfectScore, setLastPerfectScore] = useState<LastPerfectScore | null>(null)
   const [loading, setLoading] = useState(true)
+  const [isViewingAsChild, setIsViewingAsChild] = useState(false)
   const router = useRouter()
 
-  const recommendedGames = getRecommendedGames()
+  const allGames = [...mathsGames, ...englishGames, ...verbalReasoningGames, ...nonVerbalReasoningGames]
+  const recommendedGames = getRecommendedGames(allGames, gameProgress)
 
   useEffect(() => {
     const userData = localStorage.getItem('user')
@@ -278,6 +390,12 @@ export default function DashboardPage() {
     } else {
       const parsedUser = JSON.parse(userData)
       setUser(parsedUser)
+
+      // Check if this is a parent/admin viewing as child
+      const fromParent = sessionStorage.getItem('fromParent')
+      const isViewingChild = parsedUser.role === 'PLAYER' && fromParent === '1'
+      setIsViewingAsChild(isViewingChild)
+
       loadDashboardData(parsedUser.id)
     }
   }, [router])
@@ -295,6 +413,8 @@ export default function DashboardPage() {
           weekEarnings: statsData.weekEarnings || 0,
           streak: statsData.currentStreak || 0
         })
+        setGameProgress(statsData.gameProgress || [])
+        setLastPerfectScore(statsData.lastPerfectScore || null)
       }
 
       // Fetch leaderboard
@@ -344,6 +464,7 @@ export default function DashboardPage() {
               <button
                 onClick={() => {
                   localStorage.removeItem('user')
+                  sessionStorage.removeItem('fromParent')
                   router.push('/login')
                 }}
                 className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-xl font-semibold hover:bg-gray-50 transition-all"
@@ -356,6 +477,28 @@ export default function DashboardPage() {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-8">
+        {/* "Viewing as Child" Banner */}
+        {isViewingAsChild && (
+          <div className="bg-indigo-100 border border-indigo-200 rounded-xl px-4 py-3 mb-6 flex items-center justify-between shadow-sm">
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">👀</span>
+              <span className="text-indigo-900 text-sm font-medium">
+                Viewing as <strong>{user?.name}</strong> (via Parent)
+              </span>
+            </div>
+            <button
+              onClick={() => {
+                localStorage.removeItem('user')
+                sessionStorage.removeItem('fromParent')
+                router.push('/login')
+              }}
+              className="text-indigo-700 hover:text-indigo-900 text-sm font-semibold underline"
+            >
+              Log out to return to your account
+            </button>
+          </div>
+        )}
+
         {/* Today's Mission Card */}
         <div className="mb-8">
           <div className="bg-gradient-to-br from-purple-500 via-pink-500 to-rose-500 rounded-3xl p-8 shadow-2xl border-2 border-white/20">
@@ -366,7 +509,7 @@ export default function DashboardPage() {
                   <h2 className="text-3xl font-bold text-white">Today&apos;s Mission</h2>
                 </div>
                 <p className="text-white/95 text-lg mb-6">
-                  Play 15 minutes of any game and try to hit 90% accuracy in at least one session.
+                  Play 15 minutes of any game and try to get 20/20 (perfect score) in at least one session.
                 </p>
 
                 <div className="space-y-3 mb-6">
@@ -382,7 +525,7 @@ export default function DashboardPage() {
                   <div className="flex items-center gap-3">
                     <span className="text-2xl">⭕</span>
                     <span className="text-white/90 font-medium">
-                      Aim for 90%+ accuracy once today
+                      Aim for 20/20 (perfect score) once today
                     </span>
                   </div>
                 </div>
@@ -431,6 +574,39 @@ export default function DashboardPage() {
           </div>
         </div>
 
+        {/* Rewards Summary */}
+        <div className="mb-8">
+          <div className="bg-white rounded-2xl shadow-md p-6 border border-amber-100">
+            <h3 className="text-lg font-semibold text-amber-900 mb-3 flex items-center gap-2">
+              <span className="text-2xl">🎁</span>
+              Rewards Summary
+            </h3>
+            <p className="text-sm text-amber-800 mb-2">
+              This week:{" "}
+              <span className="font-bold text-lg">
+                £{stats.weekEarnings.toFixed(2)}
+              </span>
+            </p>
+
+            {lastPerfectScore ? (
+              <p className="text-xs text-amber-700">
+                Last perfect score:{" "}
+                <span className="font-semibold">
+                  {new Date(lastPerfectScore.playedAt).toLocaleDateString("en-GB")}
+                </span>{" "}
+                in{" "}
+                <span className="font-semibold">
+                  {formatGameName(lastPerfectScore.gameType)}
+                </span>
+              </p>
+            ) : (
+              <p className="text-xs text-amber-700">
+                No perfect 20/20 yet – keep going to earn a £1 bonus!
+              </p>
+            )}
+          </div>
+        </div>
+
         {/* Challenge Cards */}
         <div className="grid md:grid-cols-2 gap-6 mb-8">
           {/* 7-Day Streak Challenge */}
@@ -458,15 +634,15 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* 90% Accuracy Challenge */}
+          {/* Perfect Score Challenge */}
           <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 border-2 border-green-200 shadow-md">
             <div className="flex items-center gap-3 mb-4">
               <div className="bg-green-500 rounded-xl p-3">
                 <span className="text-3xl">🎖️</span>
               </div>
               <div>
-                <h3 className="text-xl font-bold text-green-900">90% Accuracy Challenge</h3>
-                <p className="text-green-700 text-sm">Get 90%+ correct today</p>
+                <h3 className="text-xl font-bold text-green-900">Perfect Score Challenge</h3>
+                <p className="text-green-700 text-sm">Get 20/20 in one game this week to earn £1 accuracy bonus</p>
               </div>
             </div>
             <div className="space-y-2">
@@ -660,16 +836,21 @@ export default function DashboardPage() {
                     {game.description}
                   </p>
 
-                  {/* Progress bar - TODO: Use real progress data */}
-                  <div className="mb-4">
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-xs font-semibold text-gray-600">Progress</span>
-                      <span className="text-xs font-semibold text-purple-600">Level 1</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-1.5">
-                      <div className="bg-gradient-to-r from-purple-500 to-pink-500 h-1.5 rounded-full" style={{ width: '30%' }}></div>
-                    </div>
-                  </div>
+                  {/* Progress bar */}
+                  {(() => {
+                    const progress = getGameProgress(game.id, game.subject, gameProgress)
+                    return (
+                      <div className="mb-4">
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-xs font-semibold text-gray-600">Progress</span>
+                          <span className="text-xs font-semibold text-purple-600">Level {progress.level}</span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-1.5">
+                          <div className="bg-gradient-to-r from-purple-500 to-pink-500 h-1.5 rounded-full" style={{ width: `${progress.percentage}%` }}></div>
+                        </div>
+                      </div>
+                    )
+                  })()}
 
                   <div className="flex flex-wrap gap-2">
                     {game.topics.slice(0, 2).map((topic) => (
@@ -726,16 +907,21 @@ export default function DashboardPage() {
                     {game.description}
                   </p>
 
-                  {/* Progress indicator - TODO: Use real progress data from stats */}
-                  <div className="mb-4">
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-xs font-semibold text-gray-500">Progress</span>
-                      <span className="text-xs font-semibold text-blue-600">Level 1</span>
-                    </div>
-                    <div className="w-full bg-slate-100 rounded-full h-1.5">
-                      <div className={`bg-gradient-to-r ${game.color} h-1.5 rounded-full`} style={{ width: '20%' }}></div>
-                    </div>
-                  </div>
+                  {/* Progress indicator */}
+                  {(() => {
+                    const progress = getGameProgress(game.id, game.subject, gameProgress)
+                    return (
+                      <div className="mb-4">
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-xs font-semibold text-gray-500">Progress</span>
+                          <span className="text-xs font-semibold text-blue-600">Level {progress.level}</span>
+                        </div>
+                        <div className="w-full bg-slate-100 rounded-full h-1.5">
+                          <div className={`bg-gradient-to-r ${game.color} h-1.5 rounded-full`} style={{ width: `${progress.percentage}%` }}></div>
+                        </div>
+                      </div>
+                    )
+                  })()}
 
                   <div className="flex flex-wrap gap-2 mb-4">
                     {game.topics.slice(0, 3).map((topic) => (
@@ -793,15 +979,20 @@ export default function DashboardPage() {
                   </p>
 
                   {/* Progress indicator */}
-                  <div className="mb-4">
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-xs font-semibold text-gray-500">Progress</span>
-                      <span className="text-xs font-semibold text-indigo-600">Level 1</span>
-                    </div>
-                    <div className="w-full bg-slate-100 rounded-full h-1.5">
-                      <div className={`bg-gradient-to-r ${game.color} h-1.5 rounded-full`} style={{ width: '15%' }}></div>
-                    </div>
-                  </div>
+                  {(() => {
+                    const progress = getGameProgress(game.id, game.subject, gameProgress)
+                    return (
+                      <div className="mb-4">
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-xs font-semibold text-gray-500">Progress</span>
+                          <span className="text-xs font-semibold text-indigo-600">Level {progress.level}</span>
+                        </div>
+                        <div className="w-full bg-slate-100 rounded-full h-1.5">
+                          <div className={`bg-gradient-to-r ${game.color} h-1.5 rounded-full`} style={{ width: `${progress.percentage}%` }}></div>
+                        </div>
+                      </div>
+                    )
+                  })()}
 
                   <div className="flex flex-wrap gap-2 mb-4">
                     {game.topics.slice(0, 3).map((topic) => (
@@ -859,15 +1050,20 @@ export default function DashboardPage() {
                   </p>
 
                   {/* Progress indicator */}
-                  <div className="mb-4">
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-xs font-semibold text-gray-500">Progress</span>
-                      <span className="text-xs font-semibold text-teal-600">Level 1</span>
-                    </div>
-                    <div className="w-full bg-slate-100 rounded-full h-1.5">
-                      <div className={`bg-gradient-to-r ${game.color} h-1.5 rounded-full`} style={{ width: '10%' }}></div>
-                    </div>
-                  </div>
+                  {(() => {
+                    const progress = getGameProgress(game.id, game.subject, gameProgress)
+                    return (
+                      <div className="mb-4">
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-xs font-semibold text-gray-500">Progress</span>
+                          <span className="text-xs font-semibold text-teal-600">Level {progress.level}</span>
+                        </div>
+                        <div className="w-full bg-slate-100 rounded-full h-1.5">
+                          <div className={`bg-gradient-to-r ${game.color} h-1.5 rounded-full`} style={{ width: `${progress.percentage}%` }}></div>
+                        </div>
+                      </div>
+                    )
+                  })()}
 
                   <div className="flex flex-wrap gap-2 mb-4">
                     {game.topics.slice(0, 3).map((topic) => (
@@ -925,15 +1121,20 @@ export default function DashboardPage() {
                   </p>
 
                   {/* Progress indicator */}
-                  <div className="mb-4">
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-xs font-semibold text-gray-500">Progress</span>
-                      <span className="text-xs font-semibold text-orange-600">Level 1</span>
-                    </div>
-                    <div className="w-full bg-slate-100 rounded-full h-1.5">
-                      <div className={`bg-gradient-to-r ${game.color} h-1.5 rounded-full`} style={{ width: '5%' }}></div>
-                    </div>
-                  </div>
+                  {(() => {
+                    const progress = getGameProgress(game.id, game.subject, gameProgress)
+                    return (
+                      <div className="mb-4">
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-xs font-semibold text-gray-500">Progress</span>
+                          <span className="text-xs font-semibold text-orange-600">Level {progress.level}</span>
+                        </div>
+                        <div className="w-full bg-slate-100 rounded-full h-1.5">
+                          <div className={`bg-gradient-to-r ${game.color} h-1.5 rounded-full`} style={{ width: `${progress.percentage}%` }}></div>
+                        </div>
+                      </div>
+                    )
+                  })()}
 
                   <div className="flex flex-wrap gap-2 mb-4">
                     {game.topics.slice(0, 3).map((topic) => (

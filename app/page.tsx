@@ -1,23 +1,57 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import LandingPage from './landing/page'
 
-export default function Home() {
+type Role = 'ADMIN' | 'PARENT' | 'PLAYER'
+
+interface StoredUser {
+  id: string
+  name: string
+  role: Role
+}
+
+export default function RootPage() {
   const router = useRouter()
+  const [checkedAuth, setCheckedAuth] = useState(false)
 
   useEffect(() => {
-    const userData = localStorage.getItem('user')
-    if (userData) {
-      router.push('/dashboard')
-    } else {
-      router.push('/login')
+    try {
+      const raw = typeof window !== 'undefined'
+        ? localStorage.getItem('user')
+        : null
+
+      if (!raw) {
+        setCheckedAuth(true)
+        return
+      }
+
+      const user = JSON.parse(raw) as StoredUser | null
+
+      if (!user || !user.role) {
+        localStorage.removeItem('user')
+        setCheckedAuth(true)
+        return
+      }
+
+      if (user.role === 'ADMIN') {
+        router.replace('/admin')
+      } else if (user.role === 'PARENT') {
+        router.replace('/parent')
+      } else {
+        router.replace('/dashboard')
+      }
+    } catch (e) {
+      console.error('Error reading stored user:', e)
+      localStorage.removeItem('user')
+      setCheckedAuth(true)
     }
   }, [router])
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400 flex items-center justify-center">
-      <div className="text-white text-2xl font-bold">Loading...</div>
-    </div>
-  )
+  if (!checkedAuth) {
+    return null
+  }
+
+  return <LandingPage />
 }

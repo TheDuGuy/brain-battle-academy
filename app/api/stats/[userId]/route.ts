@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { MIN_QUESTIONS_FOR_ACCURACY_REWARD } from '@/lib/rewards'
 
 // GET /api/stats/[userId] - Get user stats for dashboard
 export async function GET(
@@ -64,6 +65,50 @@ export async function GET(
       ? recentSessions.reduce((sum, s) => sum + s.accuracy, 0) / totalGames
       : 0
 
+    // Format game progress for dashboard
+    const gameProgress = progressRecords.map(p => ({
+      gameType: p.gameType,
+      subject: p.subject,
+      gamesPlayed: p.gamesPlayed,
+      bestAccuracy: p.bestAccuracy,
+      totalStars: p.totalStars,
+      skillLevel: p.skillLevel
+    }))
+
+    // Get last perfect score (20/20 or better)
+    // Look at recent sessions (last 90 days) for the most recent perfect score
+    const ninetyDaysAgo = new Date()
+    ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90)
+
+    const recentCompletedSessions = await prisma.session.findMany({
+      where: {
+        userId,
+        completed: true,
+        totalQuestions: {
+          gte: MIN_QUESTIONS_FOR_ACCURACY_REWARD
+        },
+        startTime: {
+          gte: ninetyDaysAgo
+        }
+      },
+      orderBy: {
+        startTime: 'desc'
+      }
+    })
+
+    // Filter for perfect scores (correctAnswers === totalQuestions) and get the most recent
+    const perfectScoreSession = recentCompletedSessions.find(
+      session => session.correctAnswers === session.totalQuestions
+    )
+
+    const lastPerfectScore = perfectScoreSession ? {
+      gameType: perfectScoreSession.gameType,
+      subject: perfectScoreSession.subject,
+      correctAnswers: perfectScoreSession.correctAnswers,
+      totalQuestions: perfectScoreSession.totalQuestions,
+      playedAt: perfectScoreSession.startTime.toISOString()
+    } : null
+
     return NextResponse.json({
       totalStars,
       totalEarnings,
@@ -71,7 +116,9 @@ export async function GET(
       currentStreak,
       totalGames,
       avgAccuracy,
-      recentSessions
+      recentSessions,
+      gameProgress,
+      lastPerfectScore
     })
   } catch (error) {
     console.error('Stats fetch error:', error)

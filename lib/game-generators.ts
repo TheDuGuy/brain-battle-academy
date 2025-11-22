@@ -8,35 +8,58 @@ export interface GameQuestion {
   explanation?: string
 }
 
-// Quick Fire - Simple arithmetic
-export function generateQuickFireQuestion(): GameQuestion {
-  const operations = ['+', '-', '×', '÷']
+// Quick Fire - Simple arithmetic with skill-based difficulty
+export function generateQuickFireQuestion(skillLevel: number = 1): GameQuestion {
+  // Skill-based difficulty progression:
+  // Level 1: numbers 1-20, only + and −
+  // Level 2: numbers 1-50, +, −, ×
+  // Level 3+: numbers 1-100, +, −, ×, ÷
+
+  let operations: string[]
+  let maxNumber: number
+
+  if (skillLevel <= 1) {
+    operations = ['+', '-']
+    maxNumber = 20
+  } else if (skillLevel === 2) {
+    operations = ['+', '-', '×']
+    maxNumber = 50
+  } else {
+    operations = ['+', '-', '×', '÷']
+    maxNumber = 100
+  }
+
   const operation = operations[Math.floor(Math.random() * operations.length)]
 
   let num1, num2, answer, question
 
   switch (operation) {
     case '+':
-      num1 = Math.floor(Math.random() * 100) + 1
-      num2 = Math.floor(Math.random() * 100) + 1
+      num1 = Math.floor(Math.random() * maxNumber) + 1
+      num2 = Math.floor(Math.random() * maxNumber) + 1
       answer = num1 + num2
       question = `${num1} + ${num2}`
       break
     case '-':
-      num1 = Math.floor(Math.random() * 100) + 50
-      num2 = Math.floor(Math.random() * 50) + 1
+      // Ensure positive result
+      num1 = Math.floor(Math.random() * maxNumber) + (maxNumber / 2)
+      num2 = Math.floor(Math.random() * (maxNumber / 2)) + 1
       answer = num1 - num2
       question = `${num1} - ${num2}`
       break
     case '×':
-      num1 = Math.floor(Math.random() * 12) + 1
-      num2 = Math.floor(Math.random() * 12) + 1
+      // Keep multiplication manageable even at high levels
+      const maxMultiplier = Math.min(12, Math.floor(maxNumber / 5))
+      num1 = Math.floor(Math.random() * maxMultiplier) + 1
+      num2 = Math.floor(Math.random() * maxMultiplier) + 1
       answer = num1 * num2
       question = `${num1} × ${num2}`
       break
     case '÷':
-      num2 = Math.floor(Math.random() * 12) + 1
-      answer = Math.floor(Math.random() * 12) + 1
+      // Ensure whole number division
+      const maxDivisor = Math.min(12, Math.floor(maxNumber / 5))
+      num2 = Math.floor(Math.random() * maxDivisor) + 1
+      answer = Math.floor(Math.random() * maxDivisor) + 1
       num1 = num2 * answer
       question = `${num1} ÷ ${num2}`
       break
@@ -347,18 +370,44 @@ export function generateVocabularyQuestion(): GameQuestion {
   }
 }
 
-// Synonym Finder
-export function generateSynonymQuestion(): GameQuestion {
-  const pairs = [
+// Synonym Finder with skill-based difficulty
+export function generateSynonymQuestion(skillLevel: number = 1): GameQuestion {
+  // Level 1: Short, high-frequency words
+  const level1Pairs = [
     { word: 'happy', synonym: 'joyful', wrong: ['sad', 'angry', 'tired'] },
     { word: 'big', synonym: 'large', wrong: ['tiny', 'narrow', 'short'] },
-    { word: 'smart', synonym: 'intelligent', wrong: ['foolish', 'slow', 'weak'] },
     { word: 'fast', synonym: 'quick', wrong: ['slow', 'heavy', 'tall'] },
-    { word: 'brave', synonym: 'courageous', wrong: ['cowardly', 'weak', 'tired'] },
-    { word: 'honest', synonym: 'truthful', wrong: ['dishonest', 'mean', 'lazy'] },
-    { word: 'beautiful', synonym: 'lovely', wrong: ['ugly', 'plain', 'dull'] },
+    { word: 'good', synonym: 'great', wrong: ['bad', 'poor', 'weak'] }
+  ]
+
+  // Level 2: Slightly less common / longer words
+  const level2Pairs = [
+    { word: 'smart', synonym: 'intelligent', wrong: ['foolish', 'slow', 'weak'] },
+    { word: 'brave', synonym: 'courageous', wrong: ['cowardly', 'weak', 'timid'] },
+    { word: 'honest', synonym: 'truthful', wrong: ['dishonest', 'deceitful', 'false'] },
+    { word: 'beautiful', synonym: 'lovely', wrong: ['ugly', 'plain', 'unattractive'] },
     { word: 'difficult', synonym: 'challenging', wrong: ['easy', 'simple', 'basic'] }
   ]
+
+  // Level 3+: Advanced vocabulary
+  const level3Pairs = [
+    { word: 'diligent', synonym: 'industrious', wrong: ['lazy', 'careless', 'idle'] },
+    { word: 'resilient', synonym: 'tenacious', wrong: ['fragile', 'weak', 'brittle'] },
+    { word: 'eloquent', synonym: 'articulate', wrong: ['inarticulate', 'unclear', 'confused'] },
+    { word: 'benevolent', synonym: 'compassionate', wrong: ['cruel', 'malicious', 'hostile'] },
+    { word: 'meticulous', synonym: 'precise', wrong: ['careless', 'sloppy', 'inaccurate'] },
+    { word: 'ambiguous', synonym: 'unclear', wrong: ['obvious', 'definite', 'certain'] }
+  ]
+
+  // Select word bank based on skill level
+  let pairs
+  if (skillLevel <= 1) {
+    pairs = level1Pairs
+  } else if (skillLevel === 2) {
+    pairs = level2Pairs
+  } else {
+    pairs = level3Pairs
+  }
 
   const selected = pairs[Math.floor(Math.random() * pairs.length)]
   const answer = selected.synonym
@@ -491,9 +540,10 @@ export function generateComprehensionQuestion(): GameQuestion {
   }
 }
 
-// Word Analogies
-export function generateAnalogyQuestion(): GameQuestion {
-  const analogies = [
+// Word Analogies with skill-based difficulty
+export function generateAnalogyQuestion(skillLevel: number = 1): GameQuestion {
+  // Level 1: Simple, concrete relationships
+  const level1Analogies = [
     {
       question: 'Hot is to Cold as Day is to...',
       answer: 'Night',
@@ -505,6 +555,20 @@ export function generateAnalogyQuestion(): GameQuestion {
       wrong: ['Water', 'Jump', 'Run']
     },
     {
+      question: 'Happy is to Sad as Up is to...',
+      answer: 'Down',
+      wrong: ['Sky', 'Above', 'High']
+    },
+    {
+      question: 'Finger is to Hand as Toe is to...',
+      answer: 'Foot',
+      wrong: ['Leg', 'Nail', 'Body']
+    }
+  ]
+
+  // Level 2: Common relationships, slightly more abstract
+  const level2Analogies = [
+    {
       question: 'Doctor is to Hospital as Teacher is to...',
       answer: 'School',
       wrong: ['Student', 'Book', 'Class']
@@ -515,11 +579,6 @@ export function generateAnalogyQuestion(): GameQuestion {
       wrong: ['Sharp', 'Fork', 'Eat']
     },
     {
-      question: 'Happy is to Sad as Up is to...',
-      answer: 'Down',
-      wrong: ['Sky', 'Above', 'High']
-    },
-    {
       question: 'Book is to Read as Music is to...',
       answer: 'Listen',
       wrong: ['Sound', 'Song', 'Play']
@@ -528,13 +587,42 @@ export function generateAnalogyQuestion(): GameQuestion {
       question: 'Car is to Road as Train is to...',
       answer: 'Track',
       wrong: ['Station', 'Fast', 'Journey']
-    },
-    {
-      question: 'Finger is to Hand as Toe is to...',
-      answer: 'Foot',
-      wrong: ['Leg', 'Nail', 'Body']
     }
   ]
+
+  // Level 3+: More abstract or multi-step relationships
+  const level3Analogies = [
+    {
+      question: 'Author is to Book as Composer is to...',
+      answer: 'Symphony',
+      wrong: ['Orchestra', 'Piano', 'Concert']
+    },
+    {
+      question: 'Flour is to Bread as Grapes are to...',
+      answer: 'Wine',
+      wrong: ['Fruit', 'Vineyard', 'Juice']
+    },
+    {
+      question: 'Acorn is to Oak as Seed is to...',
+      answer: 'Plant',
+      wrong: ['Garden', 'Soil', 'Root']
+    },
+    {
+      question: 'Chapter is to Book as Scene is to...',
+      answer: 'Play',
+      wrong: ['Theatre', 'Actor', 'Stage']
+    }
+  ]
+
+  // Select based on skill level
+  let analogies
+  if (skillLevel <= 1) {
+    analogies = level1Analogies
+  } else if (skillLevel === 2) {
+    analogies = level2Analogies
+  } else {
+    analogies = level3Analogies
+  }
 
   const selected = analogies[Math.floor(Math.random() * analogies.length)]
   const options = [selected.answer, ...selected.wrong]
@@ -733,15 +821,26 @@ export function generateLogicPuzzleQuestion(): GameQuestion {
   }
 }
 
-// Shape Patterns
-export function generateShapePatternQuestion(): GameQuestion {
-  const patterns = [
+// Shape Patterns with skill-based difficulty
+export function generateShapePatternQuestion(skillLevel: number = 1): GameQuestion {
+  // Level 1: Simple repeating patterns (2-3 elements)
+  const level1Patterns = [
     {
       question: 'Pattern: ○ △ □ ○ △ ?\nWhat comes next?',
       answer: '□',
       wrong: ['○', '△', '◇'],
       explanation: 'Repeating pattern: circle, triangle, square'
     },
+    {
+      question: 'Pattern: ◆ ◇ ◆ ◇ ?\nWhat comes next?',
+      answer: '◆',
+      wrong: ['◇', '○', '△'],
+      explanation: 'Alternating filled and empty diamonds'
+    }
+  ]
+
+  // Level 2: Two-step patterns
+  const level2Patterns = [
     {
       question: 'Pattern: ★ ★ ☆ ★ ★ ☆ ★ ★ ?\nWhat comes next?',
       answer: '☆',
@@ -753,14 +852,40 @@ export function generateShapePatternQuestion(): GameQuestion {
       answer: '□',
       wrong: ['■', '●', '◇'],
       explanation: 'Two filled squares, then one empty square'
-    },
-    {
-      question: 'Pattern: ◆ ◇ ◆ ◇ ?\nWhat comes next?',
-      answer: '◆',
-      wrong: ['◇', '○', '△'],
-      explanation: 'Alternating filled and empty diamonds'
     }
   ]
+
+  // Level 3+: Complex patterns with rotation or multiple attributes
+  const level3Patterns = [
+    {
+      question: 'Pattern: ◐ ◑ ◒ ◓ ?\nWhat comes next?',
+      answer: '◐',
+      wrong: ['◑', '◒', '○'],
+      explanation: 'Rotating shaded circle pattern'
+    },
+    {
+      question: 'Pattern: △ ▲ □ ■ ○ ?\nWhat comes next?',
+      answer: '●',
+      wrong: ['○', '◇', '△'],
+      explanation: 'Alternating empty and filled shapes: triangle, square, circle'
+    },
+    {
+      question: 'Pattern: ● ●● ●●● ?\nWhat comes next?',
+      answer: '●●●●',
+      wrong: ['●●', '●', '●●●●●'],
+      explanation: 'Adding one circle each time'
+    }
+  ]
+
+  // Select based on skill level
+  let patterns
+  if (skillLevel <= 1) {
+    patterns = level1Patterns
+  } else if (skillLevel === 2) {
+    patterns = level2Patterns
+  } else {
+    patterns = level3Patterns
+  }
 
   const selected = patterns[Math.floor(Math.random() * patterns.length)]
   const options = [selected.answer, ...selected.wrong]

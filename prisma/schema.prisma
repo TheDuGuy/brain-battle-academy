@@ -75,6 +75,9 @@ model Progress {
   bestAccuracy  Float     @default(0)
   lastPlayedAt  DateTime  @default(now())
 
+  // Skill level for difficulty progression (subject-wide, not per-game)
+  skillLevel    Int       @default(1)
+
   @@unique([userId, subject, gameType])
 }
 

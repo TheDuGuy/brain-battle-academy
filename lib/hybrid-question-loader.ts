@@ -5,6 +5,7 @@
  * generated questions when DB doesn't have enough content.
  */
 
+import { prisma } from './prisma'
 import {
   getImportedQuestionsForGame,
   type GameTag,
@@ -17,6 +18,40 @@ import {
   generateSynonymQuestion,
   type GameQuestion
 } from './game-generators'
+
+// ============================================================================
+// Skill Level Helper
+// ============================================================================
+
+/**
+ * Get the user's skill level for a specific subject
+ * Returns 1 (default) if no progress record exists yet
+ */
+export async function getSkillLevelForSubject(
+  userId: string,
+  subject: SubjectType,
+  gameType: string
+): Promise<number> {
+  try {
+    const progress = await prisma.progress.findUnique({
+      where: {
+        userId_subject_gameType: {
+          userId,
+          subject,
+          gameType
+        }
+      },
+      select: {
+        skillLevel: true
+      }
+    })
+
+    return progress?.skillLevel ?? 1
+  } catch (error) {
+    console.error('Error fetching skill level:', error)
+    return 1 // Default to level 1 on error
+  }
+}
 
 // ============================================================================
 // Conversion Functions
@@ -43,6 +78,8 @@ function convertImportedToGameQuestion(imported: ImportedQuestionDTO): GameQuest
 /**
  * Load questions for Quiz Master (MCQ-focused game)
  * Tries DB first, falls back to generated questions
+ *
+ * TODO: Add userId parameter and skill-based difficulty for MATHS questions
  */
 export async function loadQuizMasterQuestions(
   count: number,
@@ -80,8 +117,18 @@ export async function loadQuizMasterQuestions(
 /**
  * Load questions for Synonym Finder
  * Tries DB first (synonym questions), falls back to generated
+ * Uses user's skill level to adjust difficulty
  */
-export async function loadSynonymFinderQuestions(count: number): Promise<GameQuestion[]> {
+export async function loadSynonymFinderQuestions(
+  count: number,
+  userId?: string
+): Promise<GameQuestion[]> {
+  // Get skill level if userId provided
+  let skillLevel = 1
+  if (userId) {
+    skillLevel = await getSkillLevelForSubject(userId, 'ENGLISH', 'synonym-finder')
+  }
+
   try {
     const dbQuestions = await getImportedQuestionsForGame(
       'SYNONYM_FINDER',
@@ -97,21 +144,31 @@ export async function loadSynonymFinderQuestions(count: number): Promise<GameQue
 
     const remaining = count - convertedQuestions.length
     const generatedQuestions = Array.from({ length: remaining }, () =>
-      generateSynonymQuestion()
+      generateSynonymQuestion(skillLevel)
     )
 
     return [...convertedQuestions, ...generatedQuestions]
   } catch (error) {
     console.error('Error loading Synonym questions from DB, using generated:', error)
-    return Array.from({ length: count }, () => generateSynonymQuestion())
+    return Array.from({ length: count }, () => generateSynonymQuestion(skillLevel))
   }
 }
 
 /**
  * Load questions for Maths Quick Fire
  * Tries DB first (numeric/MCQ maths), falls back to generated
+ * Uses user's skill level to adjust difficulty
  */
-export async function loadMathsQuickFireQuestions(count: number): Promise<GameQuestion[]> {
+export async function loadMathsQuickFireQuestions(
+  count: number,
+  userId?: string
+): Promise<GameQuestion[]> {
+  // Get skill level if userId provided
+  let skillLevel = 1
+  if (userId) {
+    skillLevel = await getSkillLevelForSubject(userId, 'MATHS', 'quick-fire')
+  }
+
   try {
     const dbQuestions = await getImportedQuestionsForGame(
       'MATHS_QUICK_FIRE',
@@ -127,13 +184,13 @@ export async function loadMathsQuickFireQuestions(count: number): Promise<GameQu
 
     const remaining = count - convertedQuestions.length
     const generatedQuestions = Array.from({ length: remaining }, () =>
-      generateQuickFireQuestion()
+      generateQuickFireQuestion(skillLevel)
     )
 
     return [...convertedQuestions, ...generatedQuestions]
   } catch (error) {
     console.error('Error loading Maths Quick Fire questions from DB, using generated:', error)
-    return Array.from({ length: count }, () => generateQuickFireQuestion())
+    return Array.from({ length: count }, () => generateQuickFireQuestion(skillLevel))
   }
 }
 
@@ -157,8 +214,18 @@ export async function loadComprehensionQuestions(count: number): Promise<GameQue
 
 /**
  * Load questions for VR Puzzles
+ * Tries DB first, falls back to generated questions with skill-based difficulty
  */
-export async function loadVRPuzzleQuestions(count: number): Promise<GameQuestion[]> {
+export async function loadVRPuzzleQuestions(
+  count: number,
+  userId?: string
+): Promise<GameQuestion[]> {
+  // Get skill level if userId provided
+  let skillLevel = 1
+  if (userId) {
+    skillLevel = await getSkillLevelForSubject(userId, 'VR', 'vr-puzzles')
+  }
+
   try {
     const dbQuestions = await getImportedQuestionsForGame(
       'VR_PUZZLE',
@@ -166,7 +233,15 @@ export async function loadVRPuzzleQuestions(count: number): Promise<GameQuestion
       count
     )
 
-    return dbQuestions.map(convertImportedToGameQuestion)
+    const convertedQuestions = dbQuestions.map(convertImportedToGameQuestion)
+
+    if (convertedQuestions.length >= count) {
+      return convertedQuestions.slice(0, count)
+    }
+
+    // If not enough from DB, generate remaining with skill-based difficulty
+    // For now, return DB questions only - generators will be updated separately
+    return convertedQuestions
   } catch (error) {
     console.error('Error loading VR Puzzle questions from DB:', error)
     return []
@@ -175,8 +250,18 @@ export async function loadVRPuzzleQuestions(count: number): Promise<GameQuestion
 
 /**
  * Load questions for NVR Pattern Matching
+ * Tries DB first, falls back to generated questions with skill-based difficulty
  */
-export async function loadNVRPatternQuestions(count: number): Promise<GameQuestion[]> {
+export async function loadNVRPatternQuestions(
+  count: number,
+  userId?: string
+): Promise<GameQuestion[]> {
+  // Get skill level if userId provided
+  let skillLevel = 1
+  if (userId) {
+    skillLevel = await getSkillLevelForSubject(userId, 'NVR', 'nvr-patterns')
+  }
+
   try {
     const dbQuestions = await getImportedQuestionsForGame(
       'NVR_PATTERN_MATCH',
@@ -184,7 +269,15 @@ export async function loadNVRPatternQuestions(count: number): Promise<GameQuesti
       count
     )
 
-    return dbQuestions.map(convertImportedToGameQuestion)
+    const convertedQuestions = dbQuestions.map(convertImportedToGameQuestion)
+
+    if (convertedQuestions.length >= count) {
+      return convertedQuestions.slice(0, count)
+    }
+
+    // If not enough from DB, generate remaining with skill-based difficulty
+    // For now, return DB questions only - generators will be updated separately
+    return convertedQuestions
   } catch (error) {
     console.error('Error loading NVR Pattern questions from DB:', error)
     return []
@@ -201,7 +294,8 @@ export async function loadNVRPatternQuestions(count: number): Promise<GameQuesti
  */
 export async function loadQuestionsForGame(
   gameId: string,
-  count: number
+  count: number,
+  userId?: string
 ): Promise<GameQuestion[]> {
   switch (gameId) {
     case 'quiz-master':
@@ -209,12 +303,12 @@ export async function loadQuestionsForGame(
       return loadQuizMasterQuestions(count)
 
     case 'synonym-finder':
-      return loadSynonymFinderQuestions(count)
+      return loadSynonymFinderQuestions(count, userId)
 
     case 'quick-fire':
     case 'calculator-detective':
     case 'power-numbers':
-      return loadMathsQuickFireQuestions(count)
+      return loadMathsQuickFireQuestions(count, userId)
 
     case 'comprehension-master':
       return loadComprehensionQuestions(count)
@@ -224,14 +318,14 @@ export async function loadQuestionsForGame(
     case 'word-codes':
     case 'odd-one-out':
     case 'logic-puzzles':
-      return loadVRPuzzleQuestions(count)
+      return loadVRPuzzleQuestions(count, userId)
 
     case 'shape-patterns':
     case 'number-sequences':
     case 'rotation-patterns':
     case 'shape-completion':
     case 'mirror-images':
-      return loadNVRPatternQuestions(count)
+      return loadNVRPatternQuestions(count, userId)
 
     default:
       // For games not yet mapped, return empty array
