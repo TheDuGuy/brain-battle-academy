@@ -272,35 +272,41 @@ export default function DashboardPage() {
   const loadLeaderboard = (currentUserData: string) => {
     const currentUser = JSON.parse(currentUserData)
 
-    // Get all player stats from localStorage
+    // Get all real player stats from localStorage
     const allPlayers: PlayerStats[] = []
 
-    // Check for common player names
-    const playerNames = ['Santi', 'William', 'David', 'Emma', 'Oliver', currentUser.name]
-    const uniqueNames = [...new Set(playerNames)]
-
-    uniqueNames.forEach(name => {
-      const playerKey = `player_stats_${name.toLowerCase()}`
-      let playerStats = localStorage.getItem(playerKey)
-
-      if (!playerStats) {
-        // Create default stats for new players
-        const defaultStats: PlayerStats = {
-          name,
-          avatar: name === currentUser.name ? currentUser.avatar : ['🚀', '⚡', '🎮', '🦸', '🧙'][Math.floor(Math.random() * 5)],
-          totalStars: Math.floor(Math.random() * 50),
-          earnings: Math.floor(Math.random() * 10),
-          gamesPlayed: Math.floor(Math.random() * 20),
-          accuracy: Math.floor(Math.random() * 30) + 60
+    // Scan localStorage for all player_stats_ entries
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i)
+      if (key && key.startsWith('player_stats_')) {
+        const playerStats = localStorage.getItem(key)
+        if (playerStats) {
+          const stats = JSON.parse(playerStats)
+          // Only include players who have actually played games
+          if (stats.gamesPlayed > 0) {
+            allPlayers.push(stats)
+          }
         }
-        localStorage.setItem(playerKey, JSON.stringify(defaultStats))
-        allPlayers.push(defaultStats)
-      } else {
-        allPlayers.push(JSON.parse(playerStats))
       }
-    })
+    }
 
-    // Sort by total stars
+    // If current user doesn't have stats yet, create initial entry
+    const currentUserKey = `player_stats_${currentUser.name.toLowerCase()}`
+    const currentUserStats = localStorage.getItem(currentUserKey)
+    if (!currentUserStats) {
+      const initialStats: PlayerStats = {
+        name: currentUser.name,
+        avatar: currentUser.avatar,
+        totalStars: 0,
+        earnings: 0,
+        gamesPlayed: 0,
+        accuracy: 0
+      }
+      localStorage.setItem(currentUserKey, JSON.stringify(initialStats))
+      allPlayers.push(initialStats)
+    }
+
+    // Sort by total stars (descending)
     allPlayers.sort((a, b) => b.totalStars - a.totalStars)
     setLeaderboard(allPlayers)
   }
@@ -442,63 +448,72 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            <div className="space-y-3">
-              {leaderboard.slice(0, 5).map((player, index) => {
-                const isCurrentUser = player.name === user.name
-                const medalEmojis = ['🥇', '🥈', '🥉']
-                const medal = index < 3 ? medalEmojis[index] : `${index + 1}`
-
-                return (
-                  <div
-                    key={player.name}
-                    className={`flex items-center justify-between p-4 rounded-xl transition-all ${
-                      isCurrentUser
-                        ? 'bg-gradient-to-r from-purple-100 to-pink-100 border-2 border-purple-300 shadow-md'
-                        : 'bg-white border border-amber-200'
-                    }`}
-                  >
-                    <div className="flex items-center gap-4 flex-1">
-                      <div className="text-2xl font-bold w-8 text-center">
-                        {medal}
-                      </div>
-                      <div className="bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl p-2 shadow-md">
-                        <span className="text-2xl">{player.avatar}</span>
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <h4 className={`font-bold ${isCurrentUser ? 'text-purple-900 text-lg' : 'text-gray-800'}`}>
-                            {player.name}
-                          </h4>
-                          {isCurrentUser && (
-                            <span className="bg-purple-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
-                              You
-                            </span>
-                          )}
-                        </div>
-                        <div className="flex items-center gap-4 text-sm text-gray-600 mt-1">
-                          <span>{player.gamesPlayed} games</span>
-                          <span className="text-green-600 font-semibold">{player.accuracy}% accuracy</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="flex items-center gap-1 text-2xl font-bold text-amber-600">
-                        <span>{player.totalStars}</span>
-                        <span>⭐</span>
-                      </div>
-                      <div className="text-sm text-gray-600 mt-1">£{player.earnings.toFixed(2)}</div>
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-
-            {leaderboard.length > 5 && (
-              <div className="text-center mt-4">
-                <p className="text-amber-700 text-sm">
-                  And {leaderboard.length - 5} more players...
-                </p>
+            {leaderboard.length === 0 ? (
+              <div className="text-center py-8">
+                <p className="text-amber-700 text-lg font-medium">No players yet!</p>
+                <p className="text-amber-600 text-sm mt-2">Play some games to get on the leaderboard</p>
               </div>
+            ) : (
+              <>
+                <div className="space-y-3">
+                  {leaderboard.slice(0, 5).map((player, index) => {
+                    const isCurrentUser = player.name === user.name
+                    const medalEmojis = ['🥇', '🥈', '🥉']
+                    const medal = index < 3 ? medalEmojis[index] : `${index + 1}`
+
+                    return (
+                      <div
+                        key={player.name}
+                        className={`flex items-center justify-between p-4 rounded-xl transition-all ${
+                          isCurrentUser
+                            ? 'bg-gradient-to-r from-purple-100 to-pink-100 border-2 border-purple-300 shadow-md'
+                            : 'bg-white border border-amber-200'
+                        }`}
+                      >
+                        <div className="flex items-center gap-4 flex-1">
+                          <div className="text-2xl font-bold w-8 text-center">
+                            {medal}
+                          </div>
+                          <div className="bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl p-2 shadow-md">
+                            <span className="text-2xl">{player.avatar}</span>
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2">
+                              <h4 className={`font-bold ${isCurrentUser ? 'text-purple-900 text-lg' : 'text-gray-800'}`}>
+                                {player.name}
+                              </h4>
+                              {isCurrentUser && (
+                                <span className="bg-purple-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
+                                  You
+                                </span>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-4 text-sm text-gray-600 mt-1">
+                              <span>{player.gamesPlayed} games</span>
+                              <span className="text-green-600 font-semibold">{player.accuracy}% accuracy</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className="flex items-center gap-1 text-2xl font-bold text-amber-600">
+                            <span>{player.totalStars}</span>
+                            <span>⭐</span>
+                          </div>
+                          <div className="text-sm text-gray-600 mt-1">£{player.earnings.toFixed(2)}</div>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+
+                {leaderboard.length > 5 && (
+                  <div className="text-center mt-4">
+                    <p className="text-amber-700 text-sm">
+                      And {leaderboard.length - 5} more players...
+                    </p>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
