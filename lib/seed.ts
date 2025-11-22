@@ -43,6 +43,14 @@ async function main() {
   })
 
   console.log({ santi, william, parent })
+
+  // Summary
+  console.log('\n✅ Seed complete!')
+  console.log('Created users:')
+  console.log('  - Santi / santi123')
+  console.log('  - William / william123')
+  console.log('  - Parent / parent123')
+  console.log('\nYou can now log in with any of these accounts.')
 }
 
 main()

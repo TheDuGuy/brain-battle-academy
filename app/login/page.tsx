@@ -27,7 +27,14 @@ export default function LoginPage() {
       const data = await res.json()
 
       if (!res.ok) {
-        setError(data.error || 'Login failed')
+        // Differentiate between credential errors and server errors
+        if (res.status === 401) {
+          setError('Invalid username or password. Please try again.')
+        } else if (res.status >= 500) {
+          setError('Server error. Please try again later.')
+        } else {
+          setError(data.error || 'Login failed. Please try again.')
+        }
         setIsLoading(false)
         return
       }
@@ -36,7 +43,7 @@ export default function LoginPage() {
       localStorage.setItem('user', JSON.stringify(data.user))
       router.push('/dashboard')
     } catch (err) {
-      setError('An error occurred. Please try again.')
+      setError('Connection error. Please check your internet and try again.')
       setIsLoading(false)
     }
   }
