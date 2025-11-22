@@ -1,0 +1,106 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String    @unique
+  email         String?   @unique
+  password      String
+  avatar        String?
+  color         String    @default("#9333EA")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  sessions      Session[]
+  progress      Progress[]
+  achievements  Achievement[]
+  earnings      Earning[]
+  streaks       Streak[]
+}
+
+model Session {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  startTime     DateTime  @default(now())
+  endTime       DateTime?
+  duration      Int?      // in seconds
+  totalQuestions Int      @default(0)
+  correctAnswers Int      @default(0)
+  accuracy      Float     @default(0)
+  subject       String    // Maths, English, Verbal, NonVerbal
+  gameType      String    // QuickFire, Calculator, etc
+  starsEarned   Int       @default(0)
+  completed     Boolean   @default(false)
+
+  answers       Answer[]
+}
+
+model Answer {
+  id            String    @id @default(cuid())
+  sessionId     String
+  session       Session   @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  questionId    String
+  userAnswer    String
+  correctAnswer String
+  isCorrect     Boolean
+  timeSpent     Int       // in seconds
+  createdAt     DateTime  @default(now())
+}
+
+model Progress {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject       String
+  gameType      String
+  level         Int       @default(1)
+  totalStars    Int       @default(0)
+  gamesPlayed   Int       @default(0)
+  bestAccuracy  Float     @default(0)
+  lastPlayedAt  DateTime  @default(now())
+
+  @@unique([userId, subject, gameType])
+}
+
+model Achievement {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type          String    // Badge, Trophy, Milestone
+  name          String
+  description   String
+  icon          String
+  earnedAt      DateTime  @default(now())
+}
+
+model Earning {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  amount        Float
+  reason        String    // 7DayStreak, 90PercentAccuracy, etc
+  weekStart     DateTime
+  earnedAt      DateTime  @default(now())
+}
+
+model Streak {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  currentStreak Int       @default(0)
+  longestStreak Int       @default(0)
+  lastPlayedDate DateTime @default(now())
+  weekStart     DateTime  @default(now())
+
+  @@unique([userId, weekStart])
+}
