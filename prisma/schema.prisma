@@ -120,3 +120,39 @@ model LoginAttempt {
   @@index([username, attemptedAt])
   @@index([ipAddress, attemptedAt])
 }
+
+// ============================================================================
+// PDF Ingestion & Imported Questions
+// ============================================================================
+
+model SourceMaterial {
+  id        String   @id @default(cuid())
+  title     String
+  subject   String   // MATHS, ENGLISH, VR, NVR
+  origin    String   // e.g. file path, site name
+  createdAt DateTime @default(now())
+
+  questions ImportedQuestion[]
+}
+
+model ImportedQuestion {
+  id             String          @id @default(cuid())
+  source         SourceMaterial  @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+  sourceId       String
+
+  number         Int?            // question number in paper
+  subject        String          // MATHS, ENGLISH, VR, NVR
+  type           String          // MULTIPLE_CHOICE, SHORT_ANSWER, SYNONYM, COMPREHENSION, NUMERIC
+  gameTags       String          // JSON array of game tags ["QUIZ_MASTER","SYNONYM_FINDER",etc]
+
+  prompt         String          // main question text
+  optionsJson    String?         // JSON array for MCQ options
+  answer         String?         // correct answer if known
+  explanation    String?         // optional explanation
+  metadataJson   String?         // raw / extra info (page, original format, etc.)
+
+  createdAt      DateTime @default(now())
+
+  @@index([subject, type])
+  @@index([sourceId])
+}

@@ -431,6 +431,31 @@ export default function DashboardPage() {
           </div>
         </div>
 
+        {/* Weekly Paper Challenge - Unlocked at 7-day streak */}
+        {stats.streak >= 7 && (
+          <div className="mb-8">
+            <Link href="/game/weekly-paper">
+              <div className="bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-2xl p-8 shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105 cursor-pointer">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-4">
+                      <span className="text-6xl">📝</span>
+                    </div>
+                    <div className="text-white">
+                      <h3 className="text-3xl font-bold mb-2">🎉 Weekly Paper Challenge UNLOCKED!</h3>
+                      <p className="text-white/90 text-lg mb-1">You've earned a 7-day streak!</p>
+                      <p className="text-white/80">Complete a mini exam paper with 15 real 11+ questions</p>
+                    </div>
+                  </div>
+                  <div className="bg-white/20 backdrop-blur-sm rounded-2xl px-6 py-3">
+                    <p className="text-white text-sm font-semibold">Click to start →</p>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          </div>
+        )}
+
         {/* Leaderboard Section */}
         <div className="mb-8">
           <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 border-2 border-amber-200 shadow-md">
