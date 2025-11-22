@@ -4,16 +4,15 @@ import bcrypt from 'bcryptjs'
 const prisma = new PrismaClient()
 
 async function main() {
-  const hashedPassword = await bcrypt.hash('santi123', 10)
-
   const santi = await prisma.user.upsert({
     where: { name: 'Santi' },
     update: {},
     create: {
       name: 'Santi',
-      password: hashedPassword,
+      password: await bcrypt.hash('santi123', 10),
       color: '#9333EA',
       avatar: '🚀',
+      role: 'PLAYER',
     },
   })
 
@@ -25,10 +24,25 @@ async function main() {
       password: await bcrypt.hash('william123', 10),
       color: '#3B82F6',
       avatar: '⚡',
+      role: 'PLAYER',
     },
   })
 
-  console.log({ santi, william })
+  // Optional parent user for future use
+  const parent = await prisma.user.upsert({
+    where: { name: 'Parent' },
+    update: {},
+    create: {
+      name: 'Parent',
+      email: 'parent@brainbattle.com',
+      password: await bcrypt.hash('parent123', 10),
+      color: '#10B981',
+      avatar: '👨‍👩‍👧‍👦',
+      role: 'PARENT',
+    },
+  })
+
+  console.log({ santi, william, parent })
 }
 
 main()

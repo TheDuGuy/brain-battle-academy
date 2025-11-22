@@ -1,216 +1,318 @@
-import { NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
+/**
+ * POST /api/sessions - Create a new game session with reward evaluation
+ *
+ * This endpoint:
+ * 1. Validates incoming session data with Zod
+ * 2. Loads recent sessions and existing rewards
+ * 3. Calls the pure domain logic (evaluateRewards)
+ * 4. Persists everything in a transaction
+ * 5. Returns comprehensive session + reward data
+ */
 
-// POST /api/sessions - Create a new game session
+import { NextResponse } from 'next/server'
+import { z } from 'zod'
+import { prisma } from '@/lib/prisma'
+import {
+  evaluateRewards,
+  calculateTotalEarnings,
+  getWeekStartDate,
+  type SessionInput,
+  type ExistingReward,
+  type SubjectType
+} from '@/lib/rewards'
+
+// ============================================================================
+// Validation Schema
+// ============================================================================
+
+const sessionSchema = z.object({
+  userId: z.string().min(1, 'User ID is required'),
+  gameId: z.string().min(1, 'Game ID is required'),
+  subject: z.enum(['MATHS', 'ENGLISH', 'VR', 'NVR']),
+  startedAt: z.string().datetime(),
+  endedAt: z.string().datetime(),
+  totalQuestions: z.number().int().min(1, 'Must have at least 1 question'),
+  correctAnswers: z.number().int().min(0, 'Correct answers cannot be negative'),
+}).refine(
+  (data) => data.correctAnswers <= data.totalQuestions,
+  {
+    message: 'Correct answers cannot exceed total questions',
+    path: ['correctAnswers']
+  }
+).refine(
+  (data) => {
+    const start = new Date(data.startedAt)
+    const end = new Date(data.endedAt)
+    const durationHours = (end.getTime() - start.getTime()) / (1000 * 60 * 60)
+    return durationHours >= 0 && durationHours <= 3
+  },
+  {
+    message: 'Session duration must be between 0 and 3 hours',
+    path: ['endedAt']
+  }
+)
+
+// ============================================================================
+// Helper Functions
+// ============================================================================
+
+/**
+ * Load recent sessions for rewards calculation (last 30 days)
+ */
+async function loadRecentSessions(userId: string): Promise<SessionInput[]> {
+  const thirtyDaysAgo = new Date()
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+
+  const sessions = await prisma.session.findMany({
+    where: {
+      userId,
+      completed: true,
+      endTime: {
+        gte: thirtyDaysAgo
+      }
+    },
+    orderBy: {
+      endTime: 'desc'
+    }
+  })
+
+  return sessions.map(s => ({
+    userId: s.userId,
+    gameId: s.gameType,
+    subject: s.subject as SubjectType,
+    startedAt: s.startTime,
+    endedAt: s.endTime || s.startTime,
+    totalQuestions: s.totalQuestions,
+    correctAnswers: s.correctAnswers
+  }))
+}
+
+/**
+ * Load existing rewards for the user
+ */
+async function loadExistingRewards(userId: string): Promise<ExistingReward[]> {
+  const rewards = await prisma.reward.findMany({
+    where: { userId },
+    orderBy: { createdAt: 'desc' }
+  })
+
+  return rewards.map(r => ({
+    type: r.type as 'HIGH_ACCURACY' | 'STREAK',
+    createdAt: r.createdAt,
+    amountPence: r.amountPence,
+    weekStart: r.weekStart
+  }))
+}
+
+// ============================================================================
+// Main Handler
+// ============================================================================
+
 export async function POST(request: Request) {
   try {
+    // -------------------------------------------
+    // 1. Parse and validate request body
+    // -------------------------------------------
     const body = await request.json()
-    const {
-      userId,
-      gameType,
-      subject,
-      totalQuestions,
-      correctAnswers,
-      accuracy,
-      duration,
-      starsEarned
-    } = body
+    const validationResult = sessionSchema.safeParse(body)
 
-    // Validate required fields
-    if (!userId || !gameType || !subject) {
+    if (!validationResult.success) {
       return NextResponse.json(
-        { error: 'Missing required fields' },
+        {
+          error: 'Validation failed',
+          details: validationResult.error.format()
+        },
         { status: 400 }
       )
     }
 
-    // Create the session
-    const session = await prisma.session.create({
-      data: {
-        userId,
-        gameType,
-        subject,
-        totalQuestions: totalQuestions || 0,
-        correctAnswers: correctAnswers || 0,
-        accuracy: accuracy || 0,
-        duration: duration || null,
-        starsEarned: starsEarned || 0,
-        completed: true,
-        endTime: new Date()
-      }
+    const validated = validationResult.data
+
+    // -------------------------------------------
+    // 2. Verify user exists
+    // -------------------------------------------
+    const user = await prisma.user.findUnique({
+      where: { id: validated.userId }
     })
 
-    // Update or create progress record
-    const progress = await prisma.progress.upsert({
-      where: {
-        userId_subject_gameType: {
-          userId,
-          subject,
-          gameType
-        }
-      },
-      update: {
-        totalStars: { increment: starsEarned || 0 },
-        gamesPlayed: { increment: 1 },
-        bestAccuracy: accuracy > 0 ? { set: accuracy } : undefined,
-        lastPlayedAt: new Date()
-      },
-      create: {
-        userId,
-        subject,
-        gameType,
-        totalStars: starsEarned || 0,
-        gamesPlayed: 1,
-        bestAccuracy: accuracy || 0,
-        lastPlayedAt: new Date()
-      }
+    if (!user) {
+      return NextResponse.json(
+        { error: 'User not found' },
+        { status: 404 }
+      )
+    }
+
+    // -------------------------------------------
+    // 3. Load context for reward evaluation
+    // -------------------------------------------
+    const [recentSessions, existingRewards] = await Promise.all([
+      loadRecentSessions(validated.userId),
+      loadExistingRewards(validated.userId)
+    ])
+
+    // -------------------------------------------
+    // 4. Prepare new session input
+    // -------------------------------------------
+    const newSessionInput: SessionInput = {
+      userId: validated.userId,
+      gameId: validated.gameId,
+      subject: validated.subject,
+      startedAt: new Date(validated.startedAt),
+      endedAt: new Date(validated.endedAt),
+      totalQuestions: validated.totalQuestions,
+      correctAnswers: validated.correctAnswers
+    }
+
+    // -------------------------------------------
+    // 5. Evaluate rewards (pure domain logic)
+    // -------------------------------------------
+    const rewardsResult = evaluateRewards({
+      newSession: newSessionInput,
+      recentSessions,
+      existingRewards
     })
 
-    // Check if user earned money (90%+ accuracy)
-    let earning = null
-    if (accuracy >= 90) {
-      const weekStart = getWeekStart(new Date())
+    // -------------------------------------------
+    // 6. Calculate derived values
+    // -------------------------------------------
+    const accuracy = validated.totalQuestions > 0
+      ? (validated.correctAnswers / validated.totalQuestions) * 100
+      : 0
 
-      // Check if user already earned this week for 90% accuracy
-      const existingEarning = await prisma.earning.findFirst({
-        where: {
-          userId,
-          reason: '90PercentAccuracy',
-          weekStart
+    const duration = Math.floor(
+      (new Date(validated.endedAt).getTime() - new Date(validated.startedAt).getTime()) / 1000
+    )
+
+    const starsEarned = Math.floor((accuracy / 100) * 3)
+
+    // -------------------------------------------
+    // 7. Persist everything in a transaction
+    // -------------------------------------------
+    const result = await prisma.$transaction(async (tx) => {
+      // Create the session
+      const session = await tx.session.create({
+        data: {
+          userId: validated.userId,
+          gameType: validated.gameId,
+          subject: validated.subject,
+          startTime: new Date(validated.startedAt),
+          endTime: new Date(validated.endedAt),
+          duration,
+          totalQuestions: validated.totalQuestions,
+          correctAnswers: validated.correctAnswers,
+          accuracy,
+          starsEarned,
+          completed: true
         }
       })
 
-      if (!existingEarning) {
-        earning = await prisma.earning.create({
+      // Create reward records
+      const createdRewards = []
+      for (const reward of rewardsResult.newRewards) {
+        const createdReward = await tx.reward.create({
           data: {
-            userId,
-            amount: 1,
-            reason: '90PercentAccuracy',
-            weekStart
+            userId: validated.userId,
+            type: reward.type,
+            amountPence: reward.amountPence,
+            reason: reward.reason,
+            weekStart: reward.weekStart
           }
         })
+        createdRewards.push(createdReward)
       }
-    }
 
-    // Update streak
-    await updateStreak(userId)
+      // Update or create progress
+      await tx.progress.upsert({
+        where: {
+          userId_subject_gameType: {
+            userId: validated.userId,
+            subject: validated.subject,
+            gameType: validated.gameId
+          }
+        },
+        update: {
+          totalStars: { increment: starsEarned },
+          gamesPlayed: { increment: 1 },
+          bestAccuracy: accuracy,
+          lastPlayedAt: new Date()
+        },
+        create: {
+          userId: validated.userId,
+          subject: validated.subject,
+          gameType: validated.gameId,
+          totalStars: starsEarned,
+          gamesPlayed: 1,
+          bestAccuracy: accuracy,
+          lastPlayedAt: new Date()
+        }
+      })
 
-    return NextResponse.json({
-      session,
-      progress,
-      earning,
-      message: accuracy >= 90 ? 'Great job! You earned £1!' : 'Session saved successfully'
+      // Update or create streak record for this week
+      const weekStart = getWeekStartDate(new Date())
+      await tx.streak.upsert({
+        where: {
+          userId_weekStart: {
+            userId: validated.userId,
+            weekStart
+          }
+        },
+        update: {
+          currentStreak: rewardsResult.currentStreakDays,
+          longestStreak: { set: Math.max(rewardsResult.currentStreakDays, 0) },
+          lastPlayedDate: new Date()
+        },
+        create: {
+          userId: validated.userId,
+          weekStart,
+          currentStreak: rewardsResult.currentStreakDays,
+          longestStreak: rewardsResult.currentStreakDays,
+          lastPlayedDate: new Date()
+        }
+      })
+
+      return { session, createdRewards }
     })
+
+    // -------------------------------------------
+    // 8. Calculate total earnings
+    // -------------------------------------------
+    const allRewards = await loadExistingRewards(validated.userId)
+    const totalEarningsPence = calculateTotalEarnings(allRewards)
+
+    // -------------------------------------------
+    // 9. Return success response
+    // -------------------------------------------
+    return NextResponse.json({
+      sessionId: result.session.id,
+      accuracy,
+      currentStreakDays: rewardsResult.currentStreakDays,
+      newRewards: rewardsResult.newRewards,
+      totalEarningsPence,
+      message: rewardsResult.newRewards.length > 0
+        ? 'Session saved with rewards!'
+        : 'Session saved successfully'
+    })
+
   } catch (error) {
     console.error('Session creation error:', error)
+
+    // Return appropriate error response
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        {
+          error: 'Validation failed',
+          details: error.format()
+        },
+        { status: 400 }
+      )
+    }
+
     return NextResponse.json(
-      { error: 'Failed to save session' },
+      {
+        error: 'Failed to save session',
+        message: error instanceof Error ? error.message : 'Unknown error'
+      },
       { status: 500 }
     )
   }
-}
-
-// Helper function to get the start of the current week (Monday)
-function getWeekStart(date: Date): Date {
-  const d = new Date(date)
-  const day = d.getDay()
-  const diff = d.getDate() - day + (day === 0 ? -6 : 1) // Adjust when day is Sunday
-  d.setDate(diff)
-  d.setHours(0, 0, 0, 0)
-  return d
-}
-
-// Helper function to update user's streak
-async function updateStreak(userId: string) {
-  const weekStart = getWeekStart(new Date())
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
-
-  // Get or create streak record for this week
-  let streak = await prisma.streak.findUnique({
-    where: {
-      userId_weekStart: {
-        userId,
-        weekStart
-      }
-    }
-  })
-
-  if (!streak) {
-    // Create new streak record for this week
-    streak = await prisma.streak.create({
-      data: {
-        userId,
-        currentStreak: 1,
-        longestStreak: 1,
-        lastPlayedDate: today,
-        weekStart
-      }
-    })
-  } else {
-    const lastPlayed = new Date(streak.lastPlayedDate)
-    lastPlayed.setHours(0, 0, 0, 0)
-
-    const yesterday = new Date(today)
-    yesterday.setDate(yesterday.getDate() - 1)
-
-    if (lastPlayed.getTime() === today.getTime()) {
-      // Already played today, no streak update needed
-      return streak
-    } else if (lastPlayed.getTime() === yesterday.getTime()) {
-      // Played yesterday, increment streak
-      const newStreak = streak.currentStreak + 1
-      streak = await prisma.streak.update({
-        where: {
-          userId_weekStart: {
-            userId,
-            weekStart
-          }
-        },
-        data: {
-          currentStreak: newStreak,
-          longestStreak: Math.max(newStreak, streak.longestStreak),
-          lastPlayedDate: today
-        }
-      })
-
-      // Check for 7-day streak reward
-      if (newStreak === 7) {
-        const existingEarning = await prisma.earning.findFirst({
-          where: {
-            userId,
-            reason: '7DayStreak',
-            weekStart
-          }
-        })
-
-        if (!existingEarning) {
-          await prisma.earning.create({
-            data: {
-              userId,
-              amount: 1,
-              reason: '7DayStreak',
-              weekStart
-            }
-          })
-        }
-      }
-    } else {
-      // Streak broken, reset to 1
-      streak = await prisma.streak.update({
-        where: {
-          userId_weekStart: {
-            userId,
-            weekStart
-          }
-        },
-        data: {
-          currentStreak: 1,
-          lastPlayedDate: today
-        }
-      })
-    }
-  }
-
-  return streak
 }

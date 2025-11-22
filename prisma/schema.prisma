@@ -17,13 +17,14 @@ model User {
   password      String
   avatar        String?
   color         String    @default("#9333EA")
+  role          String    @default("PLAYER") // PLAYER or PARENT
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
   sessions      Session[]
   progress      Progress[]
   achievements  Achievement[]
-  earnings      Earning[]
+  rewards       Reward[]
   streaks       Streak[]
 }
 
@@ -83,14 +84,18 @@ model Achievement {
   earnedAt      DateTime  @default(now())
 }
 
-model Earning {
-  id            String    @id @default(cuid())
+model Reward {
+  id            String      @id @default(cuid())
   userId        String
-  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  amount        Float
-  reason        String    // 7DayStreak, 90PercentAccuracy, etc
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type          String      // HIGH_ACCURACY or STREAK
+  amountPence   Int         // Store money in pence (100 = £1)
+  reason        String
   weekStart     DateTime
-  earnedAt      DateTime  @default(now())
+  createdAt     DateTime    @default(now())
+
+  @@index([userId, weekStart])
+  @@index([userId, type, weekStart])
 }
 
 model Streak {
@@ -103,4 +108,15 @@ model Streak {
   weekStart     DateTime  @default(now())
 
   @@unique([userId, weekStart])
+}
+
+model LoginAttempt {
+  id            String    @id @default(cuid())
+  username      String
+  ipAddress     String?
+  success       Boolean
+  attemptedAt   DateTime  @default(now())
+
+  @@index([username, attemptedAt])
+  @@index([ipAddress, attemptedAt])
 }
