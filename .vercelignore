@@ -1,0 +1,5 @@
+dev.db
+prisma/dev.db
+*.db
+node_modules
+.next
