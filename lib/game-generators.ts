@@ -140,24 +140,26 @@ export function generateQuizMasterQuestion(): GameQuestion {
     case 'area':
       const length = Math.floor(Math.random() * 10) + 5
       const width = Math.floor(Math.random() * 10) + 5
-      answer = length * width
+      const areaValue = length * width
+      answer = `${areaValue}cm²`
       question = `What is the area of a rectangle with length ${length}cm and width ${width}cm?`
       options = [
-        `${answer}cm²`,
-        `${answer + 10}cm²`,
-        `${answer - 5}cm²`,
+        `${areaValue}cm²`,
+        `${areaValue + 10}cm²`,
+        `${areaValue - 5}cm²`,
         `${length + width}cm²`
       ]
       break
     case 'perimeter':
       const side1 = Math.floor(Math.random() * 10) + 5
       const side2 = Math.floor(Math.random() * 10) + 5
-      answer = (side1 + side2) * 2
+      const perimeterValue = (side1 + side2) * 2
+      answer = `${perimeterValue}cm`
       question = `What is the perimeter of a rectangle with length ${side1}cm and width ${side2}cm?`
       options = [
-        `${answer}cm`,
-        `${answer + 4}cm`,
-        `${answer - 4}cm`,
+        `${perimeterValue}cm`,
+        `${perimeterValue + 4}cm`,
+        `${perimeterValue - 4}cm`,
         `${side1 * side2}cm`
       ]
       break
