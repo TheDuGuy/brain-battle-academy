@@ -17,7 +17,7 @@
     "luxon": "^3.7.2",
     "next": "16.0.3",
     "next-auth": "^4.24.13",
-    "pdf-parse": "^2.4.5",
+    "pdf-parse": "^1.1.1",
     "prisma": "^5.22.0",
     "react": "19.2.0",
     "react-confetti": "^6.4.0",

@@ -1,0 +1,6 @@
+const module = await import('pdf-parse')
+console.log('typeof module:', typeof module)
+console.log('module keys:', Object.keys(module))
+console.log('module.default:', typeof module.default)
+console.log('module.default keys:', module.default ? Object.keys(module.default) : 'none')
+console.log('module itself:', module)

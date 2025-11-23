@@ -353,47 +353,7 @@ export function generateVocabularyQuestion(): GameQuestion {
     { word: 'ambiguous', definition: 'having more than one meaning; unclear', wrong: ['very clear', 'extremely bright', 'very loud'] },
     { word: 'diligent', definition: 'hardworking and persistent', wrong: ['lazy and idle', 'mean and cruel', 'loud and boisterous'] },
     { word: 'ponder', definition: 'to think deeply about something', wrong: ['to run quickly', 'to speak loudly', 'to eat greedily'] },
-    { word: 'serene', definition: 'calm and peaceful', wrong: ['loud and chaotic', 'angry and violent', 'quick and rushed'] },
-    { word: 'persevere', definition: 'to continue despite difficulties', wrong: ['to give up easily', 'to rest quietly', 'to complain loudly'] },
-    { word: 'abundant', definition: 'existing in large quantities', wrong: ['scarce and rare', 'small and tiny', 'empty and hollow'] },
-    { word: 'peculiar', definition: 'strange or unusual', wrong: ['normal and ordinary', 'large and massive', 'fast and quick'] },
-    { word: 'vivid', definition: 'bright and intense', wrong: ['dull and faded', 'small and weak', 'slow and lazy'] },
-    { word: 'triumph', definition: 'a great victory or achievement', wrong: ['a terrible failure', 'a small mistake', 'a quick rest'] },
-    { word: 'reluctant', definition: 'unwilling or hesitant', wrong: ['eager and excited', 'happy and cheerful', 'loud and noisy'] },
-    { word: 'gracious', definition: 'polite and kind', wrong: ['rude and mean', 'fast and quick', 'cold and frozen'] },
-    { word: 'absurd', definition: 'ridiculous or unreasonable', wrong: ['sensible and logical', 'beautiful and pretty', 'slow and careful'] },
-    { word: 'meager', definition: 'small in quantity; inadequate', wrong: ['large and plentiful', 'bright and shiny', 'fast and quick'] },
-    { word: 'arduous', definition: 'difficult and tiring', wrong: ['easy and simple', 'happy and fun', 'quiet and calm'] },
-    { word: 'tranquil', definition: 'free from disturbance; calm', wrong: ['noisy and chaotic', 'angry and hostile', 'fast and rushed'] },
-    { word: 'immense', definition: 'extremely large', wrong: ['tiny and small', 'weak and fragile', 'slow and steady'] },
-    { word: 'astute', definition: 'clever and quick to understand', wrong: ['foolish and slow', 'sad and depressed', 'loud and noisy'] },
-    { word: 'audacious', definition: 'bold and daring', wrong: ['timid and fearful', 'boring and dull', 'small and weak'] },
-    { word: 'candid', definition: 'truthful and straightforward', wrong: ['dishonest and lying', 'quiet and shy', 'fast and quick'] },
-    { word: 'contemplate', definition: 'to think carefully about', wrong: ['to ignore completely', 'to run fast', 'to eat quickly'] },
-    { word: 'diminish', definition: 'to make or become less', wrong: ['to increase greatly', 'to stay the same', 'to paint brightly'] },
-    { word: 'elaborate', definition: 'detailed and complicated', wrong: ['simple and plain', 'fast and quick', 'loud and noisy'] },
-    { word: 'formidable', definition: 'inspiring fear or respect', wrong: ['weak and pathetic', 'small and cute', 'quiet and gentle'] },
-    { word: 'impeccable', definition: 'perfect; without fault', wrong: ['flawed and broken', 'slow and lazy', 'cold and frozen'] },
-    { word: 'pristine', definition: 'in perfect condition', wrong: ['damaged and broken', 'loud and noisy', 'fast and quick'] },
-    { word: 'tenacious', definition: 'persistent and determined', wrong: ['lazy and quitting', 'sad and crying', 'small and weak'] },
-    { word: 'vigorous', definition: 'strong and energetic', wrong: ['weak and tired', 'quiet and calm', 'sad and depressed'] },
-    { word: 'zealous', definition: 'enthusiastic and passionate', wrong: ['bored and uninterested', 'slow and lazy', 'cold and unfriendly'] },
-    { word: 'amiable', definition: 'friendly and pleasant', wrong: ['hostile and mean', 'fast and quick', 'loud and aggressive'] },
-    { word: 'cautious', definition: 'careful to avoid danger', wrong: ['reckless and careless', 'happy and cheerful', 'bright and shiny'] },
-    { word: 'frivolous', definition: 'not serious; silly', wrong: ['serious and important', 'heavy and large', 'slow and careful'] },
-    { word: 'mundane', definition: 'ordinary and boring', wrong: ['exciting and thrilling', 'beautiful and pretty', 'loud and noisy'] },
-    { word: 'obsolete', definition: 'no longer used; outdated', wrong: ['modern and new', 'bright and shiny', 'fast and quick'] },
-    { word: 'proficient', definition: 'skilled and competent', wrong: ['unskilled and incompetent', 'sad and crying', 'cold and frozen'] },
-    { word: 'scrupulous', definition: 'very careful and thorough', wrong: ['careless and sloppy', 'fast and rushed', 'loud and messy'] },
-    { word: 'tedious', definition: 'boring and repetitive', wrong: ['exciting and fun', 'beautiful and lovely', 'quick and easy'] },
-    { word: 'versatile', definition: 'able to adapt to many uses', wrong: ['limited and narrow', 'slow and clumsy', 'sad and lonely'] },
-    { word: 'whimsical', definition: 'playful and fanciful', wrong: ['serious and stern', 'heavy and dull', 'loud and aggressive'] },
-    { word: 'adamant', definition: 'refusing to change opinion', wrong: ['flexible and open-minded', 'quiet and shy', 'fast and quick'] },
-    { word: 'brevity', definition: 'shortness of time or expression', wrong: ['length and wordiness', 'brightness and color', 'speed and quickness'] },
-    { word: 'clemency', definition: 'mercy and leniency', wrong: ['harshness and cruelty', 'speed and quickness', 'loudness and noise'] },
-    { word: 'dubious', definition: 'doubtful or uncertain', wrong: ['certain and sure', 'happy and cheerful', 'bright and clear'] },
-    { word: 'elusive', definition: 'difficult to find or catch', wrong: ['easy to find', 'loud and obvious', 'slow and steady'] },
-    { word: 'frugal', definition: 'economical and thrifty', wrong: ['wasteful and extravagant', 'fast and quick', 'loud and flashy'] }
+    { word: 'serene', definition: 'calm and peaceful', wrong: ['loud and chaotic', 'angry and violent', 'quick and rushed'] }
   ]
 
   const selected = words[Math.floor(Math.random() * words.length)]
@@ -410,179 +370,18 @@ export function generateVocabularyQuestion(): GameQuestion {
   }
 }
 
-// Synonym Finder with skill-based difficulty
-export function generateSynonymQuestion(skillLevel: number = 1): GameQuestion {
-  // Level 1: Short, high-frequency words
-  const level1Pairs = [
+// Synonym Finder
+export function generateSynonymQuestion(): GameQuestion {
+  const pairs = [
     { word: 'happy', synonym: 'joyful', wrong: ['sad', 'angry', 'tired'] },
     { word: 'big', synonym: 'large', wrong: ['tiny', 'narrow', 'short'] },
-    { word: 'fast', synonym: 'quick', wrong: ['slow', 'heavy', 'tall'] },
-    { word: 'good', synonym: 'great', wrong: ['bad', 'poor', 'weak'] },
-    { word: 'small', synonym: 'tiny', wrong: ['huge', 'tall', 'wide'] },
-    { word: 'cold', synonym: 'chilly', wrong: ['hot', 'warm', 'burning'] },
-    { word: 'old', synonym: 'ancient', wrong: ['new', 'young', 'fresh'] },
-    { word: 'sad', synonym: 'unhappy', wrong: ['glad', 'cheerful', 'merry'] },
-    { word: 'start', synonym: 'begin', wrong: ['end', 'finish', 'stop'] },
-    { word: 'stop', synonym: 'halt', wrong: ['start', 'continue', 'go'] },
-    { word: 'loud', synonym: 'noisy', wrong: ['quiet', 'silent', 'soft'] },
-    { word: 'hard', synonym: 'difficult', wrong: ['easy', 'simple', 'soft'] },
-    { word: 'nice', synonym: 'kind', wrong: ['mean', 'cruel', 'harsh'] },
-    { word: 'dark', synonym: 'dim', wrong: ['bright', 'light', 'sunny'] },
-    { word: 'wet', synonym: 'damp', wrong: ['dry', 'arid', 'parched'] },
-    { word: 'hot', synonym: 'warm', wrong: ['cold', 'cool', 'freezing'] },
-    { word: 'new', synonym: 'fresh', wrong: ['old', 'ancient', 'stale'] },
-    { word: 'clean', synonym: 'tidy', wrong: ['dirty', 'messy', 'filthy'] },
-    { word: 'strong', synonym: 'powerful', wrong: ['weak', 'feeble', 'frail'] },
-    { word: 'tall', synonym: 'high', wrong: ['short', 'low', 'small'] },
-    { word: 'funny', synonym: 'amusing', wrong: ['boring', 'dull', 'serious'] },
-    { word: 'brave', synonym: 'bold', wrong: ['scared', 'afraid', 'timid'] },
-    { word: 'pretty', synonym: 'beautiful', wrong: ['ugly', 'plain', 'homely'] },
-    { word: 'shy', synonym: 'timid', wrong: ['bold', 'brave', 'confident'] },
-    { word: 'smart', synonym: 'clever', wrong: ['dumb', 'stupid', 'foolish'] },
-    { word: 'rich', synonym: 'wealthy', wrong: ['poor', 'broke', 'needy'] },
-    { word: 'angry', synonym: 'mad', wrong: ['happy', 'calm', 'pleased'] },
-    { word: 'tired', synonym: 'sleepy', wrong: ['awake', 'alert', 'energetic'] },
-    { word: 'close', synonym: 'near', wrong: ['far', 'distant', 'remote'] },
-    { word: 'real', synonym: 'true', wrong: ['fake', 'false', 'pretend'] },
-    { word: 'find', synonym: 'discover', wrong: ['lose', 'miss', 'hide'] },
-    { word: 'help', synonym: 'assist', wrong: ['hurt', 'harm', 'hinder'] },
-    { word: 'like', synonym: 'enjoy', wrong: ['hate', 'dislike', 'loathe'] },
-    { word: 'look', synonym: 'see', wrong: ['ignore', 'miss', 'overlook'] },
-    { word: 'make', synonym: 'create', wrong: ['destroy', 'break', 'ruin'] },
-    { word: 'take', synonym: 'grab', wrong: ['give', 'offer', 'donate'] },
-    { word: 'run', synonym: 'sprint', wrong: ['walk', 'crawl', 'stroll'] },
-    { word: 'jump', synonym: 'leap', wrong: ['fall', 'sit', 'crouch'] },
-    { word: 'talk', synonym: 'speak', wrong: ['listen', 'hear', 'silence'] },
-    { word: 'yell', synonym: 'shout', wrong: ['whisper', 'murmur', 'mumble'] },
-    { word: 'sleep', synonym: 'rest', wrong: ['wake', 'rise', 'work'] },
-    { word: 'eat', synonym: 'consume', wrong: ['starve', 'fast', 'diet'] },
-    { word: 'love', synonym: 'adore', wrong: ['hate', 'despise', 'detest'] },
-    { word: 'sick', synonym: 'ill', wrong: ['healthy', 'well', 'fine'] },
-    { word: 'wrong', synonym: 'incorrect', wrong: ['right', 'correct', 'accurate'] },
-    { word: 'glad', synonym: 'pleased', wrong: ['upset', 'angry', 'sad'] },
-    { word: 'scary', synonym: 'frightening', wrong: ['safe', 'comforting', 'calm'] },
-    { word: 'break', synonym: 'shatter', wrong: ['fix', 'mend', 'repair'] },
-    { word: 'pull', synonym: 'drag', wrong: ['push', 'shove', 'press'] },
-    { word: 'hide', synonym: 'conceal', wrong: ['show', 'reveal', 'display'] }
-  ]
-
-  // Level 2: Slightly less common / longer words
-  const level2Pairs = [
     { word: 'smart', synonym: 'intelligent', wrong: ['foolish', 'slow', 'weak'] },
-    { word: 'brave', synonym: 'courageous', wrong: ['cowardly', 'weak', 'timid'] },
-    { word: 'honest', synonym: 'truthful', wrong: ['dishonest', 'deceitful', 'false'] },
-    { word: 'beautiful', synonym: 'lovely', wrong: ['ugly', 'plain', 'unattractive'] },
-    { word: 'difficult', synonym: 'challenging', wrong: ['easy', 'simple', 'basic'] },
-    { word: 'ancient', synonym: 'old', wrong: ['modern', 'new', 'recent'] },
-    { word: 'enormous', synonym: 'huge', wrong: ['tiny', 'small', 'minute'] },
-    { word: 'fortunate', synonym: 'lucky', wrong: ['unlucky', 'cursed', 'unfortunate'] },
-    { word: 'frightened', synonym: 'scared', wrong: ['brave', 'fearless', 'bold'] },
-    { word: 'gentle', synonym: 'mild', wrong: ['harsh', 'rough', 'violent'] },
-    { word: 'grateful', synonym: 'thankful', wrong: ['ungrateful', 'resentful', 'bitter'] },
-    { word: 'humble', synonym: 'modest', wrong: ['arrogant', 'proud', 'boastful'] },
-    { word: 'important', synonym: 'significant', wrong: ['trivial', 'minor', 'insignificant'] },
-    { word: 'improve', synonym: 'enhance', wrong: ['worsen', 'damage', 'ruin'] },
-    { word: 'incredible', synonym: 'amazing', wrong: ['ordinary', 'boring', 'dull'] },
-    { word: 'journey', synonym: 'trip', wrong: ['stay', 'halt', 'stop'] },
-    { word: 'joyful', synonym: 'cheerful', wrong: ['gloomy', 'miserable', 'sad'] },
-    { word: 'keen', synonym: 'eager', wrong: ['reluctant', 'unwilling', 'hesitant'] },
-    { word: 'loyal', synonym: 'faithful', wrong: ['disloyal', 'treacherous', 'unfaithful'] },
-    { word: 'miserable', synonym: 'unhappy', wrong: ['joyful', 'cheerful', 'content'] },
-    { word: 'nervous', synonym: 'anxious', wrong: ['calm', 'relaxed', 'peaceful'] },
-    { word: 'obvious', synonym: 'clear', wrong: ['hidden', 'obscure', 'unclear'] },
-    { word: 'peculiar', synonym: 'strange', wrong: ['normal', 'ordinary', 'typical'] },
-    { word: 'polite', synonym: 'courteous', wrong: ['rude', 'impolite', 'discourteous'] },
-    { word: 'precious', synonym: 'valuable', wrong: ['worthless', 'cheap', 'common'] },
-    { word: 'primary', synonym: 'main', wrong: ['secondary', 'minor', 'lesser'] },
-    { word: 'proper', synonym: 'correct', wrong: ['improper', 'wrong', 'incorrect'] },
-    { word: 'rapid', synonym: 'swift', wrong: ['slow', 'sluggish', 'gradual'] },
-    { word: 'rarely', synonym: 'seldom', wrong: ['often', 'frequently', 'usually'] },
-    { word: 'recent', synonym: 'new', wrong: ['old', 'ancient', 'past'] },
-    { word: 'reliable', synonym: 'dependable', wrong: ['unreliable', 'undependable', 'faulty'] },
-    { word: 'remote', synonym: 'distant', wrong: ['near', 'close', 'nearby'] },
-    { word: 'require', synonym: 'need', wrong: ['offer', 'provide', 'give'] },
-    { word: 'rigid', synonym: 'stiff', wrong: ['flexible', 'soft', 'bendable'] },
-    { word: 'rough', synonym: 'coarse', wrong: ['smooth', 'soft', 'gentle'] },
-    { word: 'scatter', synonym: 'spread', wrong: ['gather', 'collect', 'assemble'] },
-    { word: 'section', synonym: 'part', wrong: ['whole', 'entirety', 'total'] },
-    { word: 'select', synonym: 'choose', wrong: ['reject', 'refuse', 'decline'] },
-    { word: 'sincere', synonym: 'genuine', wrong: ['fake', 'false', 'insincere'] },
-    { word: 'slender', synonym: 'thin', wrong: ['thick', 'fat', 'wide'] },
-    { word: 'smooth', synonym: 'even', wrong: ['rough', 'bumpy', 'uneven'] },
-    { word: 'solid', synonym: 'firm', wrong: ['liquid', 'soft', 'weak'] },
-    { word: 'solemn', synonym: 'serious', wrong: ['cheerful', 'funny', 'playful'] },
-    { word: 'summit', synonym: 'peak', wrong: ['bottom', 'base', 'valley'] },
-    { word: 'supply', synonym: 'provide', wrong: ['demand', 'take', 'remove'] },
-    { word: 'swift', synonym: 'fast', wrong: ['slow', 'sluggish', 'lazy'] },
-    { word: 'timid', synonym: 'shy', wrong: ['bold', 'confident', 'brave'] },
-    { word: 'transparent', synonym: 'clear', wrong: ['opaque', 'cloudy', 'murky'] },
-    { word: 'vacant', synonym: 'empty', wrong: ['full', 'occupied', 'crowded'] },
-    { word: 'vast', synonym: 'immense', wrong: ['small', 'tiny', 'limited'] }
+    { word: 'fast', synonym: 'quick', wrong: ['slow', 'heavy', 'tall'] },
+    { word: 'brave', synonym: 'courageous', wrong: ['cowardly', 'weak', 'tired'] },
+    { word: 'honest', synonym: 'truthful', wrong: ['dishonest', 'mean', 'lazy'] },
+    { word: 'beautiful', synonym: 'lovely', wrong: ['ugly', 'plain', 'dull'] },
+    { word: 'difficult', synonym: 'challenging', wrong: ['easy', 'simple', 'basic'] }
   ]
-
-  // Level 3+: Advanced vocabulary
-  const level3Pairs = [
-    { word: 'diligent', synonym: 'industrious', wrong: ['lazy', 'careless', 'idle'] },
-    { word: 'resilient', synonym: 'tenacious', wrong: ['fragile', 'weak', 'brittle'] },
-    { word: 'eloquent', synonym: 'articulate', wrong: ['inarticulate', 'unclear', 'confused'] },
-    { word: 'benevolent', synonym: 'compassionate', wrong: ['cruel', 'malicious', 'hostile'] },
-    { word: 'meticulous', synonym: 'precise', wrong: ['careless', 'sloppy', 'inaccurate'] },
-    { word: 'ambiguous', synonym: 'unclear', wrong: ['obvious', 'definite', 'certain'] },
-    { word: 'abundant', synonym: 'plentiful', wrong: ['scarce', 'rare', 'limited'] },
-    { word: 'absurd', synonym: 'ridiculous', wrong: ['reasonable', 'sensible', 'logical'] },
-    { word: 'adjacent', synonym: 'neighboring', wrong: ['distant', 'remote', 'separate'] },
-    { word: 'adversary', synonym: 'opponent', wrong: ['ally', 'friend', 'supporter'] },
-    { word: 'advocate', synonym: 'supporter', wrong: ['opponent', 'critic', 'enemy'] },
-    { word: 'ample', synonym: 'sufficient', wrong: ['inadequate', 'insufficient', 'lacking'] },
-    { word: 'arduous', synonym: 'difficult', wrong: ['easy', 'simple', 'effortless'] },
-    { word: 'arrogant', synonym: 'conceited', wrong: ['humble', 'modest', 'meek'] },
-    { word: 'authentic', synonym: 'genuine', wrong: ['fake', 'counterfeit', 'false'] },
-    { word: 'bizarre', synonym: 'peculiar', wrong: ['normal', 'ordinary', 'typical'] },
-    { word: 'candid', synonym: 'frank', wrong: ['dishonest', 'deceitful', 'evasive'] },
-    { word: 'cautious', synonym: 'careful', wrong: ['reckless', 'careless', 'hasty'] },
-    { word: 'compassion', synonym: 'sympathy', wrong: ['cruelty', 'harshness', 'indifference'] },
-    { word: 'competent', synonym: 'capable', wrong: ['incompetent', 'unable', 'inept'] },
-    { word: 'complex', synonym: 'complicated', wrong: ['simple', 'easy', 'basic'] },
-    { word: 'conceal', synonym: 'hide', wrong: ['reveal', 'expose', 'show'] },
-    { word: 'condemn', synonym: 'criticize', wrong: ['praise', 'commend', 'applaud'] },
-    { word: 'confirm', synonym: 'verify', wrong: ['deny', 'refute', 'contradict'] },
-    { word: 'consecutive', synonym: 'successive', wrong: ['alternate', 'random', 'scattered'] },
-    { word: 'conspicuous', synonym: 'obvious', wrong: ['hidden', 'inconspicuous', 'subtle'] },
-    { word: 'contemplate', synonym: 'ponder', wrong: ['ignore', 'dismiss', 'overlook'] },
-    { word: 'contemporary', synonym: 'modern', wrong: ['ancient', 'old', 'archaic'] },
-    { word: 'contrary', synonym: 'opposite', wrong: ['similar', 'same', 'identical'] },
-    { word: 'convene', synonym: 'assemble', wrong: ['disperse', 'scatter', 'separate'] },
-    { word: 'cordial', synonym: 'friendly', wrong: ['hostile', 'unfriendly', 'cold'] },
-    { word: 'corrupt', synonym: 'dishonest', wrong: ['honest', 'ethical', 'moral'] },
-    { word: 'courageous', synonym: 'brave', wrong: ['cowardly', 'fearful', 'timid'] },
-    { word: 'credible', synonym: 'believable', wrong: ['unbelievable', 'doubtful', 'dubious'] },
-    { word: 'crucial', synonym: 'critical', wrong: ['unimportant', 'trivial', 'minor'] },
-    { word: 'cunning', synonym: 'crafty', wrong: ['honest', 'straightforward', 'naive'] },
-    { word: 'daunting', synonym: 'intimidating', wrong: ['encouraging', 'reassuring', 'easy'] },
-    { word: 'deceive', synonym: 'mislead', wrong: ['enlighten', 'inform', 'clarify'] },
-    { word: 'defiant', synonym: 'rebellious', wrong: ['obedient', 'compliant', 'submissive'] },
-    { word: 'delicate', synonym: 'fragile', wrong: ['sturdy', 'strong', 'robust'] },
-    { word: 'desolate', synonym: 'barren', wrong: ['lush', 'fertile', 'abundant'] },
-    { word: 'deteriorate', synonym: 'decline', wrong: ['improve', 'enhance', 'strengthen'] },
-    { word: 'determine', synonym: 'decide', wrong: ['hesitate', 'waver', 'doubt'] },
-    { word: 'devour', synonym: 'consume', wrong: ['reject', 'refuse', 'abstain'] },
-    { word: 'diligent', synonym: 'hardworking', wrong: ['lazy', 'idle', 'sluggish'] },
-    { word: 'diminish', synonym: 'decrease', wrong: ['increase', 'expand', 'grow'] },
-    { word: 'dismal', synonym: 'gloomy', wrong: ['cheerful', 'bright', 'optimistic'] },
-    { word: 'dismay', synonym: 'distress', wrong: ['comfort', 'reassure', 'encourage'] },
-    { word: 'display', synonym: 'exhibit', wrong: ['conceal', 'hide', 'cover'] },
-    { word: 'dispute', synonym: 'argument', wrong: ['agreement', 'harmony', 'consensus'] }
-  ]
-
-  // Select word bank based on skill level
-  let pairs
-  if (skillLevel <= 1) {
-    pairs = level1Pairs
-  } else if (skillLevel === 2) {
-    pairs = level2Pairs
-  } else {
-    pairs = level3Pairs
-  }
 
   const selected = pairs[Math.floor(Math.random() * pairs.length)]
   const answer = selected.synonym
@@ -715,10 +514,9 @@ export function generateComprehensionQuestion(): GameQuestion {
   }
 }
 
-// Word Analogies with skill-based difficulty
-export function generateAnalogyQuestion(skillLevel: number = 1): GameQuestion {
-  // Level 1: Simple, concrete relationships
-  const level1Analogies = [
+// Word Analogies
+export function generateAnalogyQuestion(): GameQuestion {
+  const analogies = [
     {
       question: 'Hot is to Cold as Day is to...',
       answer: 'Night',
@@ -730,20 +528,6 @@ export function generateAnalogyQuestion(skillLevel: number = 1): GameQuestion {
       wrong: ['Water', 'Jump', 'Run']
     },
     {
-      question: 'Happy is to Sad as Up is to...',
-      answer: 'Down',
-      wrong: ['Sky', 'Above', 'High']
-    },
-    {
-      question: 'Finger is to Hand as Toe is to...',
-      answer: 'Foot',
-      wrong: ['Leg', 'Nail', 'Body']
-    }
-  ]
-
-  // Level 2: Common relationships, slightly more abstract
-  const level2Analogies = [
-    {
       question: 'Doctor is to Hospital as Teacher is to...',
       answer: 'School',
       wrong: ['Student', 'Book', 'Class']
@@ -754,6 +538,11 @@ export function generateAnalogyQuestion(skillLevel: number = 1): GameQuestion {
       wrong: ['Sharp', 'Fork', 'Eat']
     },
     {
+      question: 'Happy is to Sad as Up is to...',
+      answer: 'Down',
+      wrong: ['Sky', 'Above', 'High']
+    },
+    {
       question: 'Book is to Read as Music is to...',
       answer: 'Listen',
       wrong: ['Sound', 'Song', 'Play']
@@ -762,42 +551,13 @@ export function generateAnalogyQuestion(skillLevel: number = 1): GameQuestion {
       question: 'Car is to Road as Train is to...',
       answer: 'Track',
       wrong: ['Station', 'Fast', 'Journey']
+    },
+    {
+      question: 'Finger is to Hand as Toe is to...',
+      answer: 'Foot',
+      wrong: ['Leg', 'Nail', 'Body']
     }
   ]
-
-  // Level 3+: More abstract or multi-step relationships
-  const level3Analogies = [
-    {
-      question: 'Author is to Book as Composer is to...',
-      answer: 'Symphony',
-      wrong: ['Orchestra', 'Piano', 'Concert']
-    },
-    {
-      question: 'Flour is to Bread as Grapes are to...',
-      answer: 'Wine',
-      wrong: ['Fruit', 'Vineyard', 'Juice']
-    },
-    {
-      question: 'Acorn is to Oak as Seed is to...',
-      answer: 'Plant',
-      wrong: ['Garden', 'Soil', 'Root']
-    },
-    {
-      question: 'Chapter is to Book as Scene is to...',
-      answer: 'Play',
-      wrong: ['Theatre', 'Actor', 'Stage']
-    }
-  ]
-
-  // Select based on skill level
-  let analogies
-  if (skillLevel <= 1) {
-    analogies = level1Analogies
-  } else if (skillLevel === 2) {
-    analogies = level2Analogies
-  } else {
-    analogies = level3Analogies
-  }
 
   const selected = analogies[Math.floor(Math.random() * analogies.length)]
   const options = [selected.answer, ...selected.wrong]
@@ -996,26 +756,15 @@ export function generateLogicPuzzleQuestion(): GameQuestion {
   }
 }
 
-// Shape Patterns with skill-based difficulty
-export function generateShapePatternQuestion(skillLevel: number = 1): GameQuestion {
-  // Level 1: Simple repeating patterns (2-3 elements)
-  const level1Patterns = [
+// Shape Patterns
+export function generateShapePatternQuestion(): GameQuestion {
+  const patterns = [
     {
       question: 'Pattern: ○ △ □ ○ △ ?\nWhat comes next?',
       answer: '□',
       wrong: ['○', '△', '◇'],
       explanation: 'Repeating pattern: circle, triangle, square'
     },
-    {
-      question: 'Pattern: ◆ ◇ ◆ ◇ ?\nWhat comes next?',
-      answer: '◆',
-      wrong: ['◇', '○', '△'],
-      explanation: 'Alternating filled and empty diamonds'
-    }
-  ]
-
-  // Level 2: Two-step patterns
-  const level2Patterns = [
     {
       question: 'Pattern: ★ ★ ☆ ★ ★ ☆ ★ ★ ?\nWhat comes next?',
       answer: '☆',
@@ -1027,40 +776,14 @@ export function generateShapePatternQuestion(skillLevel: number = 1): GameQuesti
       answer: '□',
       wrong: ['■', '●', '◇'],
       explanation: 'Two filled squares, then one empty square'
-    }
-  ]
-
-  // Level 3+: Complex patterns with rotation or multiple attributes
-  const level3Patterns = [
-    {
-      question: 'Pattern: ◐ ◑ ◒ ◓ ?\nWhat comes next?',
-      answer: '◐',
-      wrong: ['◑', '◒', '○'],
-      explanation: 'Rotating shaded circle pattern'
     },
     {
-      question: 'Pattern: △ ▲ □ ■ ○ ?\nWhat comes next?',
-      answer: '●',
-      wrong: ['○', '◇', '△'],
-      explanation: 'Alternating empty and filled shapes: triangle, square, circle'
-    },
-    {
-      question: 'Pattern: ● ●● ●●● ?\nWhat comes next?',
-      answer: '●●●●',
-      wrong: ['●●', '●', '●●●●●'],
-      explanation: 'Adding one circle each time'
+      question: 'Pattern: ◆ ◇ ◆ ◇ ?\nWhat comes next?',
+      answer: '◆',
+      wrong: ['◇', '○', '△'],
+      explanation: 'Alternating filled and empty diamonds'
     }
   ]
-
-  // Select based on skill level
-  let patterns
-  if (skillLevel <= 1) {
-    patterns = level1Patterns
-  } else if (skillLevel === 2) {
-    patterns = level2Patterns
-  } else {
-    patterns = level3Patterns
-  }
 
   const selected = patterns[Math.floor(Math.random() * patterns.length)]
   const options = [selected.answer, ...selected.wrong]

@@ -206,6 +206,7 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
   const [expandedSection, setExpandedSection] = useState<number | null>(null)
   const [showAnswer, setShowAnswer] = useState(false)
   const [isWrong, setIsWrong] = useState(false)
+  const [gameStartTime, setGameStartTime] = useState<Date | null>(null)
   const router = useRouter()
 
   const hasTimer = gameId === 'quick-fire'
@@ -359,6 +360,7 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
     const initialQuestions = Array.from({ length: 10 }, generateQuestion)
     setQuestions(initialQuestions)
     setGameStarted(true)
+    setGameStartTime(new Date())
     setTimeLeft(60)
     setScore(0)
     setLives(3)
@@ -484,48 +486,68 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
 
   const endGame = async () => {
     setGameEnded(true)
+    const gameEndTime = new Date()
+
+    // FIX: Use questions.length (total in game) not just answered questions
+    const total = questions.length
     const correct = questions.filter(q => q.isCorrect).length
-    const total = questions.filter(q => q.userAnswer).length
     const accuracy = total > 0 ? (correct / total) * 100 : 0
     const stars = Math.floor((accuracy / 100) * 3)
     setSessionStats({ correct, total, accuracy })
 
     // Save session to database
-    if (user) {
+    if (user && gameStartTime) {
       try {
-        const duration = hasTimer ? (60 - timeLeft) : null
         const subject = gameId.includes('quick-fire') || gameId.includes('calculator') ||
                        gameId.includes('quiz') || gameId.includes('fraction') ||
                        gameId.includes('power') || gameId.includes('problem')
-                       ? 'Maths'
+                       ? 'MATHS'
                        : gameId.includes('vocabulary') || gameId.includes('synonym') ||
                          gameId.includes('grammar') || gameId.includes('spelling') ||
                          gameId.includes('comprehension')
-                       ? 'English'
+                       ? 'ENGLISH'
                        : gameId.includes('word') || gameId.includes('letter') ||
                          gameId.includes('code') || gameId.includes('odd') ||
                          gameId.includes('logic')
-                       ? 'Verbal Reasoning'
-                       : 'Non-Verbal Reasoning'
+                       ? 'VR'
+                       : 'NVR'
+
+        // Debug logging (dev only)
+        if (process.env.NODE_ENV === 'development') {
+          console.log('🎮 Session Debug:', {
+            gameId,
+            totalQuestions: total,
+            correctAnswers: correct,
+            accuracy: accuracy.toFixed(1) + '%',
+            meetsRewardCriteria: total >= 20 && correct === total
+          })
+        }
 
         const res = await fetch('/api/sessions', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             userId: user.id,
-            gameType: gameId,
+            gameId,
             subject,
+            startedAt: gameStartTime.toISOString(),
+            endedAt: gameEndTime.toISOString(),
             totalQuestions: total,
-            correctAnswers: correct,
-            accuracy,
-            duration,
-            starsEarned: stars
+            correctAnswers: correct
           })
         })
 
         if (res.ok) {
           const data = await res.json()
           console.log('Session saved:', data)
+
+          // Debug: Log reward info
+          if (process.env.NODE_ENV === 'development' && data.newRewards) {
+            console.log('💰 Rewards earned:', data.newRewards)
+          }
+        } else {
+          const error = await res.json()
+          console.error('Failed to save session:', error)
         }
       } catch (error) {
         console.error('Failed to save session:', error)

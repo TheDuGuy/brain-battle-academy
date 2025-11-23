@@ -9,10 +9,19 @@
 
 import fs from 'fs'
 import path from 'path'
-import * as pdfParse from 'pdf-parse'
 import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
+
+// Import pdf-parse dynamically
+let pdfParse: any
+async function loadPdfParse() {
+  if (!pdfParse) {
+    const module = await import('pdf-parse')
+    pdfParse = module.default
+  }
+  return pdfParse
+}
 
 // ============================================================================
 // Configuration
@@ -27,27 +36,67 @@ interface PDFConfig {
   title: string
 }
 
-// TODO: Update these paths with your actual PDF locations
+// Real 11+ exam papers from GL Assessment
 const PDF_CONFIGS: PDFConfig[] = [
   {
-    path: '/Users/edoumota/Downloads/11+ papers/maths-sample-1.pdf',
+    path: '/Users/edoumota/Downloads/11+ papers/Maths 4.pdf',
     subject: 'MATHS',
-    title: 'Maths Sample Paper 1'
+    title: 'GL Maths Paper 4'
   },
   {
-    path: '/Users/edoumota/Downloads/11+ papers/english-sample-1.pdf',
+    path: '/Users/edoumota/Downloads/11+ papers/Maths Question Paper 8.pdf',
+    subject: 'MATHS',
+    title: 'GL Maths Question Paper 8'
+  },
+  {
+    path: '/Users/edoumota/Downloads/11+ papers/GL Variety Pack Test 5 Maths .pdf',
+    subject: 'MATHS',
+    title: 'GL Variety Pack Test 5 Maths'
+  },
+  {
+    path: '/Users/edoumota/Downloads/11+ papers/English 4.pdf',
     subject: 'ENGLISH',
-    title: 'English Sample Paper 1'
+    title: 'GL English Paper 4'
   },
   {
-    path: '/Users/edoumota/Downloads/11+ papers/verbal-reasoning-sample-1.pdf',
+    path: '/Users/edoumota/Downloads/11+ papers/English Question Paper 8.pdf',
+    subject: 'ENGLISH',
+    title: 'GL English Question Paper 8'
+  },
+  {
+    path: '/Users/edoumota/Downloads/11+ papers/GL Variety Pack Test 5 English .pdf',
+    subject: 'ENGLISH',
+    title: 'GL Variety Pack Test 5 English'
+  },
+  {
+    path: '/Users/edoumota/Downloads/11+ papers/4 VR.pdf',
     subject: 'VR',
-    title: 'Verbal Reasoning Sample Paper 1'
+    title: 'GL Verbal Reasoning Paper 4'
   },
   {
-    path: '/Users/edoumota/Downloads/11+ papers/non-verbal-reasoning-sample-1.pdf',
+    path: '/Users/edoumota/Downloads/t-pz-1641387904-verbal-reasoning-ultimate-practice-pack_ver_6.pdf',
+    subject: 'VR',
+    title: 'Verbal Reasoning Ultimate Practice Pack'
+  },
+  {
+    path: '/Users/edoumota/Downloads/cgp-11plus-gl-vr-free-practice-test.pdf',
+    subject: 'VR',
+    title: 'CGP 11+ GL VR Free Practice Test'
+  },
+  {
+    path: '/Users/edoumota/Downloads/11+ papers/NVR Question paper 8.pdf',
     subject: 'NVR',
-    title: 'Non-Verbal Reasoning Sample Paper 1'
+    title: 'GL NVR Question Paper 8'
+  },
+  {
+    path: '/Users/edoumota/Downloads/11+ papers/GL Variety Pack Test 5 NVR.pdf',
+    subject: 'NVR',
+    title: 'GL Variety Pack Test 5 NVR'
+  },
+  {
+    path: '/Users/edoumota/Downloads/11+ papers/GL NVR variety 4-compressed.pdf',
+    subject: 'NVR',
+    title: 'GL NVR Variety Pack 4'
   }
 ]
 
@@ -266,8 +315,9 @@ async function processPDF(config: PDFConfig): Promise<void> {
   }
 
   // Read and parse PDF
+  const parser = await loadPdfParse()
   const dataBuffer = fs.readFileSync(config.path)
-  const pdfData = await pdfParse(dataBuffer)
+  const pdfData = await parser(dataBuffer)
   const text = pdfData.text
 
   console.log(`📄 PDF Pages: ${pdfData.numpages}`)
