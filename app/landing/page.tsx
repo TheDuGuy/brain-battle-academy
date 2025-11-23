@@ -77,7 +77,7 @@ export default function LandingPage() {
                     Log in / Start practicing
                   </button>
                 </Link>
-                <a href="mailto:edou@example.com">
+                <a href="mailto:edou.mota@me.com">
                   <button className="px-6 py-3 bg-white text-slate-900 border-2 border-slate-300 rounded-lg font-semibold hover:border-slate-400 transition-colors text-lg">
                     Talk to us
                   </button>
@@ -431,7 +431,7 @@ export default function LandingPage() {
             <p className="text-slate-300 mb-6">
               We'd love to hear from you. Get in touch to learn more or discuss access.
             </p>
-            <a href="mailto:edou@example.com">
+            <a href="mailto:edou.mota@me.com">
               <button className="px-6 py-3 bg-white text-slate-900 rounded-lg font-semibold hover:bg-slate-100 transition-colors">
                 Contact us
               </button>
