@@ -207,6 +207,7 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
   const [showAnswer, setShowAnswer] = useState(false)
   const [isWrong, setIsWrong] = useState(false)
   const [gameStartTime, setGameStartTime] = useState<Date | null>(null)
+  const [earnedRewards, setEarnedRewards] = useState<any[]>([])
   const router = useRouter()
 
   const hasTimer = gameId === 'quick-fire'
@@ -369,6 +370,7 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
     setShowAnswer(false)
     setIsWrong(false)
     setGameEnded(false)
+    setEarnedRewards([]) // Reset rewards for new game
 
     // Clear any saved progress when starting new game
     if (user) {
@@ -519,7 +521,7 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
             totalQuestions: total,
             correctAnswers: correct,
             accuracy: accuracy.toFixed(1) + '%',
-            meetsRewardCriteria: total >= 20 && correct === total
+            meetsRewardCriteria: total >= 10 && correct === total
           })
         }
 
@@ -540,6 +542,11 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
         if (res.ok) {
           const data = await res.json()
           console.log('Session saved:', data)
+
+          // Capture rewards from API response
+          if (data.newRewards && data.newRewards.length > 0) {
+            setEarnedRewards(data.newRewards)
+          }
 
           // Debug: Log reward info
           if (process.env.NODE_ENV === 'development' && data.newRewards) {
@@ -618,7 +625,7 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="bg-green-100 text-green-700 font-bold w-6 h-6 rounded-full flex items-center justify-center text-sm flex-shrink-0">£</span>
-                  <span className="font-semibold">Get 20/20 (perfect score) to earn £1!</span>
+                  <span className="font-semibold">Get 10/10 (perfect score) to earn £1!</span>
                 </li>
               </ul>
             </div>
@@ -646,8 +653,8 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
   }
 
   if (gameEnded) {
-    const earnedMoney = sessionStats.accuracy >= 90 ? 1 : 0
     const stars = Math.floor((sessionStats.accuracy / 100) * 3)
+    const perfectScore = sessionStats.correct === sessionStats.total && sessionStats.total === 10
 
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center p-4">
@@ -677,13 +684,23 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
               </div>
             </div>
 
-            {earnedMoney > 0 && (
+            {earnedRewards.length > 0 && (
               <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 mb-6 border-2 border-green-300">
                 <div className="text-5xl mb-3">💰</div>
                 <h3 className="text-2xl font-bold text-green-700 mb-1">
-                  You earned £{earnedMoney}!
+                  You earned £{((earnedRewards[0]?.amountPence || 0) / 100).toFixed(2)}!
                 </h3>
-                <p className="text-green-600">Amazing accuracy!</p>
+                <p className="text-green-600">{earnedRewards[0]?.reason || 'Perfect score!'}</p>
+              </div>
+            )}
+
+            {perfectScore && earnedRewards.length === 0 && (
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 mb-6 border-2 border-blue-300">
+                <div className="text-5xl mb-3">🎯</div>
+                <h3 className="text-2xl font-bold text-blue-700 mb-1">
+                  Perfect Again!
+                </h3>
+                <p className="text-blue-600">You've already earned this week's £1 bonus.</p>
               </div>
             )}
 

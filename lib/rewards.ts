@@ -59,8 +59,8 @@ export type EvaluateRewardsOutput = {
 const TIMEZONE = 'Europe/London'
 const DAILY_COMPLETION_SECONDS = 900 // 15 minutes
 
-// Accuracy reward requirements (tightened to prevent easy £1)
-export const MIN_QUESTIONS_FOR_ACCURACY_REWARD = 20
+// Accuracy reward requirements (10/10 perfect score earns £1)
+export const MIN_QUESTIONS_FOR_ACCURACY_REWARD = 10
 export const REQUIRED_ACCURACY_FOR_REWARD = 1.0 // 100%
 
 const STREAK_TARGET_DAYS = 7
@@ -221,7 +221,7 @@ function hasStreakRewardThisWeek(
  * Evaluate rewards for a new session
  *
  * This is a pure function that implements all reward business logic:
- * - HIGH_ACCURACY: £1 for 20/20 questions (100% accuracy, once per week)
+ * - HIGH_ACCURACY: £1 for 10/10 questions (100% accuracy, once per week)
  * - STREAK: £1 for 7 consecutive completed days (once per week)
  *
  * @param input - The new session and context (recent sessions, existing rewards)

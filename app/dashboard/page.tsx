@@ -509,7 +509,7 @@ export default function DashboardPage() {
                   <h2 className="text-3xl font-bold text-white">Today&apos;s Mission</h2>
                 </div>
                 <p className="text-white/95 text-lg mb-6">
-                  Play 15 minutes of any game and try to get 20/20 (perfect score) in at least one session.
+                  Play 15 minutes today
                 </p>
 
                 <div className="space-y-3 mb-6">
@@ -525,7 +525,7 @@ export default function DashboardPage() {
                   <div className="flex items-center gap-3">
                     <span className="text-2xl">⭕</span>
                     <span className="text-white/90 font-medium">
-                      Aim for 20/20 (perfect score) once today
+                      Aim for one 10/10 perfect score today
                     </span>
                   </div>
                 </div>
@@ -601,7 +601,7 @@ export default function DashboardPage() {
               </p>
             ) : (
               <p className="text-xs text-amber-700">
-                No perfect 20/20 yet – keep going to earn a £1 bonus!
+                No perfect 10/10 yet – keep going to earn a £1 bonus!
               </p>
             )}
           </div>
@@ -642,7 +642,7 @@ export default function DashboardPage() {
               </div>
               <div>
                 <h3 className="text-xl font-bold text-green-900">Perfect Score Challenge</h3>
-                <p className="text-green-700 text-sm">Get 20/20 in one game this week to earn £1 accuracy bonus</p>
+                <p className="text-green-700 text-sm">Get 10/10 in one game this week to earn a £1 accuracy bonus</p>
               </div>
             </div>
             <div className="space-y-2">

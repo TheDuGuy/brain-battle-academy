@@ -75,7 +75,7 @@ export async function GET(
       skillLevel: p.skillLevel
     }))
 
-    // Get last perfect score (20/20 or better)
+    // Get last perfect score (10/10 or better)
     // Look at recent sessions (last 90 days) for the most recent perfect score
     const ninetyDaysAgo = new Date()
     ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90)

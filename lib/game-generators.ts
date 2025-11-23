@@ -604,38 +604,227 @@ export function generateGrammarQuestion(): GameQuestion {
     {
       question: 'Which sentence uses the correct punctuation?',
       answer: 'The dog, who was very friendly, wagged its tail.',
-      wrong: [
-        'The dog who was very friendly wagged its tail',
-        'The dog, who was very friendly wagged its tail.',
-        'The dog who was very friendly, wagged its tail.'
-      ]
+      wrong: ['The dog who was very friendly wagged its tail', 'The dog, who was very friendly wagged its tail.', 'The dog who was very friendly, wagged its tail.']
     },
     {
       question: 'Choose the sentence with the correct verb form:',
       answer: 'She has been studying for three hours.',
-      wrong: [
-        'She have been studying for three hours.',
-        'She has been study for three hours.',
-        'She has be studying for three hours.'
-      ]
+      wrong: ['She have been studying for three hours.', 'She has been study for three hours.', 'She has be studying for three hours.']
     },
     {
       question: 'Which sentence is written correctly?',
       answer: "They're going to their house over there.",
-      wrong: [
-        "Their going to they're house over there.",
-        "There going to their house over their.",
-        "They're going to there house over their."
-      ]
+      wrong: ["Their going to they're house over there.", "There going to their house over their.", "They're going to there house over their."]
     },
     {
       question: 'Select the sentence with proper subject-verb agreement:',
       answer: 'The team of players was excited.',
-      wrong: [
-        'The team of players were excited.',
-        'The team of players be excited.',
-        'The team of players is be excited.'
-      ]
+      wrong: ['The team of players were excited.', 'The team of players be excited.', 'The team of players is be excited.']
+    },
+    {
+      question: 'Which sentence has correct capitalization?',
+      answer: 'My family visited the Tower of London last summer.',
+      wrong: ['My Family visited the tower of london last Summer.', 'my family visited the Tower Of London last summer.', 'My family visited the Tower Of london Last Summer.']
+    },
+    {
+      question: 'Choose the correct use of apostrophes:',
+      answer: "The children's toys were scattered everywhere.",
+      wrong: ["The childrens toys were scattered everywhere.", "The childrens' toys were scattered everywhere.", "The children's toy's were scattered everywhere."]
+    },
+    {
+      question: 'Select the correct sentence:',
+      answer: 'I should have gone to the party.',
+      wrong: ['I should of gone to the party.', 'I should have went to the party.', 'I should of went to the party.']
+    },
+    {
+      question: 'Which sentence uses commas correctly?',
+      answer: 'We bought apples, oranges, bananas, and grapes.',
+      wrong: ['We bought apples oranges, bananas and grapes.', 'We bought apples, oranges bananas, and grapes.', 'We bought, apples, oranges, bananas, and, grapes.']
+    },
+    {
+      question: 'Choose the sentence with correct verb tense:',
+      answer: 'Yesterday, I walked to the park.',
+      wrong: ['Yesterday, I walk to the park.', 'Yesterday, I am walking to the park.', 'Yesterday, I walks to the park.']
+    },
+    {
+      question: 'Which sentence is grammatically correct?',
+      answer: 'Between you and me, this is a secret.',
+      wrong: ['Between you and I, this is a secret.', 'Between me and you, this is a secret.', 'Between I and you, this is a secret.']
+    },
+    {
+      question: 'Select the correct pronoun usage:',
+      answer: 'The teacher gave the books to my friend and me.',
+      wrong: ['The teacher gave the books to my friend and I.', 'The teacher gave the books to me and my friend.', 'The teacher gave the books to I and my friend.']
+    },
+    {
+      question: 'Which sentence uses quotation marks correctly?',
+      answer: 'She said, "I will be there soon."',
+      wrong: ['She said, "I will be there soon".', 'She said "I will be there soon."', 'She said, "I will be there soon.']
+    },
+    {
+      question: 'Choose the sentence with correct word order:',
+      answer: 'The tall, dark-haired man walked slowly.',
+      wrong: ['The dark-haired, tall man slowly walked.', 'The man tall, dark-haired walked slowly.', 'Slowly walked the tall, dark-haired man.']
+    },
+    {
+      question: 'Which sentence has the correct article?',
+      answer: 'I saw an elephant at the zoo.',
+      wrong: ['I saw a elephant at the zoo.', 'I saw an elephants at the zoo.', 'I saw the elephant at a zoo.']
+    },
+    {
+      question: 'Select the sentence with proper plural form:',
+      answer: 'The children played with their toys.',
+      wrong: ['The childs played with their toys.', 'The childrens played with their toys.', 'The children played with there toys.']
+    },
+    {
+      question: 'Which uses the comparative form correctly?',
+      answer: 'This book is more interesting than that one.',
+      wrong: ['This book is more interestinger than that one.', 'This book is most interesting than that one.', 'This book is interestinger than that one.']
+    },
+    {
+      question: 'Choose the correct negative form:',
+      answer: "I don't have any money.",
+      wrong: ["I don't have no money.", "I doesn't have any money.", "I don't has any money."]
+    },
+    {
+      question: 'Which sentence uses "who" or "whom" correctly?',
+      answer: 'The person whom I met was very kind.',
+      wrong: ['The person who I met was very kind.', 'The person whom was very kind met me.', 'The person which I met was very kind.']
+    },
+    {
+      question: 'Select the sentence with correct preposition use:',
+      answer: 'I am good at mathematics.',
+      wrong: ['I am good in mathematics.', 'I am good on mathematics.', 'I am good for mathematics.']
+    },
+    {
+      question: 'Which sentence has correct parallel structure?',
+      answer: 'I like swimming, reading, and playing football.',
+      wrong: ['I like swimming, to read, and playing football.', 'I like to swim, reading, and play football.', 'I like swim, read, and playing football.']
+    },
+    {
+      question: 'Choose the correct use of "its" or "it\'s":',
+      answer: "The cat licked its paw.",
+      wrong: ["The cat licked it's paw.", "The cat licked its' paw.", "The cat licked it paw."]
+    },
+    {
+      question: 'Which sentence has correct subject-verb agreement?',
+      answer: 'Everyone has their own opinion.',
+      wrong: ['Everyone have their own opinion.', 'Everyone has they own opinion.', 'Everyone have they own opinion.']
+    },
+    {
+      question: 'Select the sentence with correct past tense:',
+      answer: 'I ate breakfast this morning.',
+      wrong: ['I eated breakfast this morning.', 'I eat breakfast this morning.', 'I eating breakfast this morning.']
+    },
+    {
+      question: 'Which sentence uses adjectives correctly?',
+      answer: 'The beautiful, old house stood on the hill.',
+      wrong: ['The old, beautifuly house stood on the hill.', 'The beauty, old house stood on the hill.', 'The beautiful, older house stood on the hill.']
+    },
+    {
+      question: 'Choose the correct reflexive pronoun:',
+      answer: 'She taught herself to play the piano.',
+      wrong: ['She taught her to play the piano.', 'She taught sheself to play the piano.', 'She taught her own to play the piano.']
+    },
+    {
+      question: 'Which sentence has correct adverb placement?',
+      answer: 'She quickly ran to the door.',
+      wrong: ['She ran quickly to the door.', 'Quickly she ran to the door.', 'She ran to the door quickly.']
+    },
+    {
+      question: 'Select the sentence with correct conjunction use:',
+      answer: 'I wanted to go, but I was too tired.',
+      wrong: ['I wanted to go but, I was too tired.', 'I wanted to go, but, I was too tired.', 'I wanted to go but I was too tired.']
+    },
+    {
+      question: 'Which sentence uses the superlative correctly?',
+      answer: 'She is the tallest girl in the class.',
+      wrong: ['She is the most tall girl in the class.', 'She is the taller girl in the class.', 'She is the more tall girl in the class.']
+    },
+    {
+      question: 'Choose the correct conditional sentence:',
+      answer: 'If I had known, I would have come.',
+      wrong: ['If I have known, I would have come.', 'If I had known, I will have come.', 'If I know, I would have come.']
+    },
+    {
+      question: 'Which sentence has correct word choice?',
+      answer: 'The effect of the medicine was immediate.',
+      wrong: ['The affect of the medicine was immediate.', 'The efect of the medicine was immediate.', 'The effects of the medicine was immediate.']
+    },
+    {
+      question: 'Select the sentence with correct modal verb:',
+      answer: 'You must finish your homework.',
+      wrong: ['You must to finish your homework.', 'You must finishing your homework.', 'You musted finish your homework.']
+    },
+    {
+      question: 'Which sentence uses the possessive correctly?',
+      answer: "James's book is on the table.",
+      wrong: ["James book is on the table.", "James' book is on the table.", "Jame's book is on the table."]
+    },
+    {
+      question: 'Choose the correct relative pronoun:',
+      answer: 'The girl who lives next door is my friend.',
+      wrong: ['The girl which lives next door is my friend.', 'The girl whom lives next door is my friend.', 'The girl that lives next door is my friend.']
+    },
+    {
+      question: 'Which sentence has correct passive voice?',
+      answer: 'The letter was written by my sister.',
+      wrong: ['The letter was wrote by my sister.', 'The letter is written by my sister.', 'The letter has written by my sister.']
+    },
+    {
+      question: 'Select the correct sentence with question tag:',
+      answer: "You like pizza, don't you?",
+      wrong: ["You like pizza, doesn't you?", "You like pizza, do you?", "You like pizza, don't it?"]
+    },
+    {
+      question: 'Which sentence uses "fewer" or "less" correctly?',
+      answer: 'There are fewer students today than yesterday.',
+      wrong: ['There are less students today than yesterday.', 'There is fewer students today than yesterday.', 'There are lesser students today than yesterday.']
+    },
+    {
+      question: 'Choose the correct gerund form:',
+      answer: 'Swimming is my favourite activity.',
+      wrong: ['To swim is my favourite activity.', 'Swim is my favourite activity.', 'Swam is my favourite activity.']
+    },
+    {
+      question: 'Which sentence has correct reported speech?',
+      answer: 'She said that she was tired.',
+      wrong: ['She said that she is tired.', 'She said that she will be tired.', 'She said she tired.']
+    },
+    {
+      question: 'Select the sentence with correct quantifier:',
+      answer: 'There are many books on the shelf.',
+      wrong: ['There are much books on the shelf.', 'There is many books on the shelf.', 'There are a lot books on the shelf.']
+    },
+    {
+      question: 'Which sentence uses "than" or "then" correctly?',
+      answer: 'I would rather read than watch TV.',
+      wrong: ['I would rather read then watch TV.', 'I would rather to read than watch TV.', 'I would rather reading than watch TV.']
+    },
+    {
+      question: 'Choose the correct infinitive form:',
+      answer: 'I want to learn French.',
+      wrong: ['I want learning French.', 'I want learn French.', 'I want for to learn French.']
+    },
+    {
+      question: 'Which sentence has correct double negative avoidance?',
+      answer: 'I hardly ever see him.',
+      wrong: ["I don't hardly ever see him.", "I hardly don't ever see him.", "I don't see him hardly ever."]
+    },
+    {
+      question: 'Select the sentence with correct linking words:',
+      answer: 'Although it was raining, we went out.',
+      wrong: ['Despite it was raining, we went out.', 'Although it was raining but we went out.', 'However it was raining, we went out.']
+    },
+    {
+      question: 'Which sentence uses "who\'s" or "whose" correctly?',
+      answer: 'Whose book is this?',
+      wrong: ["Who's book is this?", "Whos book is this?", "Who book is this?"]
+    },
+    {
+      question: 'Choose the correct phrasal verb:',
+      answer: 'Please turn off the lights.',
+      wrong: ['Please turn of the lights.', 'Please turn of the lights.', 'Please turn out the lights.']
     }
   ]
 
@@ -660,9 +849,54 @@ export function generateSpellingQuestion(): GameQuestion {
     { correct: 'accommodation', wrong: ['accomodation', 'acommodation', 'accomadation'] },
     { correct: 'separate', wrong: ['seperate', 'separete', 'seprate'] },
     { correct: 'occurred', wrong: ['occured', 'ocurred', 'ocured'] },
-    { correct: 'embarrass', wrong: ['embarass', 'embarras', 'embarras'] },
+    { correct: 'embarrass', wrong: ['embarass', 'embarras', 'embearass'] },
     { correct: 'beginning', wrong: ['begining', 'beggining', 'beginining'] },
-    { correct: 'receive', wrong: ['recieve', 'receeve', 'recive'] }
+    { correct: 'receive', wrong: ['recieve', 'receeve', 'recive'] },
+    { correct: 'believe', wrong: ['beleive', 'belive', 'beleave'] },
+    { correct: 'achieve', wrong: ['acheive', 'acheeve', 'achievve'] },
+    { correct: 'friend', wrong: ['freind', 'frend', 'freand'] },
+    { correct: 'beautiful', wrong: ['beautifull', 'beutiful', 'beatiful'] },
+    { correct: 'because', wrong: ['becuase', 'beacuse', 'becaus'] },
+    { correct: 'calendar', wrong: ['calender', 'calandar', 'calander'] },
+    { correct: 'parliament', wrong: ['parliment', 'parliment', 'parlimant'] },
+    { correct: 'government', wrong: ['goverment', 'govenment', 'govermnent'] },
+    { correct: 'environment', wrong: ['enviroment', 'enviornment', 'envirement'] },
+    { correct: 'restaurant', wrong: ['restarant', 'resturant', 'resteraunt'] },
+    { correct: 'business', wrong: ['buisness', 'bussiness', 'busness'] },
+    { correct: 'familiar', wrong: ['familar', 'familliar', 'familier'] },
+    { correct: 'guarantee', wrong: ['guarentee', 'garantee', 'guaruntee'] },
+    { correct: 'immediate', wrong: ['immeadiate', 'immediete', 'imediate'] },
+    { correct: 'independent', wrong: ['independant', 'independet', 'indipendent'] },
+    { correct: 'interest', wrong: ['intrest', 'interst', 'intreast'] },
+    { correct: 'knowledge', wrong: ['knowlege', 'knowledg', 'knowladge'] },
+    { correct: 'library', wrong: ['libary', 'librery', 'libarary'] },
+    { correct: 'medicine', wrong: ['medecine', 'medicin', 'medisine'] },
+    { correct: 'opinion', wrong: ['oppinion', 'opinon', 'opinnion'] },
+    { correct: 'opportunity', wrong: ['oportunity', 'oppertunity', 'opportunety'] },
+    { correct: 'original', wrong: ['orignal', 'originel', 'originl'] },
+    { correct: 'particular', wrong: ['perticular', 'particuler', 'particullar'] },
+    { correct: 'physical', wrong: ['phisical', 'physica', 'physicle'] },
+    { correct: 'privilege', wrong: ['priviledge', 'privilage', 'privilige'] },
+    { correct: 'probably', wrong: ['probly', 'probally', 'probabley'] },
+    { correct: 'profession', wrong: ['proffession', 'profesion', 'profeshion'] },
+    { correct: 'pronunciation', wrong: ['pronounciation', 'pronuciation', 'pronuncietion'] },
+    { correct: 'recommend', wrong: ['recomend', 'reccomend', 'recomand'] },
+    { correct: 'remember', wrong: ['rememeber', 'remeber', 'remembor'] },
+    { correct: 'restaurant', wrong: ['restaraunt', 'resaurant', 'restraunt'] },
+    { correct: 'rhythm', wrong: ['rythm', 'rhithm', 'rythym'] },
+    { correct: 'scissors', wrong: ['scisors', 'scissers', 'scizers'] },
+    { correct: 'similar', wrong: ['similer', 'similiar', 'simular'] },
+    { correct: 'sincere', wrong: ['sincear', 'sincer', 'sinsere'] },
+    { correct: 'surprise', wrong: ['suprise', 'surprize', 'serprise'] },
+    { correct: 'temperature', wrong: ['temprature', 'temperture', 'tempature'] },
+    { correct: 'thorough', wrong: ['thourough', 'thorogh', 'throrough'] },
+    { correct: 'tomorrow', wrong: ['tommorow', 'tommorrow', 'tomorow'] },
+    { correct: 'Tuesday', wrong: ['Teusday', 'Tuesdy', 'Tusday'] },
+    { correct: 'until', wrong: ['untill', 'untl', 'untile'] },
+    { correct: 'vegetable', wrong: ['vegatable', 'vegetible', 'vegtable'] },
+    { correct: 'Wednesday', wrong: ['Wensday', 'Wednsday', 'Wendsday'] },
+    { correct: 'weird', wrong: ['wierd', 'weerd', 'wiered'] },
+    { correct: 'whether', wrong: ['wether', 'wheather', 'wheter'] }
   ]
 
   const selected = words[Math.floor(Math.random() * words.length)]
@@ -699,6 +933,60 @@ export function generateComprehensionQuestion(): GameQuestion {
       question: 'What do plants produce during photosynthesis?',
       answer: 'Glucose and oxygen',
       wrong: ['Water and carbon dioxide', 'Sunlight and nutrients', 'Soil and minerals']
+    },
+    {
+      passage: 'The Roman Empire was one of the largest empires in history. At its peak, it controlled territories across Europe, North Africa, and the Middle East. The empire lasted for over 500 years.',
+      question: 'How long did the Roman Empire last?',
+      answer: 'Over 500 years',
+      wrong: ['Over 100 years', 'Over 1000 years', 'Over 200 years']
+    },
+    {
+      passage: 'Bees play a crucial role in our ecosystem. They pollinate flowers, helping plants to reproduce. Without bees, many of our favourite fruits and vegetables would not exist.',
+      question: 'Why are bees important to our ecosystem?',
+      answer: 'They pollinate flowers',
+      wrong: ['They make honey', 'They eat pests', 'They fertilize soil']
+    },
+    {
+      passage: 'The water cycle is a continuous process. Water evaporates from oceans and lakes, forms clouds, falls as rain, and returns to bodies of water. This cycle is essential for life on Earth.',
+      question: 'What happens first in the water cycle?',
+      answer: 'Water evaporates',
+      wrong: ['Clouds form', 'Rain falls', 'Water returns to lakes']
+    },
+    {
+      passage: 'Mount Everest is the highest mountain on Earth. It is located in the Himalayas between Nepal and Tibet. Many climbers attempt to reach its summit each year, but it is extremely dangerous.',
+      question: 'Where is Mount Everest located?',
+      answer: 'In the Himalayas',
+      wrong: ['In the Alps', 'In the Andes', 'In the Rockies']
+    },
+    {
+      passage: 'The digestive system breaks down food into nutrients that our body can use. It starts in the mouth where food is chewed, then moves through the stomach and intestines where nutrients are absorbed.',
+      question: 'Where does digestion begin?',
+      answer: 'In the mouth',
+      wrong: ['In the stomach', 'In the intestines', 'In the throat']
+    },
+    {
+      passage: 'Fossils are the preserved remains of ancient organisms. They form when an organism dies and is quickly buried by sediment. Over millions of years, the remains turn to stone.',
+      question: 'How do fossils form?',
+      answer: 'Organisms are buried and turn to stone',
+      wrong: ['Organisms freeze in ice', 'Organisms dry out completely', 'Organisms are preserved in amber']
+    },
+    {
+      passage: 'The moon orbits around Earth approximately once every 27 days. It does not produce its own light but reflects sunlight. The different phases of the moon depend on its position relative to the sun and Earth.',
+      question: 'Why does the moon appear to shine?',
+      answer: 'It reflects sunlight',
+      wrong: ['It produces its own light', 'It reflects starlight', 'It glows from heat']
+    },
+    {
+      passage: 'Penguins are flightless birds that live in the Southern Hemisphere. They are excellent swimmers and can dive deep underwater to catch fish. Their black and white coloring helps protect them from predators.',
+      question: 'What do penguins eat?',
+      answer: 'Fish',
+      wrong: ['Plants', 'Insects', 'Seeds']
+    },
+    {
+      passage: 'The Industrial Revolution began in Britain in the late 1700s. It marked a shift from hand-made goods to machine-made products. Factories were built, and many people moved from farms to cities to work.',
+      question: 'When did the Industrial Revolution begin?',
+      answer: 'In the late 1700s',
+      wrong: ['In the early 1600s', 'In the mid 1800s', 'In the early 1900s']
     }
   ]
 
@@ -844,6 +1132,222 @@ export function generateSequenceQuestion(): GameQuestion {
       answer: 'IK',
       wrong: ['JK', 'HJ', 'IJ'],
       explanation: 'Two letters jumping by 2 each time'
+    },
+    {
+      question: 'What comes next in the sequence?\nC, F, I, L, ?',
+      answer: 'O',
+      wrong: ['M', 'N', 'P'],
+      explanation: 'Skip two letters each time (+3)'
+    },
+    {
+      question: 'What comes next in the sequence?\nA, D, G, J, ?',
+      answer: 'M',
+      wrong: ['K', 'L', 'N'],
+      explanation: 'Skip two letters each time (+3)'
+    },
+    {
+      question: 'What comes next in the sequence?\nE, J, O, T, ?',
+      answer: 'Y',
+      wrong: ['X', 'U', 'Z'],
+      explanation: 'Skip four letters each time (+5)'
+    },
+    {
+      question: 'What comes next in the sequence?\nB, E, H, K, ?',
+      answer: 'N',
+      wrong: ['L', 'M', 'O'],
+      explanation: 'Skip two letters each time (+3)'
+    },
+    {
+      question: 'What comes next in the sequence?\nM, L, K, J, ?',
+      answer: 'I',
+      wrong: ['H', 'G', 'K'],
+      explanation: 'Going backwards by 1 each time'
+    },
+    {
+      question: 'What comes next in the sequence?\nP, N, L, J, ?',
+      answer: 'H',
+      wrong: ['I', 'G', 'K'],
+      explanation: 'Going backwards by 2 each time (-2)'
+    },
+    {
+      question: 'What comes next in the sequence?\nA, A, B, B, C, C, ?',
+      answer: 'D',
+      wrong: ['C', 'E', 'B'],
+      explanation: 'Each letter appears twice'
+    },
+    {
+      question: 'What comes next in the sequence?\nAB, BC, CD, DE, ?',
+      answer: 'EF',
+      wrong: ['DF', 'EG', 'FG'],
+      explanation: 'Consecutive letter pairs moving forward'
+    },
+    {
+      question: 'What comes next in the sequence?\nAZ, BY, CX, DW, ?',
+      answer: 'EV',
+      wrong: ['EW', 'DV', 'FV'],
+      explanation: 'First letter goes forward, second backwards'
+    },
+    {
+      question: 'What comes next in the sequence?\nB, C, E, H, ?',
+      answer: 'L',
+      wrong: ['I', 'K', 'J'],
+      explanation: 'Add 1, then 2, then 3, then 4 (+1, +2, +3, +4)'
+    },
+    {
+      question: 'What comes next in the sequence?\nA, C, F, J, ?',
+      answer: 'O',
+      wrong: ['K', 'M', 'N'],
+      explanation: 'Add 2, then 3, then 4, then 5 (+2, +3, +4, +5)'
+    },
+    {
+      question: 'What comes next in the sequence?\nZ, X, V, T, ?',
+      answer: 'R',
+      wrong: ['S', 'Q', 'U'],
+      explanation: 'Backwards by 2 each time (-2)'
+    },
+    {
+      question: 'What comes next in the sequence?\nF, H, J, L, ?',
+      answer: 'N',
+      wrong: ['M', 'O', 'K'],
+      explanation: 'Skip one letter each time (+2)'
+    },
+    {
+      question: 'What comes next in the sequence?\nA, E, I, M, ?',
+      answer: 'Q',
+      wrong: ['N', 'O', 'P'],
+      explanation: 'Skip three letters each time (+4)'
+    },
+    {
+      question: 'What comes next in the sequence?\nC, E, G, I, ?',
+      answer: 'K',
+      wrong: ['J', 'H', 'L'],
+      explanation: 'Skip one letter each time (+2)'
+    },
+    {
+      question: 'What comes next in the sequence?\nABC, BCD, CDE, DEF, ?',
+      answer: 'EFG',
+      wrong: ['DFG', 'EFH', 'FGH'],
+      explanation: 'Three consecutive letters moving forward'
+    },
+    {
+      question: 'What comes next in the sequence?\nBA, DC, FE, HG, ?',
+      answer: 'JI',
+      wrong: ['IJ', 'KJ', 'JK'],
+      explanation: 'Pairs with first letter forward (+2), second backward (-1)'
+    },
+    {
+      question: 'What comes next in the sequence?\nAC, BD, CE, DF, ?',
+      answer: 'EG',
+      wrong: ['EF', 'DG', 'FG'],
+      explanation: 'Both letters move forward by 1'
+    },
+    {
+      question: 'What comes next in the sequence?\nA, Z, B, Y, C, ?',
+      answer: 'X',
+      wrong: ['D', 'W', 'Z'],
+      explanation: 'Alternating: forward from start, backward from end'
+    },
+    {
+      question: 'What comes next in the sequence?\nD, G, J, M, ?',
+      answer: 'P',
+      wrong: ['N', 'O', 'Q'],
+      explanation: 'Skip two letters each time (+3)'
+    },
+    {
+      question: 'What comes next in the sequence?\nW, U, S, Q, ?',
+      answer: 'O',
+      wrong: ['P', 'R', 'N'],
+      explanation: 'Backwards by 2 each time (-2)'
+    },
+    {
+      question: 'What comes next in the sequence?\nB, B, D, D, F, F, ?',
+      answer: 'H',
+      wrong: ['G', 'F', 'I'],
+      explanation: 'Each letter appears twice, skip one each time'
+    },
+    {
+      question: 'What comes next in the sequence?\nA, D, B, E, C, F, ?',
+      answer: 'D',
+      wrong: ['G', 'E', 'C'],
+      explanation: 'Two patterns: A,B,C... and D,E,F...'
+    },
+    {
+      question: 'What comes next in the sequence?\nM, N, P, Q, S, T, ?',
+      answer: 'V',
+      wrong: ['U', 'W', 'T'],
+      explanation: 'Add 1, then skip 1, alternating pattern'
+    },
+    {
+      question: 'What comes next in the sequence?\nAC, DF, GI, JL, ?',
+      answer: 'MO',
+      wrong: ['MN', 'NO', 'LN'],
+      explanation: 'Both letters jump forward by 3'
+    },
+    {
+      question: 'What comes next in the sequence?\nH, I, K, N, ?',
+      answer: 'R',
+      wrong: ['O', 'P', 'Q'],
+      explanation: 'Add 1, then 2, then 3, then 4'
+    },
+    {
+      question: 'What comes next in the sequence?\nP, Q, S, V, ?',
+      answer: 'Z',
+      wrong: ['W', 'X', 'Y'],
+      explanation: 'Add 1, then 2, then 3, then 4'
+    },
+    {
+      question: 'What comes next in the sequence?\nE, F, H, K, O, ?',
+      answer: 'T',
+      wrong: ['P', 'S', 'R'],
+      explanation: 'Add 1, 2, 3, 4, 5'
+    },
+    {
+      question: 'What comes next in the sequence?\nAB, DE, GH, JK, ?',
+      answer: 'MN',
+      wrong: ['LM', 'NO', 'KL'],
+      explanation: 'Pairs jumping forward by 3 letters'
+    },
+    {
+      question: 'What comes next in the sequence?\nZ, W, T, Q, ?',
+      answer: 'N',
+      wrong: ['O', 'P', 'M'],
+      explanation: 'Backwards by 3 each time (-3)'
+    },
+    {
+      question: 'What comes next in the sequence?\nA, C, G, M, ?',
+      answer: 'U',
+      wrong: ['S', 'T', 'N'],
+      explanation: 'Add 2, then 4, then 6, then 8'
+    },
+    {
+      question: 'What comes next in the sequence?\nBDF, CEG, DFH, EGI, ?',
+      answer: 'FHJ',
+      wrong: ['FGJ', 'GHJ', 'EHJ'],
+      explanation: 'Three letters each moving forward by 1'
+    },
+    {
+      question: 'What comes next in the sequence?\nAE, BF, CG, DH, ?',
+      answer: 'EI',
+      wrong: ['EH', 'DI', 'FI'],
+      explanation: 'Both letters move forward by 1'
+    },
+    {
+      question: 'What comes next in the sequence?\nN, L, J, H, ?',
+      answer: 'F',
+      wrong: ['G', 'I', 'E'],
+      explanation: 'Backwards by 2 each time (-2)'
+    },
+    {
+      question: 'What comes next in the sequence?\nA, B, C, E, F, G, I, ?',
+      answer: 'J',
+      wrong: ['H', 'K', 'L'],
+      explanation: 'Groups of 3, skip one letter between groups'
+    },
+    {
+      question: 'What comes next in the sequence?\nY, W, U, S, ?',
+      answer: 'Q',
+      wrong: ['R', 'T', 'P'],
+      explanation: 'Backwards by 2 each time (-2)'
     }
   ]
 
@@ -886,6 +1390,228 @@ export function generateCodeQuestion(): GameQuestion {
       question: 'In a code, if SUN = TVO, what does FUN equal?',
       answer: 'GVO',
       wrong: ['FVO', 'GUN', 'FUO'],
+      explanation: 'Each letter moves forward by 1'
+    },
+    {
+      question: 'If BIG = 297, what does TOP equal?\n(A=1, B=2, C=3... Z=26)',
+      answer: '201516',
+      wrong: ['201615', '191516', '211516'],
+      explanation: 'T=20, O=15, P=16'
+    },
+    {
+      question: 'In a code, if DOG = EPH, what does CAT equal?',
+      answer: 'DBU',
+      wrong: ['CBT', 'DAU', 'CAU'],
+      explanation: 'Each letter moves forward by 1'
+    },
+    {
+      question: 'If RAT = SAU, what does PIG equal?',
+      answer: 'QJH',
+      wrong: ['QIH', 'PIH', 'QIG'],
+      explanation: 'Each letter moves forward by 1'
+    },
+    {
+      question: 'In a code, if BAD = CDE, what does MAD equal?',
+      answer: 'NDE',
+      wrong: ['MDE', 'NCE', 'NBE'],
+      explanation: 'Each letter moves forward by 2'
+    },
+    {
+      question: 'If RED = UFG, what does BED equal?',
+      answer: 'EHG',
+      wrong: ['DGF', 'EGF', 'DHG'],
+      explanation: 'Each letter moves forward by 3'
+    },
+    {
+      question: 'In a code, if HAT = GZS, what does BAT equal?',
+      answer: 'AZS',
+      wrong: ['BZS', 'AYS', 'BYS'],
+      explanation: 'Each letter moves backward by 1'
+    },
+    {
+      question: 'If FOX = ENW, what does BOX equal?',
+      answer: 'ANW',
+      wrong: ['BNW', 'AOW', 'BMW'],
+      explanation: 'Each letter moves backward by 1'
+    },
+    {
+      question: 'If ARM = 1185, what does LEG equal?\n(A=1, B=2, C=3... Z=26)',
+      answer: '12513',
+      wrong: ['12514', '11513', '12512'],
+      explanation: 'L=12, E=5, G=13'
+    },
+    {
+      question: 'If FISH = 6919 8, what does BIRD equal?\n(A=1, B=2, C=3... Z=26)',
+      answer: '291894',
+      wrong: ['291895', '281894', '291884'],
+      explanation: 'B=2, I=9, R=18, D=4'
+    },
+    {
+      question: 'In a code, if RUN = SVO, what does FAN equal?',
+      answer: 'GBO',
+      wrong: ['FBO', 'GBN', 'GAN'],
+      explanation: 'Each letter moves forward by 1'
+    },
+    {
+      question: 'If TIN = UJO, what does WIN equal?',
+      answer: 'XJO',
+      wrong: ['WJO', 'XIO', 'YJO'],
+      explanation: 'Each letter moves forward by 1'
+    },
+    {
+      question: 'In a code, if MAP = OCP, what does TAP equal?',
+      answer: 'VCP',
+      wrong: ['TCP', 'UCP', 'VBP'],
+      explanation: 'Each letter moves forward by 2'
+    },
+    {
+      question: 'If CAR = DBT, what does VAN equal?',
+      answer: 'WBO',
+      wrong: ['VBO', 'WBN', 'VAN'],
+      explanation: 'Each letter moves forward by 1'
+    },
+    {
+      question: 'If MAN = 131114, what does PAN equal?\n(A=1, B=2, C=3... Z=26)',
+      answer: '161114',
+      wrong: ['151114', '161115', '171114'],
+      explanation: 'P=16, A=1, N=14'
+    },
+    {
+      question: 'In a code, if BUS = CVT, what does CUT equal?',
+      answer: 'DVU',
+      wrong: ['CUT', 'CVU', 'DUT'],
+      explanation: 'Each letter moves forward by 1'
+    },
+    {
+      question: 'If JAM = KBN, what does HAM equal?',
+      answer: 'IBN',
+      wrong: ['HBN', 'ICN', 'JBN'],
+      explanation: 'Each letter moves forward by 1'
+    },
+    {
+      question: 'If HOT = IPU, what does POT equal?',
+      answer: 'QPU',
+      wrong: ['PPU', 'QPT', 'PPT'],
+      explanation: 'Each letter moves forward by 1'
+    },
+    {
+      question: 'In a code, if TEA = WEB, what does PEA equal?',
+      answer: 'SEB',
+      wrong: ['PEB', 'REB', 'TEB'],
+      explanation: 'Each letter moves forward by 3'
+    },
+    {
+      question: 'If COW = DPX, what does NOW equal?',
+      answer: 'OPX',
+      wrong: ['NPX', 'OOX', 'NPW'],
+      explanation: 'Each letter moves forward by 1'
+    },
+    {
+      question: 'If EGG = 577, what does BEE equal?\n(A=1, B=2, C=3... Z=26)',
+      answer: '255',
+      wrong: ['256', '265', '245'],
+      explanation: 'B=2, E=5, E=5'
+    },
+    {
+      question: 'In a code, if NET = OFU, what does JET equal?',
+      answer: 'KFU',
+      wrong: ['JFU', 'KGU', 'JET'],
+      explanation: 'Each letter moves forward by 1'
+    },
+    {
+      question: 'If BOW = CPX, what does ROW equal?',
+      answer: 'SPX',
+      wrong: ['RPX', 'SOX', 'RQX'],
+      explanation: 'Each letter moves forward by 1'
+    },
+    {
+      question: 'If MAT = NCU, what does BAT equal?',
+      answer: 'CBU',
+      wrong: ['BBU', 'CAU', 'BCU'],
+      explanation: 'Each letter moves forward by 1'
+    },
+    {
+      question: 'In a code, if GUN = HVO, what does RUN equal?',
+      answer: 'SVO',
+      wrong: ['RVO', 'SUO', 'TVO'],
+      explanation: 'Each letter moves forward by 1'
+    },
+    {
+      question: 'If PIE = QJF, what does TIE equal?',
+      answer: 'UJF',
+      wrong: ['TJF', 'UIF', 'VJF'],
+      explanation: 'Each letter moves forward by 1'
+    },
+    {
+      question: 'If SKY = 192511, what does FLY equal?\n(A=1, B=2, C=3... Z=26)',
+      answer: '612 25',
+      wrong: ['71225', '61225', '51225'],
+      explanation: 'F=6, L=12, Y=25'
+    },
+    {
+      question: 'In a code, if LAD = MBE, what does SAD equal?',
+      answer: 'TBE',
+      wrong: ['SBE', 'TCE', 'UAE'],
+      explanation: 'Each letter moves forward by 1'
+    },
+    {
+      question: 'If CUP = DVQ, what does MUG equal?',
+      answer: 'NVH',
+      wrong: ['MVH', 'NUH', 'OVH'],
+      explanation: 'Each letter moves forward by 1'
+    },
+    {
+      question: 'If OWL = PXM, what does BAT equal?',
+      answer: 'CBU',
+      wrong: ['BBU', 'CAU', 'BAU'],
+      explanation: 'Each letter moves forward by 1'
+    },
+    {
+      question: 'In a code, if FIG = GJH, what does BIG equal?',
+      answer: 'CJH',
+      wrong: ['BJH', 'CIH', 'DIH'],
+      explanation: 'Each letter moves forward by 1'
+    },
+    {
+      question: 'If SIT = TJU, what does HIT equal?',
+      answer: 'IJU',
+      wrong: ['HJU', 'IIU', 'JJU'],
+      explanation: 'Each letter moves forward by 1'
+    },
+    {
+      question: 'If COT = DPU, what does POT equal?',
+      answer: 'QPU',
+      wrong: ['PPU', 'QOU', 'QPT'],
+      explanation: 'Each letter moves forward by 1'
+    },
+    {
+      question: 'If RAG = SBH, what does BAG equal?',
+      answer: 'CBH',
+      wrong: ['BBH', 'CAH', 'BCH'],
+      explanation: 'Each letter moves forward by 1'
+    },
+    {
+      question: 'In a code, if PIG = RKI, what does FIG equal?',
+      answer: 'HKI',
+      wrong: ['GKI', 'HJI', 'IKI'],
+      explanation: 'Each letter moves forward by 2'
+    },
+    {
+      question: 'If BIN = CJO, what does PIN equal?',
+      answer: 'QJO',
+      wrong: ['PJO', 'QIO', 'RJO'],
+      explanation: 'Each letter moves forward by 1'
+    },
+    {
+      question: 'If NUT = OVU, what does CUT equal?',
+      answer: 'DVU',
+      wrong: ['CVU', 'DUU', 'EVU'],
+      explanation: 'Each letter moves forward by 1'
+    },
+    {
+      question: 'If PAW = QBX, what does SAW equal?',
+      answer: 'TBX',
+      wrong: ['SBX', 'TAX', 'UBX'],
       explanation: 'Each letter moves forward by 1'
     }
   ]
@@ -936,6 +1662,216 @@ export function generateOddOneOutQuestion(): GameQuestion {
       answer: 'Dog',
       wrong: ['Eagle', 'Sparrow', 'Robin'],
       explanation: 'Dog is a mammal, the others are birds'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Spain',
+      wrong: ['Paris', 'London', 'Berlin'],
+      explanation: 'Spain is a country, the others are capital cities'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Piano',
+      wrong: ['Violin', 'Guitar', 'Cello'],
+      explanation: 'Piano uses keys, the others use strings'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Square',
+      wrong: ['Pentagon', 'Hexagon', 'Octagon'],
+      explanation: 'Square has 4 sides, the others have 5 or more'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Mercury',
+      wrong: ['Venus', 'Mars', 'Saturn'],
+      explanation: 'Mercury is closest to the sun, others are outer planets'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Whale',
+      wrong: ['Shark', 'Dolphin', 'Seal'],
+      explanation: 'Whale is a mammal, shark is a fish'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Gold',
+      wrong: ['Wood', 'Paper', 'Cotton'],
+      explanation: 'Gold is a metal, the others are organic materials'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Soccer',
+      wrong: ['Tennis', 'Badminton', 'Squash'],
+      explanation: 'Soccer uses a ball kicked with feet, others use rackets'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'River',
+      wrong: ['Lake', 'Pond', 'Pool'],
+      explanation: 'River has flowing water, the others are still water bodies'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Butterfly',
+      wrong: ['Ant', 'Bee', 'Wasp'],
+      explanation: 'Butterfly undergoes complete metamorphosis differently'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Hammer',
+      wrong: ['Screwdriver', 'Wrench', 'Pliers'],
+      explanation: 'Hammer is for striking, others are for gripping/turning'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Novel',
+      wrong: ['Magazine', 'Newspaper', 'Journal'],
+      explanation: 'Novel is fiction, the others are periodicals'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Penguin',
+      wrong: ['Ostrich', 'Emu', 'Kiwi'],
+      explanation: 'Penguin lives in Antarctica, others are found in warmer climates'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Broccoli',
+      wrong: ['Rose', 'Tulip', 'Daisy'],
+      explanation: 'Broccoli is a vegetable, the others are flowers'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Copper',
+      wrong: ['Plastic', 'Rubber', 'Glass'],
+      explanation: 'Copper is a metal and conducts electricity, others are insulators'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Dictionary',
+      wrong: ['Novel', 'Story', 'Biography'],
+      explanation: 'Dictionary is reference, others are narrative books'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Jupiter',
+      wrong: ['Earth', 'Mars', 'Venus'],
+      explanation: 'Jupiter is a gas giant, the others are rocky planets'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Bread',
+      wrong: ['Butter', 'Cheese', 'Yogurt'],
+      explanation: 'Bread is made from grain, the others are dairy products'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Ice',
+      wrong: ['Steam', 'Water', 'Rain'],
+      explanation: 'Ice is solid, the others are liquid or gas forms of water'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Spider',
+      wrong: ['Ant', 'Butterfly', 'Beetle'],
+      explanation: 'Spider has 8 legs (arachnid), the others have 6 legs (insects)'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Trumpet',
+      wrong: ['Flute', 'Clarinet', 'Saxophone'],
+      explanation: 'Trumpet is brass, the others are woodwind instruments'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Lake',
+      wrong: ['Ocean', 'Sea', 'Bay'],
+      explanation: 'Lake is freshwater and landlocked, others are saltwater'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Snake',
+      wrong: ['Frog', 'Toad', 'Salamander'],
+      explanation: 'Snake is a reptile, the others are amphibians'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Oak',
+      wrong: ['Pine', 'Fir', 'Spruce'],
+      explanation: 'Oak is deciduous (loses leaves), others are evergreen'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Equator',
+      wrong: ['Continent', 'Country', 'City'],
+      explanation: 'Equator is an imaginary line, the others are physical places'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Microscope',
+      wrong: ['Telescope', 'Binoculars', 'Periscope'],
+      explanation: 'Microscope magnifies small objects, others magnify distant objects'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Rectangle',
+      wrong: ['Square', 'Rhombus', 'Diamond'],
+      explanation: 'Rectangle has only opposite sides equal, others have all sides equal'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Oxygen',
+      wrong: ['Iron', 'Copper', 'Silver'],
+      explanation: 'Oxygen is a gas, the others are solid metals'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Subway',
+      wrong: ['Bus', 'Taxi', 'Truck'],
+      explanation: 'Subway runs on tracks underground, others run on roads'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Cone',
+      wrong: ['Cube', 'Pyramid', 'Prism'],
+      explanation: 'Cone has a curved surface, the others have flat faces only'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Potato',
+      wrong: ['Onion', 'Garlic', 'Ginger'],
+      explanation: 'Potato is a tuber, the others are bulbs or rhizomes'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Moon',
+      wrong: ['Sun', 'Star', 'Comet'],
+      explanation: 'Moon is a satellite, the others produce their own light'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Tornado',
+      wrong: ['Hurricane', 'Typhoon', 'Cyclone'],
+      explanation: 'Tornado forms over land, the others form over ocean'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Cactus',
+      wrong: ['Fern', 'Moss', 'Algae'],
+      explanation: 'Cactus is a flowering plant, the others reproduce by spores'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Leather',
+      wrong: ['Cotton', 'Wool', 'Silk'],
+      explanation: 'Leather comes from animal skin, others are natural fibers'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Volcano',
+      wrong: ['Mountain', 'Hill', 'Valley'],
+      explanation: 'Volcano can erupt, the others are passive landforms'
     }
   ]
 
@@ -980,6 +1916,181 @@ export function generateLogicPuzzleQuestion(): GameQuestion {
       question: 'A train leaves at 3:00 PM and arrives at 5:30 PM. How long is the journey?',
       answer: '2 hours 30 minutes',
       wrong: ['2 hours', '3 hours', '2 hours 20 minutes']
+    },
+    {
+      question: 'Lucy is younger than Mark. Mark is younger than Nina. Who is the oldest?',
+      answer: 'Nina',
+      wrong: ['Lucy', 'Mark', 'Cannot tell']
+    },
+    {
+      question: 'If it rains, the ground gets wet. The ground is wet. What can we conclude?',
+      answer: 'It might have rained',
+      wrong: ['It definitely rained', 'It did not rain', 'The ground is dry']
+    },
+    {
+      question: 'All cats have whiskers. Fluffy has whiskers. What can we conclude?',
+      answer: 'Fluffy might be a cat',
+      wrong: ['Fluffy is definitely a cat', 'Fluffy is not a cat', 'All whiskers belong to cats']
+    },
+    {
+      question: 'Ben runs faster than Amy. Amy runs faster than Carl. Who is the slowest?',
+      answer: 'Carl',
+      wrong: ['Ben', 'Amy', 'Cannot tell']
+    },
+    {
+      question: 'A bus leaves at 9:15 AM and the journey takes 45 minutes. What time does it arrive?',
+      answer: '10:00 AM',
+      wrong: ['9:45 AM', '10:15 AM', '9:60 AM']
+    },
+    {
+      question: 'If all birds can fly and penguins are birds, can penguins fly?',
+      answer: 'The statement is false',
+      wrong: ['Yes, they can fly', 'No, but they are not birds', 'Only some penguins fly']
+    },
+    {
+      question: 'Red is darker than pink. Pink is darker than white. Which is the lightest?',
+      answer: 'White',
+      wrong: ['Red', 'Pink', 'Cannot tell']
+    },
+    {
+      question: 'If A is larger than B and B is larger than C, which is the smallest?',
+      answer: 'C',
+      wrong: ['A', 'B', 'Cannot tell']
+    },
+    {
+      question: 'Sam is heavier than Lisa. Lisa is heavier than Paul. Who weighs the most?',
+      answer: 'Sam',
+      wrong: ['Lisa', 'Paul', 'Cannot tell']
+    },
+    {
+      question: 'If today is Monday, what day was it 3 days ago?',
+      answer: 'Friday',
+      wrong: ['Thursday', 'Saturday', 'Sunday']
+    },
+    {
+      question: 'All roses are flowers. This is a flower. What can we conclude?',
+      answer: 'It might be a rose',
+      wrong: ['It is definitely a rose', 'It is not a rose', 'All flowers are roses']
+    },
+    {
+      question: 'Jane sits to the left of Tim. Tim sits to the left of Sarah. Who is on the far right?',
+      answer: 'Sarah',
+      wrong: ['Jane', 'Tim', 'Cannot tell']
+    },
+    {
+      question: 'A movie starts at 7:30 PM and lasts 2 hours 15 minutes. When does it end?',
+      answer: '9:45 PM',
+      wrong: ['9:30 PM', '10:00 PM', '9:15 PM']
+    },
+    {
+      question: 'If all squares are rectangles, and this is a square, what can we conclude?',
+      answer: 'It is a rectangle',
+      wrong: ['It is not a rectangle', 'All rectangles are squares', 'It might be a rectangle']
+    },
+    {
+      question: 'Book A is thicker than Book B. Book C is thinner than Book B. Which is the thinnest?',
+      answer: 'Book C',
+      wrong: ['Book A', 'Book B', 'Cannot tell']
+    },
+    {
+      question: 'If no cats are dogs, and Rex is a cat, what can we conclude?',
+      answer: 'Rex is not a dog',
+      wrong: ['Rex is a dog', 'Some cats are dogs', 'Rex might be a dog']
+    },
+    {
+      question: 'Anna finished before Beth. Beth finished before Carol. Who finished first?',
+      answer: 'Anna',
+      wrong: ['Beth', 'Carol', 'Cannot tell']
+    },
+    {
+      question: 'A clock shows 2:45. What time will it show in 3 hours and 30 minutes?',
+      answer: '6:15',
+      wrong: ['5:45', '6:45', '5:15']
+    },
+    {
+      question: 'If all mammals breathe air and whales are mammals, do whales breathe air?',
+      answer: 'Yes',
+      wrong: ['No', 'Only some whales', 'Cannot tell']
+    },
+    {
+      question: 'Tree X is taller than Tree Y. Tree Z is shorter than Tree Y. Which is the tallest?',
+      answer: 'Tree X',
+      wrong: ['Tree Y', 'Tree Z', 'Cannot tell']
+    },
+    {
+      question: 'If March comes before April, and today is April 5th, was March 20th in the past or future?',
+      answer: 'Past',
+      wrong: ['Future', 'Present', 'Cannot tell']
+    },
+    {
+      question: 'Box 1 is lighter than Box 2. Box 3 is heavier than Box 2. Which is the heaviest?',
+      answer: 'Box 3',
+      wrong: ['Box 1', 'Box 2', 'Cannot tell']
+    },
+    {
+      question: 'All students in the class passed. Maria is in the class. Did Maria pass?',
+      answer: 'Yes',
+      wrong: ['No', 'Maybe', 'Cannot tell']
+    },
+    {
+      question: 'A train journey takes 1 hour 45 minutes. If it leaves at 11:30 AM, when does it arrive?',
+      answer: '1:15 PM',
+      wrong: ['12:15 PM', '1:45 PM', '12:45 PM']
+    },
+    {
+      question: 'If some birds migrate and sparrows are birds, do all sparrows migrate?',
+      answer: 'Cannot tell',
+      wrong: ['Yes, all sparrows migrate', 'No sparrows migrate', 'Only some birds are sparrows']
+    },
+    {
+      question: 'Dan scored higher than Emma. Finn scored lower than Emma. Who scored the lowest?',
+      answer: 'Finn',
+      wrong: ['Dan', 'Emma', 'Cannot tell']
+    },
+    {
+      question: 'If all even numbers are divisible by 2, and 8 is even, is 8 divisible by 2?',
+      answer: 'Yes',
+      wrong: ['No', 'Sometimes', 'Cannot tell']
+    },
+    {
+      question: 'Building A is older than Building B. Building C is newer than Building B. Which is the newest?',
+      answer: 'Building C',
+      wrong: ['Building A', 'Building B', 'Cannot tell']
+    },
+    {
+      question: 'If we leave at 4:20 PM and arrive 2 hours 40 minutes later, what time do we arrive?',
+      answer: '7:00 PM',
+      wrong: ['6:40 PM', '6:00 PM', '7:20 PM']
+    },
+    {
+      question: 'Rachel is behind Tom in the queue. Sarah is behind Rachel. Who is at the front?',
+      answer: 'Tom',
+      wrong: ['Rachel', 'Sarah', 'Cannot tell']
+    },
+    {
+      question: 'If all prime numbers greater than 2 are odd, and 7 is prime and greater than 2, is 7 odd?',
+      answer: 'Yes',
+      wrong: ['No', 'Sometimes', 'Cannot tell']
+    },
+    {
+      question: 'Car A costs more than Car B. Car C costs less than Car B. Which is the cheapest?',
+      answer: 'Car C',
+      wrong: ['Car A', 'Car B', 'Cannot tell']
+    },
+    {
+      question: 'All triangles have 3 sides. This shape has 3 sides. What can we conclude?',
+      answer: 'It might be a triangle',
+      wrong: ['It is definitely a triangle', 'It is not a triangle', 'All 3-sided shapes are triangles']
+    },
+    {
+      question: 'If breakfast is at 8:00 AM and lunch is 4 hours later, what time is lunch?',
+      answer: '12:00 PM',
+      wrong: ['11:00 AM', '1:00 PM', '12:30 PM']
+    },
+    {
+      question: 'Peter lives further from school than Quinn. Quinn lives further than Ruby. Who lives closest?',
+      answer: 'Ruby',
+      wrong: ['Peter', 'Quinn', 'Cannot tell']
     }
   ]
 
@@ -1011,6 +2122,84 @@ export function generateShapePatternQuestion(skillLevel: number = 1): GameQuesti
       answer: '◆',
       wrong: ['◇', '○', '△'],
       explanation: 'Alternating filled and empty diamonds'
+    },
+    {
+      question: 'Pattern: ★ ☆ ★ ☆ ★ ?\nWhat comes next?',
+      answer: '☆',
+      wrong: ['★', '●', '◇'],
+      explanation: 'Alternating filled and empty stars'
+    },
+    {
+      question: 'Pattern: ■ □ ■ □ ?\nWhat comes next?',
+      answer: '■',
+      wrong: ['□', '●', '○'],
+      explanation: 'Alternating filled and empty squares'
+    },
+    {
+      question: 'Pattern: ● ○ ● ○ ● ?\nWhat comes next?',
+      answer: '○',
+      wrong: ['●', '△', '□'],
+      explanation: 'Alternating filled and empty circles'
+    },
+    {
+      question: 'Pattern: △ ○ △ ○ ?\nWhat comes next?',
+      answer: '△',
+      wrong: ['○', '□', '◇'],
+      explanation: 'Alternating triangle and circle'
+    },
+    {
+      question: 'Pattern: □ △ ○ □ △ ?\nWhat comes next?',
+      answer: '○',
+      wrong: ['□', '△', '●'],
+      explanation: 'Repeating pattern: square, triangle, circle'
+    },
+    {
+      question: 'Pattern: ◇ ◇ ● ◇ ◇ ?\nWhat comes next?',
+      answer: '●',
+      wrong: ['◇', '○', '□'],
+      explanation: 'Two diamonds, then one circle'
+    },
+    {
+      question: 'Pattern: ▲ ▼ ▲ ▼ ?\nWhat comes next?',
+      answer: '▲',
+      wrong: ['▼', '△', '●'],
+      explanation: 'Alternating up and down triangles'
+    },
+    {
+      question: 'Pattern: ○ ○ △ ○ ○ ?\nWhat comes next?',
+      answer: '△',
+      wrong: ['○', '●', '□'],
+      explanation: 'Two circles, then one triangle'
+    },
+    {
+      question: 'Pattern: ■ ● ■ ● ?\nWhat comes next?',
+      answer: '■',
+      wrong: ['●', '□', '○'],
+      explanation: 'Alternating square and circle'
+    },
+    {
+      question: 'Pattern: ☆ △ □ ☆ △ ?\nWhat comes next?',
+      answer: '□',
+      wrong: ['☆', '△', '○'],
+      explanation: 'Repeating pattern: star, triangle, square'
+    },
+    {
+      question: 'Pattern: ◆ ○ ◆ ○ ?\nWhat comes next?',
+      answer: '◆',
+      wrong: ['○', '●', '△'],
+      explanation: 'Alternating diamond and circle'
+    },
+    {
+      question: 'Pattern: ▲ □ ○ ▲ □ ?\nWhat comes next?',
+      answer: '○',
+      wrong: ['▲', '□', '△'],
+      explanation: 'Repeating pattern: triangle, square, circle'
+    },
+    {
+      question: 'Pattern: ● △ ● △ ● ?\nWhat comes next?',
+      answer: '△',
+      wrong: ['●', '○', '□'],
+      explanation: 'Alternating filled circle and triangle'
     }
   ]
 
@@ -1027,6 +2216,84 @@ export function generateShapePatternQuestion(skillLevel: number = 1): GameQuesti
       answer: '□',
       wrong: ['■', '●', '◇'],
       explanation: 'Two filled squares, then one empty square'
+    },
+    {
+      question: 'Pattern: ○ △ △ ○ △ △ ○ ?\nWhat comes next?',
+      answer: '△',
+      wrong: ['○', '□', '●'],
+      explanation: 'One circle, then two triangles'
+    },
+    {
+      question: 'Pattern: ● ● ● ○ ● ● ● ?\nWhat comes next?',
+      answer: '○',
+      wrong: ['●', '△', '□'],
+      explanation: 'Three filled circles, then one empty circle'
+    },
+    {
+      question: 'Pattern: □ ■ ■ □ ■ ■ ?\nWhat comes next?',
+      answer: '□',
+      wrong: ['■', '○', '●'],
+      explanation: 'One empty square, then two filled squares'
+    },
+    {
+      question: 'Pattern: △ ○ ○ △ ○ ○ △ ?\nWhat comes next?',
+      answer: '○',
+      wrong: ['△', '●', '□'],
+      explanation: 'One triangle, then two circles'
+    },
+    {
+      question: 'Pattern: ◆ ◇ ◇ ◆ ◇ ◇ ?\nWhat comes next?',
+      answer: '◆',
+      wrong: ['◇', '●', '○'],
+      explanation: 'One filled diamond, then two empty diamonds'
+    },
+    {
+      question: 'Pattern: ☆ ☆ ★ ☆ ☆ ★ ?\nWhat comes next?',
+      answer: '☆',
+      wrong: ['★', '●', '○'],
+      explanation: 'Two empty stars, then one filled star'
+    },
+    {
+      question: 'Pattern: ▲ ▲ ▼ ▲ ▲ ▼ ▲ ▲ ?\nWhat comes next?',
+      answer: '▼',
+      wrong: ['▲', '△', '●'],
+      explanation: 'Two up triangles, then one down triangle'
+    },
+    {
+      question: 'Pattern: ● ○ ○ ○ ● ○ ○ ○ ?\nWhat comes next?',
+      answer: '●',
+      wrong: ['○', '△', '□'],
+      explanation: 'One filled circle, then three empty circles'
+    },
+    {
+      question: 'Pattern: □ □ △ □ □ △ ?\nWhat comes next?',
+      answer: '□',
+      wrong: ['△', '○', '●'],
+      explanation: 'Two squares, then one triangle'
+    },
+    {
+      question: 'Pattern: ◇ ● ● ◇ ● ● ?\nWhat comes next?',
+      answer: '◇',
+      wrong: ['●', '○', '△'],
+      explanation: 'One diamond, then two circles'
+    },
+    {
+      question: 'Pattern: ■ ○ ○ ■ ○ ○ ■ ?\nWhat comes next?',
+      answer: '○',
+      wrong: ['■', '●', '△'],
+      explanation: 'One square, then two circles'
+    },
+    {
+      question: 'Pattern: ★ △ △ △ ★ △ △ △ ?\nWhat comes next?',
+      answer: '★',
+      wrong: ['△', '☆', '○'],
+      explanation: 'One star, then three triangles'
+    },
+    {
+      question: 'Pattern: ▲ ● ● ▲ ● ● ▲ ?\nWhat comes next?',
+      answer: '●',
+      wrong: ['▲', '○', '△'],
+      explanation: 'One triangle, then two circles'
     }
   ]
 
@@ -1049,6 +2316,78 @@ export function generateShapePatternQuestion(skillLevel: number = 1): GameQuesti
       answer: '●●●●',
       wrong: ['●●', '●', '●●●●●'],
       explanation: 'Adding one circle each time'
+    },
+    {
+      question: 'Pattern: ○ ●● ○○○ ●●●● ?\nWhat comes next?',
+      answer: '○○○○○',
+      wrong: ['●●●●●', '○○○○', '●●●'],
+      explanation: 'Alternating filled/empty, adding one each time'
+    },
+    {
+      question: 'Pattern: △ △△ □ □□ ○ ?\nWhat comes next?',
+      answer: '○○',
+      wrong: ['○', '△△△', '□□□'],
+      explanation: 'Different shapes, doubling count each time'
+    },
+    {
+      question: 'Pattern: ■ □□ ■■■ □□□□ ?\nWhat comes next?',
+      answer: '■■■■■',
+      wrong: ['□□□□□', '■■■■', '□□□'],
+      explanation: 'Alternating filled/empty squares, increasing count'
+    },
+    {
+      question: 'Pattern: ▶ ▼ ◀ ▲ ▶ ?\nWhat comes next?',
+      answer: '▼',
+      wrong: ['◀', '▲', '▶'],
+      explanation: 'Rotating arrows clockwise: right, down, left, up'
+    },
+    {
+      question: 'Pattern: ★ ☆☆ ★★★ ☆☆☆☆ ?\nWhat comes next?',
+      answer: '★★★★★',
+      wrong: ['☆☆☆☆☆', '★★★★', '☆☆☆'],
+      explanation: 'Alternating filled/empty stars, increasing count'
+    },
+    {
+      question: 'Pattern: ◆ ◆◇ ◆◇◇ ?\nWhat comes next?',
+      answer: '◆◇◇◇',
+      wrong: ['◆◆◇◇', '◇◇◇◇', '◆◆◆◇'],
+      explanation: 'One filled diamond, then adding empty diamonds'
+    },
+    {
+      question: 'Pattern: ○ △△ ○○○ △△△△ ?\nWhat comes next?',
+      answer: '○○○○○',
+      wrong: ['△△△△△', '○○○○', '△△△'],
+      explanation: 'Alternating shapes, increasing count each time'
+    },
+    {
+      question: 'Pattern: ● □ ●● □□ ●●● ?\nWhat comes next?',
+      answer: '□□□',
+      wrong: ['●●●●', '□□', '●●'],
+      explanation: 'Alternating circle and square, increasing count'
+    },
+    {
+      question: 'Pattern: ▲ ▼ ▼ ▲ ▲ ▲ ▼ ▼ ▼ ▼ ?\nWhat comes next?',
+      answer: '▲',
+      wrong: ['▼', '△', '●'],
+      explanation: 'Alternating up/down triangles with increasing count'
+    },
+    {
+      question: 'Pattern: ■ ◆ ● ■ ◆ ● ?\nWhat comes next?',
+      answer: '■',
+      wrong: ['◆', '●', '○'],
+      explanation: 'Three different shapes repeating: square, diamond, circle'
+    },
+    {
+      question: 'Pattern: ☆ ★★ ☆☆☆ ★★★★ ?\nWhat comes next?',
+      answer: '☆☆☆☆☆',
+      wrong: ['★★★★★', '☆☆☆☆', '★★★'],
+      explanation: 'Alternating empty/filled stars, increasing count'
+    },
+    {
+      question: 'Pattern: ○ △ □ ◇ ○ △ □ ?\nWhat comes next?',
+      answer: '◇',
+      wrong: ['○', '△', '□'],
+      explanation: 'Four different shapes repeating: circle, triangle, square, diamond'
     }
   ]
 
@@ -1108,6 +2447,216 @@ export function generateNumberSequenceQuestion(): GameQuestion {
       answer: '60',
       wrong: ['50', '65', '75'],
       explanation: 'Subtract 10 each time'
+    },
+    {
+      question: 'What comes next?\n5, 10, 15, 20, ?',
+      answer: '25',
+      wrong: ['22', '30', '24'],
+      explanation: 'Add 5 each time (multiples of 5)'
+    },
+    {
+      question: 'What comes next?\n1, 3, 5, 7, ?',
+      answer: '9',
+      wrong: ['8', '10', '11'],
+      explanation: 'Odd numbers, add 2 each time'
+    },
+    {
+      question: 'What comes next?\n10, 20, 30, 40, ?',
+      answer: '50',
+      wrong: ['45', '60', '55'],
+      explanation: 'Add 10 each time (multiples of 10)'
+    },
+    {
+      question: 'What comes next?\n1, 2, 4, 8, ?',
+      answer: '16',
+      wrong: ['12', '10', '14'],
+      explanation: 'Double each time (×2)'
+    },
+    {
+      question: 'What comes next?\n50, 45, 40, 35, ?',
+      answer: '30',
+      wrong: ['25', '32', '28'],
+      explanation: 'Subtract 5 each time'
+    },
+    {
+      question: 'What comes next?\n4, 8, 12, 16, ?',
+      answer: '20',
+      wrong: ['18', '24', '19'],
+      explanation: 'Add 4 each time (multiples of 4)'
+    },
+    {
+      question: 'What comes next?\n1, 1, 2, 3, 5, ?',
+      answer: '8',
+      wrong: ['6', '7', '9'],
+      explanation: 'Fibonacci: add previous two numbers (1+1=2, 1+2=3, 2+3=5, 3+5=8)'
+    },
+    {
+      question: 'What comes next?\n64, 32, 16, 8, ?',
+      answer: '4',
+      wrong: ['2', '6', '0'],
+      explanation: 'Halve each time (÷2)'
+    },
+    {
+      question: 'What comes next?\n7, 14, 21, 28, ?',
+      answer: '35',
+      wrong: ['32', '42', '30'],
+      explanation: 'Add 7 each time (multiples of 7)'
+    },
+    {
+      question: 'What comes next?\n1, 8, 27, 64, ?',
+      answer: '125',
+      wrong: ['100', '81', '216'],
+      explanation: 'Cube numbers: 1³, 2³, 3³, 4³, 5³'
+    },
+    {
+      question: 'What comes next?\n11, 22, 33, 44, ?',
+      answer: '55',
+      wrong: ['50', '66', '45'],
+      explanation: 'Add 11 each time (multiples of 11)'
+    },
+    {
+      question: 'What comes next?\n3, 9, 27, 81, ?',
+      answer: '243',
+      wrong: ['162', '216', '180'],
+      explanation: 'Multiply by 3 each time (×3)'
+    },
+    {
+      question: 'What comes next?\n2, 6, 12, 20, ?',
+      answer: '30',
+      wrong: ['24', '28', '26'],
+      explanation: 'Add increasing even numbers: +4, +6, +8, +10'
+    },
+    {
+      question: 'What comes next?\n1, 3, 6, 10, ?',
+      answer: '15',
+      wrong: ['13', '14', '12'],
+      explanation: 'Triangular numbers: add 2, then 3, then 4, then 5'
+    },
+    {
+      question: 'What comes next?\n80, 70, 61, 53, ?',
+      answer: '46',
+      wrong: ['45', '44', '48'],
+      explanation: 'Subtract decreasing numbers: -10, -9, -8, -7'
+    },
+    {
+      question: 'What comes next?\n6, 12, 18, 24, ?',
+      answer: '30',
+      wrong: ['28', '32', '26'],
+      explanation: 'Add 6 each time (multiples of 6)'
+    },
+    {
+      question: 'What comes next?\n1, 4, 7, 10, ?',
+      answer: '13',
+      wrong: ['12', '14', '11'],
+      explanation: 'Add 3 each time'
+    },
+    {
+      question: 'What comes next?\n5, 25, 125, 625, ?',
+      answer: '3125',
+      wrong: ['2500', '1250', '5000'],
+      explanation: 'Multiply by 5 each time (×5)'
+    },
+    {
+      question: 'What comes next?\n9, 18, 27, 36, ?',
+      answer: '45',
+      wrong: ['40', '54', '42'],
+      explanation: 'Add 9 each time (multiples of 9)'
+    },
+    {
+      question: 'What comes next?\n100, 50, 25, 12.5, ?',
+      answer: '6.25',
+      wrong: ['6', '5', '12'],
+      explanation: 'Halve each time (÷2)'
+    },
+    {
+      question: 'What comes next?\n2, 5, 11, 23, ?',
+      answer: '47',
+      wrong: ['35', '46', '48'],
+      explanation: 'Double and add 1: (2×2)+1=5, (5×2)+1=11, (11×2)+1=23, (23×2)+1=47'
+    },
+    {
+      question: 'What comes next?\n15, 12, 9, 6, ?',
+      answer: '3',
+      wrong: ['0', '4', '5'],
+      explanation: 'Subtract 3 each time'
+    },
+    {
+      question: 'What comes next?\n8, 16, 24, 32, ?',
+      answer: '40',
+      wrong: ['36', '48', '38'],
+      explanation: 'Add 8 each time (multiples of 8)'
+    },
+    {
+      question: 'What comes next?\n1, 5, 9, 13, ?',
+      answer: '17',
+      wrong: ['15', '16', '18'],
+      explanation: 'Add 4 each time'
+    },
+    {
+      question: 'What comes next?\n36, 30, 24, 18, ?',
+      answer: '12',
+      wrong: ['10', '14', '6'],
+      explanation: 'Subtract 6 each time'
+    },
+    {
+      question: 'What comes next?\n2, 3, 5, 7, ?',
+      answer: '11',
+      wrong: ['9', '10', '8'],
+      explanation: 'Prime numbers in sequence'
+    },
+    {
+      question: 'What comes next?\n144, 121, 100, 81, ?',
+      answer: '64',
+      wrong: ['49', '72', '60'],
+      explanation: 'Square numbers decreasing: 12², 11², 10², 9², 8²'
+    },
+    {
+      question: 'What comes next?\n3, 7, 11, 15, ?',
+      answer: '19',
+      wrong: ['17', '18', '20'],
+      explanation: 'Add 4 each time'
+    },
+    {
+      question: 'What comes next?\n20, 17, 14, 11, ?',
+      answer: '8',
+      wrong: ['7', '9', '10'],
+      explanation: 'Subtract 3 each time'
+    },
+    {
+      question: 'What comes next?\n4, 9, 16, 25, ?',
+      answer: '36',
+      wrong: ['30', '49', '32'],
+      explanation: 'Square numbers: 2², 3², 4², 5², 6²'
+    },
+    {
+      question: 'What comes next?\n12, 24, 36, 48, ?',
+      answer: '60',
+      wrong: ['50', '72', '54'],
+      explanation: 'Add 12 each time (multiples of 12)'
+    },
+    {
+      question: 'What comes next?\n0, 1, 1, 2, 3, 5, 8, ?',
+      answer: '13',
+      wrong: ['11', '10', '12'],
+      explanation: 'Fibonacci sequence: each number is sum of previous two'
+    },
+    {
+      question: 'What comes next?\n90, 81, 72, 63, ?',
+      answer: '54',
+      wrong: ['45', '55', '50'],
+      explanation: 'Subtract 9 each time'
+    },
+    {
+      question: 'What comes next?\n5, 11, 17, 23, ?',
+      answer: '29',
+      wrong: ['27', '28', '30'],
+      explanation: 'Add 6 each time'
+    },
+    {
+      question: 'What comes next?\n1000, 100, 10, 1, ?',
+      answer: '0.1',
+      wrong: ['0', '0.5', '10'],
+      explanation: 'Divide by 10 each time (÷10)'
     }
   ]
 
@@ -1151,6 +2700,222 @@ export function generateRotationQuestion(): GameQuestion {
       answer: '▶',
       wrong: ['◀', '▲', '▼'],
       explanation: 'Down arrow rotates right'
+    },
+    {
+      question: 'If ▲ rotates 90° clockwise, what does it become?',
+      answer: '▶',
+      wrong: ['◀', '▼', '▲'],
+      explanation: 'Up arrow rotates right'
+    },
+    {
+      question: 'If ▼ rotates 180°, what does it become?',
+      answer: '▲',
+      wrong: ['▶', '◀', '▼'],
+      explanation: 'Down arrow rotates to up'
+    },
+    {
+      question: 'If ◀ rotates 180°, what does it become?',
+      answer: '▶',
+      wrong: ['◀', '▲', '▼'],
+      explanation: 'Left arrow rotates to right'
+    },
+    {
+      question: 'If ▶ rotates 90° anti-clockwise, what does it become?',
+      answer: '▲',
+      wrong: ['▼', '◀', '▶'],
+      explanation: 'Right arrow rotates up'
+    },
+    {
+      question: 'If ▲ rotates 90° anti-clockwise, what does it become?',
+      answer: '◀',
+      wrong: ['▶', '▼', '▲'],
+      explanation: 'Up arrow rotates left'
+    },
+    {
+      question: 'If ▼ rotates 90° clockwise, what does it become?',
+      answer: '◀',
+      wrong: ['▶', '▲', '▼'],
+      explanation: 'Down arrow rotates left'
+    },
+    {
+      question: 'If ◀ rotates 90° anti-clockwise, what does it become?',
+      answer: '▼',
+      wrong: ['▲', '▶', '◀'],
+      explanation: 'Left arrow rotates down'
+    },
+    {
+      question: 'If ▶ rotates 180°, what does it become?',
+      answer: '◀',
+      wrong: ['▶', '▲', '▼'],
+      explanation: 'Right arrow rotates to left'
+    },
+    {
+      question: 'If ▲ rotates 270° clockwise, what does it become?',
+      answer: '◀',
+      wrong: ['▶', '▼', '▲'],
+      explanation: 'Up arrow rotates 270° clockwise to left'
+    },
+    {
+      question: 'If ▼ rotates 270° clockwise, what does it become?',
+      answer: '▶',
+      wrong: ['◀', '▲', '▼'],
+      explanation: 'Down arrow rotates 270° clockwise to right'
+    },
+    {
+      question: 'If ◀ rotates 270° clockwise, what does it become?',
+      answer: '▼',
+      wrong: ['▲', '▶', '◀'],
+      explanation: 'Left arrow rotates 270° clockwise to down'
+    },
+    {
+      question: 'If ▶ rotates 270° clockwise, what does it become?',
+      answer: '▲',
+      wrong: ['▼', '◀', '▶'],
+      explanation: 'Right arrow rotates 270° clockwise to up'
+    },
+    {
+      question: 'If ▲ rotates 270° anti-clockwise, what does it become?',
+      answer: '▶',
+      wrong: ['◀', '▼', '▲'],
+      explanation: 'Up arrow rotates 270° anti-clockwise to right'
+    },
+    {
+      question: 'If ▼ rotates 270° anti-clockwise, what does it become?',
+      answer: '◀',
+      wrong: ['▶', '▲', '▼'],
+      explanation: 'Down arrow rotates 270° anti-clockwise to left'
+    },
+    {
+      question: 'If ◀ rotates 270° anti-clockwise, what does it become?',
+      answer: '▲',
+      wrong: ['▼', '▶', '◀'],
+      explanation: 'Left arrow rotates 270° anti-clockwise to up'
+    },
+    {
+      question: 'If ▶ rotates 270° anti-clockwise, what does it become?',
+      answer: '▼',
+      wrong: ['▲', '◀', '▶'],
+      explanation: 'Right arrow rotates 270° anti-clockwise to down'
+    },
+    {
+      question: 'If △ rotates 180°, what does it become?',
+      answer: '▽',
+      wrong: ['△', '◁', '▷'],
+      explanation: 'Upward triangle rotates to downward triangle'
+    },
+    {
+      question: 'If ▷ rotates 90° clockwise, what does it become?',
+      answer: '▽',
+      wrong: ['△', '◁', '▷'],
+      explanation: 'Right-pointing triangle rotates down'
+    },
+    {
+      question: 'If ◁ rotates 90° clockwise, what does it become?',
+      answer: '△',
+      wrong: ['▽', '▷', '◁'],
+      explanation: 'Left-pointing triangle rotates up'
+    },
+    {
+      question: 'If ▽ rotates 90° clockwise, what does it become?',
+      answer: '◁',
+      wrong: ['▷', '△', '▽'],
+      explanation: 'Downward triangle rotates left'
+    },
+    {
+      question: 'If △ rotates 90° clockwise, what does it become?',
+      answer: '▷',
+      wrong: ['◁', '▽', '△'],
+      explanation: 'Upward triangle rotates right'
+    },
+    {
+      question: 'If ▷ rotates 180°, what does it become?',
+      answer: '◁',
+      wrong: ['▷', '△', '▽'],
+      explanation: 'Right-pointing triangle rotates to left-pointing'
+    },
+    {
+      question: 'If ◁ rotates 180°, what does it become?',
+      answer: '▷',
+      wrong: ['◁', '△', '▽'],
+      explanation: 'Left-pointing triangle rotates to right-pointing'
+    },
+    {
+      question: 'If ▽ rotates 180°, what does it become?',
+      answer: '△',
+      wrong: ['▽', '◁', '▷'],
+      explanation: 'Downward triangle rotates to upward'
+    },
+    {
+      question: 'If △ rotates 90° anti-clockwise, what does it become?',
+      answer: '◁',
+      wrong: ['▷', '▽', '△'],
+      explanation: 'Upward triangle rotates left'
+    },
+    {
+      question: 'If ▽ rotates 90° anti-clockwise, what does it become?',
+      answer: '▷',
+      wrong: ['◁', '△', '▽'],
+      explanation: 'Downward triangle rotates right'
+    },
+    {
+      question: 'If ◁ rotates 90° anti-clockwise, what does it become?',
+      answer: '▽',
+      wrong: ['△', '▷', '◁'],
+      explanation: 'Left-pointing triangle rotates down'
+    },
+    {
+      question: 'If ▷ rotates 90° anti-clockwise, what does it become?',
+      answer: '△',
+      wrong: ['▽', '◁', '▷'],
+      explanation: 'Right-pointing triangle rotates up'
+    },
+    {
+      question: 'If ▲ rotates twice by 90° clockwise each time, what does it become?',
+      answer: '▼',
+      wrong: ['▶', '◀', '▲'],
+      explanation: 'Two 90° rotations = 180°, up becomes down'
+    },
+    {
+      question: 'If ▶ rotates twice by 90° clockwise each time, what does it become?',
+      answer: '◀',
+      wrong: ['▶', '▲', '▼'],
+      explanation: 'Two 90° rotations = 180°, right becomes left'
+    },
+    {
+      question: 'If ◀ rotates three times by 90° clockwise each time, what does it become?',
+      answer: '▼',
+      wrong: ['▲', '▶', '◀'],
+      explanation: 'Three 90° rotations = 270°, left becomes down'
+    },
+    {
+      question: 'If ▼ rotates three times by 90° anti-clockwise each time, what does it become?',
+      answer: '◀',
+      wrong: ['▶', '▲', '▼'],
+      explanation: 'Three 90° anti-clockwise rotations = 270°, down becomes left'
+    },
+    {
+      question: 'If ▲ rotates four times by 90° clockwise each time, what does it become?',
+      answer: '▲',
+      wrong: ['▼', '▶', '◀'],
+      explanation: 'Four 90° rotations = 360°, returns to original position'
+    },
+    {
+      question: 'If ▶ rotates 360°, what does it become?',
+      answer: '▶',
+      wrong: ['◀', '▲', '▼'],
+      explanation: 'Full rotation returns to original position'
+    },
+    {
+      question: 'If △ rotates 270° clockwise, what does it become?',
+      answer: '◁',
+      wrong: ['▷', '▽', '△'],
+      explanation: 'Upward triangle rotates 270° clockwise to left'
+    },
+    {
+      question: 'If ▽ rotates 270° anti-clockwise, what does it become?',
+      answer: '◁',
+      wrong: ['▷', '△', '▽'],
+      explanation: 'Downward triangle rotates 270° anti-clockwise to left'
     }
   ]
 
@@ -1188,6 +2953,228 @@ export function generateShapeCompletionQuestion(): GameQuestion {
       answer: '■',
       wrong: ['□', '●', '◆'],
       explanation: 'Checkerboard pattern with filled and empty squares'
+    },
+    {
+      question: 'Complete the pattern:\n[● ○ ●]\n[○ ● ○]\n[● ○ ?]',
+      answer: '●',
+      wrong: ['○', '□', '■'],
+      explanation: 'Alternating checkerboard pattern with circles'
+    },
+    {
+      question: 'Which shape completes the pattern?\n[△ □ ○]\n[□ ○ △]\n[○ △ ?]',
+      answer: '□',
+      wrong: ['△', '○', '●'],
+      explanation: 'Each row has the three shapes in rotating order'
+    },
+    {
+      question: 'Complete the grid:\n[■ ■ □]\n[■ □ □]\n[□ □ ?]',
+      answer: '□',
+      wrong: ['■', '●', '○'],
+      explanation: 'Pattern moves from filled to empty diagonally'
+    },
+    {
+      question: 'What fits in the missing space?\n[○ △ □]\n[△ □ ○]\n[? ○ △]',
+      answer: '□',
+      wrong: ['○', '△', '●'],
+      explanation: 'Each row contains all three shapes in different order'
+    },
+    {
+      question: 'Complete the pattern:\n[★ ★ ★]\n[☆ ☆ ☆]\n[★ ★ ?]',
+      answer: '★',
+      wrong: ['☆', '●', '○'],
+      explanation: 'Pattern alternates filled stars and empty stars by row'
+    },
+    {
+      question: 'Which shape completes?\n[● ● ●]\n[● ○ ●]\n[● ● ?]',
+      answer: '●',
+      wrong: ['○', '□', '△'],
+      explanation: 'All filled circles except center of middle row'
+    },
+    {
+      question: 'Complete the grid:\n[△ △ ▽]\n[△ ▽ ▽]\n[▽ ▽ ?]',
+      answer: '▽',
+      wrong: ['△', '○', '□'],
+      explanation: 'Upward triangles decrease, downward triangles increase'
+    },
+    {
+      question: 'What fits in the missing space?\n[■ □ □]\n[□ ■ □]\n[□ □ ?]',
+      answer: '■',
+      wrong: ['□', '●', '○'],
+      explanation: 'Diagonal line of filled squares from top-left to bottom-right'
+    },
+    {
+      question: 'Complete the pattern:\n[○ ● ○]\n[● ○ ●]\n[○ ? ○]',
+      answer: '●',
+      wrong: ['○', '□', '■'],
+      explanation: 'Alternating checkerboard of filled and empty circles'
+    },
+    {
+      question: 'Which shape completes?\n[▲ ▲ ▲]\n[▶ ▶ ▶]\n[▼ ▼ ?]',
+      answer: '▼',
+      wrong: ['▲', '▶', '◀'],
+      explanation: 'Each row contains the same arrow direction'
+    },
+    {
+      question: 'Complete the grid:\n[★ ○ △]\n[○ △ ★]\n[△ ★ ?]',
+      answer: '○',
+      wrong: ['★', '△', '□'],
+      explanation: 'Each row and column contains all three shapes once'
+    },
+    {
+      question: 'What fits in the missing space?\n[◆ ◇ ◆]\n[◇ ◆ ◇]\n[◆ ◇ ?]',
+      answer: '◆',
+      wrong: ['◇', '●', '○'],
+      explanation: 'Checkerboard pattern with filled and empty diamonds'
+    },
+    {
+      question: 'Complete the pattern:\n[□ □ □]\n[■ □ □]\n[■ ■ ?]',
+      answer: '□',
+      wrong: ['■', '○', '●'],
+      explanation: 'Filled squares increase diagonally from bottom-left'
+    },
+    {
+      question: 'Which shape completes?\n[● ○]\n[○ ●]\n[● ?]',
+      answer: '○',
+      wrong: ['●', '□', '■'],
+      explanation: 'Alternating diagonal pattern'
+    },
+    {
+      question: 'Complete the grid:\n[▲ ▶]\n[◀ ▼]\n[▲ ?]',
+      answer: '▶',
+      wrong: ['▲', '▼', '◀'],
+      explanation: 'Arrows rotate clockwise, pattern repeats'
+    },
+    {
+      question: 'What fits in the missing space?\n[○ ○ ●]\n[○ ● ●]\n[● ● ?]',
+      answer: '●',
+      wrong: ['○', '□', '■'],
+      explanation: 'Pattern transitions from empty to filled circles diagonally'
+    },
+    {
+      question: 'Complete the pattern:\n[■ ○ △]\n[△ ■ ○]\n[○ △ ?]',
+      answer: '■',
+      wrong: ['○', '△', '□'],
+      explanation: 'Latin square: each symbol appears once per row and column'
+    },
+    {
+      question: 'Which shape completes?\n[★ ☆]\n[☆ ★]\n[★ ?]',
+      answer: '☆',
+      wrong: ['★', '●', '○'],
+      explanation: 'Alternating diagonal pattern with stars'
+    },
+    {
+      question: 'Complete the grid:\n[● ● ●]\n[○ ● ○]\n[○ ○ ?]',
+      answer: '○',
+      wrong: ['●', '□', '△'],
+      explanation: 'Triangle shape of filled circles at top'
+    },
+    {
+      question: 'What fits in the missing space?\n[△ △ △]\n[○ ○ ○]\n[□ □ ?]',
+      answer: '□',
+      wrong: ['△', '○', '●'],
+      explanation: 'Three different shapes, one per row'
+    },
+    {
+      question: 'Complete the pattern:\n[■ □ ■ □]\n[□ ■ □ ■]\n[■ □ ■ ?]',
+      answer: '□',
+      wrong: ['■', '●', '○'],
+      explanation: 'Extended checkerboard pattern'
+    },
+    {
+      question: 'Which shape completes?\n[▶ ▶ ▶]\n[▼ ▼ ▼]\n[◀ ◀ ?]',
+      answer: '◀',
+      wrong: ['▶', '▼', '▲'],
+      explanation: 'Each row contains same arrow direction'
+    },
+    {
+      question: 'Complete the grid:\n[○ △]\n[△ □]\n[□ ?]',
+      answer: '○',
+      wrong: ['△', '□', '●'],
+      explanation: 'Diagonal pattern cycles through three shapes'
+    },
+    {
+      question: 'What fits in the missing space?\n[● ○ ○]\n[○ ○ ○]\n[○ ○ ?]',
+      answer: '○',
+      wrong: ['●', '□', '■'],
+      explanation: 'Only top-left is filled, all others empty'
+    },
+    {
+      question: 'Complete the pattern:\n[★ ★ ☆]\n[★ ☆ ☆]\n[☆ ☆ ?]',
+      answer: '☆',
+      wrong: ['★', '●', '○'],
+      explanation: 'Filled stars decrease diagonally, empty stars increase'
+    },
+    {
+      question: 'Which shape completes?\n[■ ○ △ □]\n[○ △ □ ■]\n[△ □ ■ ?]',
+      answer: '○',
+      wrong: ['■', '△', '□'],
+      explanation: 'Each row shifts pattern one position to the left'
+    },
+    {
+      question: 'Complete the grid:\n[▲ ▼ ▲]\n[▼ ▲ ▼]\n[▲ ▼ ?]',
+      answer: '▲',
+      wrong: ['▼', '▶', '◀'],
+      explanation: 'Checkerboard pattern with up and down triangles'
+    },
+    {
+      question: 'What fits in the missing space?\n[◆ ◇ ◆ ◇]\n[◇ ◆ ◇ ◆]\n[◆ ◇ ◆ ?]',
+      answer: '◇',
+      wrong: ['◆', '●', '○'],
+      explanation: 'Extended checkerboard with diamonds'
+    },
+    {
+      question: 'Complete the pattern:\n[● ● ○]\n[● ○ ○]\n[○ ○ ?]',
+      answer: '○',
+      wrong: ['●', '□', '■'],
+      explanation: 'Filled circles decrease diagonally from top-left'
+    },
+    {
+      question: 'Which shape completes?\n[□ ○ □]\n[○ □ ○]\n[□ ○ ?]',
+      answer: '□',
+      wrong: ['○', '●', '■'],
+      explanation: 'Alternating checkerboard pattern'
+    },
+    {
+      question: 'Complete the grid:\n[★ △ ○]\n[△ ○ ★]\n[○ ★ ?]',
+      answer: '△',
+      wrong: ['★', '○', '□'],
+      explanation: 'Latin square: each shape once per row and column'
+    },
+    {
+      question: 'What fits in the missing space?\n[■ ■ ■]\n[■ □ ■]\n[■ ■ ?]',
+      answer: '■',
+      wrong: ['□', '●', '○'],
+      explanation: 'All filled except center of middle row'
+    },
+    {
+      question: 'Complete the pattern:\n[▶ ▼ ◀]\n[▼ ◀ ▲]\n[◀ ▲ ?]',
+      answer: '▶',
+      wrong: ['▼', '◀', '▲'],
+      explanation: 'Arrows rotate clockwise in each position'
+    },
+    {
+      question: 'Which shape completes?\n[○ ● ○ ●]\n[● ○ ● ○]\n[○ ● ○ ?]',
+      answer: '●',
+      wrong: ['○', '□', '■'],
+      explanation: 'Extended checkerboard pattern with circles'
+    },
+    {
+      question: 'Complete the grid:\n[△ △ △ △]\n[○ ○ ○ ○]\n[□ □ □ ?]',
+      answer: '□',
+      wrong: ['△', '○', '●'],
+      explanation: 'Each row contains same shape repeated'
+    },
+    {
+      question: 'What fits in the missing space?\n[■ □ □ □]\n[□ ■ □ □]\n[□ □ ■ ?]',
+      answer: '□',
+      wrong: ['■', '●', '○'],
+      explanation: 'Diagonal line of filled squares from top-left'
+    },
+    {
+      question: 'Complete the pattern:\n[● ○ ● ○]\n[○ ● ○ ●]\n[● ○ ● ?]',
+      answer: '○',
+      wrong: ['●', '□', '■'],
+      explanation: 'Extended checkerboard with circles'
     }
   ]
 
@@ -1231,6 +3218,222 @@ export function generateMirrorImageQuestion(): GameQuestion {
       answer: '⅃',
       wrong: ['L', '⅂', '⊥'],
       explanation: 'L flips to backwards L'
+    },
+    {
+      question: 'What is the mirror image of:\n456',
+      answer: '654',
+      wrong: ['456', '546', '465'],
+      explanation: 'Numbers reverse order horizontally'
+    },
+    {
+      question: 'What is the mirror image of:\nXYZ',
+      answer: 'ZYX',
+      wrong: ['XYZ', 'YZX', 'XZY'],
+      explanation: 'Letters reverse order horizontally'
+    },
+    {
+      question: 'Which is the mirror image of ◀?',
+      answer: '▶',
+      wrong: ['▲', '▼', '◀'],
+      explanation: 'Left arrow mirrors to right arrow'
+    },
+    {
+      question: 'What is the mirror image of:\n789',
+      answer: '987',
+      wrong: ['789', '879', '798'],
+      explanation: 'Numbers flip horizontally'
+    },
+    {
+      question: 'What is the mirror image of:\nDOG',
+      answer: 'GOD',
+      wrong: ['DOG', 'ODG', 'DGO'],
+      explanation: 'Letters reverse order horizontally'
+    },
+    {
+      question: 'Which is the mirror image of ▲?',
+      answer: '▲',
+      wrong: ['▼', '◀', '▶'],
+      explanation: 'Up arrow is symmetrical, mirrors to itself'
+    },
+    {
+      question: 'What is the mirror image of:\n12',
+      answer: '21',
+      wrong: ['12', '11', '22'],
+      explanation: 'Two digits reverse order'
+    },
+    {
+      question: 'What is the mirror image of:\nCAT',
+      answer: 'TAC',
+      wrong: ['CAT', 'ACT', 'CTA'],
+      explanation: 'Letters reverse order horizontally'
+    },
+    {
+      question: 'Which is the mirror image of ▼?',
+      answer: '▼',
+      wrong: ['▲', '◀', '▶'],
+      explanation: 'Down arrow is symmetrical, mirrors to itself'
+    },
+    {
+      question: 'What is the mirror image of:\n2468',
+      answer: '8642',
+      wrong: ['2468', '4682', '6428'],
+      explanation: 'Numbers reverse order horizontally'
+    },
+    {
+      question: 'What is the mirror image of:\nSTAR',
+      answer: 'RATS',
+      wrong: ['STAR', 'TARS', 'STRA'],
+      explanation: 'Letters reverse order horizontally'
+    },
+    {
+      question: 'Which is the mirror image of ◁?',
+      answer: '▷',
+      wrong: ['△', '▽', '◁'],
+      explanation: 'Left-pointing triangle mirrors to right-pointing'
+    },
+    {
+      question: 'What is the mirror image of:\n135',
+      answer: '531',
+      wrong: ['135', '315', '153'],
+      explanation: 'Numbers reverse order horizontally'
+    },
+    {
+      question: 'What is the mirror image of:\nBOOK',
+      answer: 'KOOB',
+      wrong: ['BOOK', 'OBKO', 'BOKO'],
+      explanation: 'Letters reverse order horizontally'
+    },
+    {
+      question: 'Which is the mirror image of ▷?',
+      answer: '◁',
+      wrong: ['△', '▽', '▷'],
+      explanation: 'Right-pointing triangle mirrors to left-pointing'
+    },
+    {
+      question: 'What is the mirror image of:\n987',
+      answer: '789',
+      wrong: ['987', '879', '798'],
+      explanation: 'Numbers reverse order horizontally'
+    },
+    {
+      question: 'What is the mirror image of:\nTREE',
+      answer: 'EERT',
+      wrong: ['TREE', 'ETRE', 'TERE'],
+      explanation: 'Letters reverse order horizontally'
+    },
+    {
+      question: 'Which is the mirror image of ○?',
+      answer: '○',
+      wrong: ['●', '◯', '◌'],
+      explanation: 'Circle is symmetrical, mirrors to itself'
+    },
+    {
+      question: 'What is the mirror image of:\n1357',
+      answer: '7531',
+      wrong: ['1357', '3571', '5731'],
+      explanation: 'Numbers reverse order horizontally'
+    },
+    {
+      question: 'What is the mirror image of:\nHOME',
+      answer: 'EMOH',
+      wrong: ['HOME', 'OMEH', 'MEHO'],
+      explanation: 'Letters reverse order horizontally'
+    },
+    {
+      question: 'Which is the mirror image of □?',
+      answer: '□',
+      wrong: ['■', '▢', '▣'],
+      explanation: 'Square is symmetrical, mirrors to itself'
+    },
+    {
+      question: 'What is the mirror image of:\n2468',
+      answer: '8642',
+      wrong: ['2468', '6842', '4862'],
+      explanation: 'Numbers reverse order horizontally'
+    },
+    {
+      question: 'What is the mirror image of:\nSUNNY',
+      answer: 'YNNUS',
+      wrong: ['SUNNY', 'NSUNY', 'UNSNY'],
+      explanation: 'Letters reverse order horizontally'
+    },
+    {
+      question: 'Which is the mirror image of △?',
+      answer: '△',
+      wrong: ['▽', '◁', '▷'],
+      explanation: 'Up triangle is symmetrical, mirrors to itself'
+    },
+    {
+      question: 'What is the mirror image of:\n951',
+      answer: '159',
+      wrong: ['951', '591', '195'],
+      explanation: 'Numbers reverse order horizontally'
+    },
+    {
+      question: 'What is the mirror image of:\nFISH',
+      answer: 'HSIF',
+      wrong: ['FISH', 'ISHF', 'SFIH'],
+      explanation: 'Letters reverse order horizontally'
+    },
+    {
+      question: 'Which is the mirror image of ▽?',
+      answer: '▽',
+      wrong: ['△', '◁', '▷'],
+      explanation: 'Down triangle is symmetrical, mirrors to itself'
+    },
+    {
+      question: 'What is the mirror image of:\n7531',
+      answer: '1357',
+      wrong: ['7531', '3157', '5371'],
+      explanation: 'Numbers reverse order horizontally'
+    },
+    {
+      question: 'What is the mirror image of:\nMOON',
+      answer: 'NOOM',
+      wrong: ['MOON', 'OMNO', 'MNOO'],
+      explanation: 'Letters reverse order horizontally'
+    },
+    {
+      question: 'Which is the mirror image of ●?',
+      answer: '●',
+      wrong: ['○', '◉', '◯'],
+      explanation: 'Filled circle is symmetrical, mirrors to itself'
+    },
+    {
+      question: 'What is the mirror image of:\n369',
+      answer: '963',
+      wrong: ['369', '639', '396'],
+      explanation: 'Numbers reverse order horizontally'
+    },
+    {
+      question: 'What is the mirror image of:\nBIRD',
+      answer: 'DRIB',
+      wrong: ['BIRD', 'IRBD', 'RBID'],
+      explanation: 'Letters reverse order horizontally'
+    },
+    {
+      question: 'Which is the mirror image of ★?',
+      answer: '★',
+      wrong: ['☆', '✦', '✧'],
+      explanation: 'Star is symmetrical, mirrors to itself'
+    },
+    {
+      question: 'What is the mirror image of:\n8642',
+      answer: '2468',
+      wrong: ['8642', '4628', '6482'],
+      explanation: 'Numbers reverse order horizontally'
+    },
+    {
+      question: 'What is the mirror image of:\nRAIN',
+      answer: 'NIAR',
+      wrong: ['RAIN', 'AIRN', 'RIAN'],
+      explanation: 'Letters reverse order horizontally'
+    },
+    {
+      question: 'Which is the mirror image of ■?',
+      answer: '■',
+      wrong: ['□', '▪', '▫'],
+      explanation: 'Filled square is symmetrical, mirrors to itself'
     }
   ]
 
