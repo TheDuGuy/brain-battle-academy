@@ -294,7 +294,7 @@ function getGameProgress(
   // Calculate percentage based on games played and best accuracy
   // Simple heuristic: weight games played progress with accuracy
   const gamesPlayedProgress = Math.min(progress.gamesPlayed / 10, 1) // Normalize to 0-1
-  const accuracyWeight = progress.bestAccuracy // Already 0-1
+  const accuracyWeight = progress.bestAccuracy / 100 // Convert from percentage (0-100) to decimal (0-1)
   const effectiveProgress = gamesPlayedProgress * accuracyWeight
   const percentage = Math.round(effectiveProgress * 100)
 

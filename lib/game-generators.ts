@@ -1026,6 +1026,51 @@ export function generateAnalogyQuestion(skillLevel: number = 1): GameQuestion {
       question: 'Finger is to Hand as Toe is to...',
       answer: 'Foot',
       wrong: ['Leg', 'Nail', 'Body']
+    },
+    {
+      question: 'Cat is to Kitten as Dog is to...',
+      answer: 'Puppy',
+      wrong: ['Bark', 'Pet', 'Animal']
+    },
+    {
+      question: 'Wheel is to Car as Blade is to...',
+      answer: 'Knife',
+      wrong: ['Cut', 'Sharp', 'Metal']
+    },
+    {
+      question: 'White is to Black as Left is to...',
+      answer: 'Right',
+      wrong: ['Up', 'Down', 'North']
+    },
+    {
+      question: 'Eye is to See as Ear is to...',
+      answer: 'Hear',
+      wrong: ['Sound', 'Listen', 'Noise']
+    },
+    {
+      question: 'Teacher is to Student as Parent is to...',
+      answer: 'Child',
+      wrong: ['Family', 'School', 'Baby']
+    },
+    {
+      question: 'Cow is to Milk as Chicken is to...',
+      answer: 'Egg',
+      wrong: ['Feather', 'Nest', 'Farm']
+    },
+    {
+      question: 'Slow is to Fast as Quiet is to...',
+      answer: 'Loud',
+      wrong: ['Sound', 'Noise', 'Volume']
+    },
+    {
+      question: 'Beginning is to End as Start is to...',
+      answer: 'Finish',
+      wrong: ['Begin', 'Go', 'Come']
+    },
+    {
+      question: 'Apple is to Fruit as Carrot is to...',
+      answer: 'Vegetable',
+      wrong: ['Orange', 'Food', 'Garden']
     }
   ]
 
@@ -1050,6 +1095,61 @@ export function generateAnalogyQuestion(skillLevel: number = 1): GameQuestion {
       question: 'Car is to Road as Train is to...',
       answer: 'Track',
       wrong: ['Station', 'Fast', 'Journey']
+    },
+    {
+      question: 'Painter is to Canvas as Sculptor is to...',
+      answer: 'Stone',
+      wrong: ['Chisel', 'Art', 'Clay']
+    },
+    {
+      question: 'Hunger is to Food as Thirst is to...',
+      answer: 'Water',
+      wrong: ['Drink', 'Cup', 'Cold']
+    },
+    {
+      question: 'Hammer is to Nail as Shovel is to...',
+      answer: 'Soil',
+      wrong: ['Dig', 'Earth', 'Ground']
+    },
+    {
+      question: 'Athlete is to Stadium as Actor is to...',
+      answer: 'Theatre',
+      wrong: ['Stage', 'Play', 'Audience']
+    },
+    {
+      question: 'Microscope is to Small as Telescope is to...',
+      answer: 'Far',
+      wrong: ['Big', 'Stars', 'Space']
+    },
+    {
+      question: 'Thermometer is to Temperature as Scale is to...',
+      answer: 'Weight',
+      wrong: ['Heavy', 'Balance', 'Measure']
+    },
+    {
+      question: 'Police is to Crime as Doctor is to...',
+      answer: 'Disease',
+      wrong: ['Medicine', 'Hospital', 'Illness']
+    },
+    {
+      question: 'Seed is to Plant as Egg is to...',
+      answer: 'Bird',
+      wrong: ['Nest', 'Hatch', 'Feather']
+    },
+    {
+      question: 'Photographer is to Camera as Writer is to...',
+      answer: 'Pen',
+      wrong: ['Paper', 'Notebook', 'Ink']
+    },
+    {
+      question: 'Judge is to Courtroom as Principal is to...',
+      answer: 'School',
+      wrong: ['Student', 'Classroom', 'Office']
+    },
+    {
+      question: 'Memory is to Forget as Health is to...',
+      answer: 'Illness',
+      wrong: ['Sick', 'Doctor', 'Medicine']
     }
   ]
 
@@ -1074,6 +1174,61 @@ export function generateAnalogyQuestion(skillLevel: number = 1): GameQuestion {
       question: 'Chapter is to Book as Scene is to...',
       answer: 'Play',
       wrong: ['Theatre', 'Actor', 'Stage']
+    },
+    {
+      question: 'Architect is to Building as Engineer is to...',
+      answer: 'Bridge',
+      wrong: ['Metal', 'Construction', 'Road']
+    },
+    {
+      question: 'Melody is to Song as Plot is to...',
+      answer: 'Story',
+      wrong: ['Book', 'Character', 'Novel']
+    },
+    {
+      question: 'Extinction is to Species as Amnesia is to...',
+      answer: 'Memory',
+      wrong: ['Brain', 'Forget', 'Loss']
+    },
+    {
+      question: 'Pedal is to Bicycle as Paddle is to...',
+      answer: 'Canoe',
+      wrong: ['Water', 'Row', 'Boat']
+    },
+    {
+      question: 'Hypothesis is to Theory as Draft is to...',
+      answer: 'Novel',
+      wrong: ['Book', 'Final', 'Manuscript']
+    },
+    {
+      question: 'Apprentice is to Master as Student is to...',
+      answer: 'Scholar',
+      wrong: ['Teacher', 'Learning', 'School']
+    },
+    {
+      question: 'Catalyst is to Reaction as Spark is to...',
+      answer: 'Fire',
+      wrong: ['Flame', 'Heat', 'Light']
+    },
+    {
+      question: 'Chrysalis is to Butterfly as Tadpole is to...',
+      answer: 'Frog',
+      wrong: ['Lily', 'Metamorphosis', 'Water']
+    },
+    {
+      question: 'Fossil is to Dinosaur as Artifact is to...',
+      answer: 'Civilization',
+      wrong: ['History', 'Museum', 'Ancient']
+    },
+    {
+      question: 'Manuscript is to Publication as Draft is to...',
+      answer: 'Finished Work',
+      wrong: ['Complete', 'Written', 'Final']
+    },
+    {
+      question: 'Syntax is to Language as Grammar is to...',
+      answer: 'Communication',
+      wrong: ['Writing', 'Rules', 'Speech']
     }
   ]
 
