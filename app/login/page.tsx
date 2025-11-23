@@ -117,12 +117,6 @@ export default function LoginPage() {
             {isLoading ? 'Logging in...' : 'Start Learning!'}
           </button>
         </form>
-
-        <div className="mt-6 text-center text-sm text-gray-500">
-          <p className="mb-2">Test accounts:</p>
-          <p className="font-mono text-xs">Santi / santi123</p>
-          <p className="font-mono text-xs">William / william123</p>
-        </div>
       </div>
     </div>
   )
