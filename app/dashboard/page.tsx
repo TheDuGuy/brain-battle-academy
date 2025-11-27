@@ -521,11 +521,11 @@ export default function DashboardPage() {
                     </span>
                   </div>
 
-                  {/* Accuracy status - TODO: Track daily accuracy */}
+                  {/* Daily Challenge status */}
                   <div className="flex items-center gap-3">
                     <span className="text-2xl">⭕</span>
                     <span className="text-white/90 font-medium">
-                      Aim for one 10/10 perfect score today
+                      Complete all 4 subjects + 15/15 for £1
                     </span>
                   </div>
                 </div>
@@ -601,7 +601,7 @@ export default function DashboardPage() {
               </p>
             ) : (
               <p className="text-xs text-amber-700">
-                No perfect 10/10 yet – keep going to earn a £1 bonus!
+                No perfect 15/15 yet – keep going!
               </p>
             )}
           </div>
@@ -634,27 +634,39 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* Perfect Score Challenge */}
+          {/* Daily Challenge */}
           <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 border-2 border-green-200 shadow-md">
             <div className="flex items-center gap-3 mb-4">
               <div className="bg-green-500 rounded-xl p-3">
                 <span className="text-3xl">🎖️</span>
               </div>
               <div>
-                <h3 className="text-xl font-bold text-green-900">Perfect Score Challenge</h3>
-                <p className="text-green-700 text-sm">Get 10/10 in one game this week to earn a £1 accuracy bonus</p>
+                <h3 className="text-xl font-bold text-green-900">Daily £1 Challenge</h3>
+                <p className="text-green-700 text-sm">Complete all 4 subjects + get 15/15 in one game</p>
               </div>
             </div>
             <div className="space-y-2">
-              <div className="flex items-center justify-between mb-1">
-                <span className="text-sm font-medium text-green-800">0% today</span>
-                <span className="text-sm font-bold text-green-600">Reward: £1</span>
+              <div className="grid grid-cols-4 gap-2 mb-2">
+                <div className="text-center">
+                  <span className="text-lg">📐</span>
+                  <p className="text-xs text-green-700">Maths</p>
+                </div>
+                <div className="text-center">
+                  <span className="text-lg">📚</span>
+                  <p className="text-xs text-green-700">English</p>
+                </div>
+                <div className="text-center">
+                  <span className="text-lg">🧩</span>
+                  <p className="text-xs text-green-700">VR</p>
+                </div>
+                <div className="text-center">
+                  <span className="text-lg">🔷</span>
+                  <p className="text-xs text-green-700">NVR</p>
+                </div>
               </div>
-              <div className="w-full bg-green-200 rounded-full h-3">
-                <div
-                  className="bg-gradient-to-r from-green-500 to-emerald-500 h-3 rounded-full transition-all"
-                  style={{ width: '0%' }}
-                ></div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium text-green-800">+ 15/15 perfect</span>
+                <span className="text-sm font-bold text-green-600">Reward: £1/day</span>
               </div>
             </div>
           </div>

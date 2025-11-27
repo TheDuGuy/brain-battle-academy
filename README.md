@@ -7,8 +7,8 @@ An engaging, gamified 11+ exam preparation platform for kids. Features multiple 
 - **Multiple Game Types**: Quick Fire, Calculator Detective, Quiz Master, and more
 - **Progress Tracking**: Track stars, accuracy, and session history
 - **Earnings System**:
+  - £1 daily for completing all 4 subjects (Maths, English, VR, NVR) + getting 15/15 perfect score
   - £1 for completing 7 days streak (15min/day)
-  - £1 for achieving 90%+ accuracy in a session
 - **Weekly Leaderboard**: Compete with friends (William vs Santi vs others)
 - **Session Timer**: 15-minute focused learning sessions
 - **Subjects Covered**:
@@ -107,8 +107,8 @@ brain-battle-academy/
 ### Quick Fire ⚡
 - Fast-paced arithmetic practice
 - Addition, subtraction, multiplication, division
-- 20 questions in 15 minutes
-- Earn £1 for 90%+ accuracy
+- 15 questions per game
+- Shows wrong answers with corrections at the end
 
 ## Features Implemented
 
@@ -127,7 +127,8 @@ brain-battle-academy/
 ### Progress & Rewards
 - ✅ Automatic session saving to database
 - ✅ Star collection system
-- ✅ Earnings system: £1 for 90%+ accuracy, £1 for 7-day streak
+- ✅ Earnings system: £1 daily for all 4 subjects + 15/15, £1 for 7-day streak
+- ✅ End-of-game summary showing wrong answers with corrections
 - ✅ Weekly streak tracking
 - ✅ Real-time leaderboard
 

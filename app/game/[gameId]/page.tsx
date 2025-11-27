@@ -358,7 +358,7 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
   }
 
   const startGame = () => {
-    const initialQuestions = Array.from({ length: 10 }, generateQuestion)
+    const initialQuestions = Array.from({ length: 15 }, generateQuestion)
     setQuestions(initialQuestions)
     setGameStarted(true)
     setGameStartTime(new Date())
@@ -609,7 +609,7 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
               <ul className="space-y-3 text-gray-700">
                 <li className="flex items-start gap-3">
                   <span className="bg-red-100 text-red-700 font-bold w-6 h-6 rounded-full flex items-center justify-center text-sm flex-shrink-0">1</span>
-                  <span>Answer 10 questions as fast as you can</span>
+                  <span>Answer 15 questions as fast as you can</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="bg-red-100 text-red-700 font-bold w-6 h-6 rounded-full flex items-center justify-center text-sm flex-shrink-0">2</span>
@@ -625,7 +625,7 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="bg-green-100 text-green-700 font-bold w-6 h-6 rounded-full flex items-center justify-center text-sm flex-shrink-0">£</span>
-                  <span className="font-semibold">Get 10/10 (perfect score) to earn £1!</span>
+                  <span className="font-semibold">Complete all 4 subjects with 15/15 to earn £1 daily!</span>
                 </li>
               </ul>
             </div>
@@ -654,11 +654,12 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
 
   if (gameEnded) {
     const stars = Math.floor((sessionStats.accuracy / 100) * 3)
-    const perfectScore = sessionStats.correct === sessionStats.total && sessionStats.total === 10
+    const perfectScore = sessionStats.correct === sessionStats.total && sessionStats.total === 15
+    const wrongAnswers = questions.filter(q => q.isCorrect === false)
 
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-2xl shadow-xl p-10 max-w-2xl w-full border border-gray-100">
+        <div className="bg-white rounded-2xl shadow-xl p-10 max-w-2xl w-full border border-gray-100 max-h-[90vh] overflow-y-auto">
           <div className="text-center">
             <div className="text-7xl mb-4">🎉</div>
             <h1 className="text-4xl font-bold text-gray-800 mb-2">
@@ -698,9 +699,36 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
               <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 mb-6 border-2 border-blue-300">
                 <div className="text-5xl mb-3">🎯</div>
                 <h3 className="text-2xl font-bold text-blue-700 mb-1">
-                  Perfect Again!
+                  Perfect Score!
                 </h3>
-                <p className="text-blue-600">You've already earned this week's £1 bonus.</p>
+                <p className="text-blue-600">Complete all 4 subjects today to earn £1!</p>
+              </div>
+            )}
+
+            {/* Wrong Answers Summary */}
+            {wrongAnswers.length > 0 && (
+              <div className="bg-gradient-to-br from-red-50 to-orange-50 rounded-xl p-6 mb-6 border-2 border-red-200 text-left">
+                <h3 className="text-xl font-bold text-red-700 mb-4 text-center">
+                  📚 Questions to Review ({wrongAnswers.length})
+                </h3>
+                <div className="space-y-4 max-h-60 overflow-y-auto">
+                  {wrongAnswers.map((q, index) => (
+                    <div key={index} className="bg-white rounded-lg p-4 border border-red-100">
+                      <p className="text-gray-800 font-medium mb-2">{q.question}</p>
+                      <div className="flex flex-col gap-1 text-sm">
+                        <p className="text-red-600">
+                          <span className="font-semibold">Your answer:</span> {q.userAnswer || 'No answer'}
+                        </p>
+                        <p className="text-green-600">
+                          <span className="font-semibold">Correct answer:</span> {q.answer}
+                        </p>
+                        {q.explanation && (
+                          <p className="text-gray-500 mt-1 text-xs">{q.explanation}</p>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
 
@@ -847,7 +875,7 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
 
           <div className="text-center">
             <p className="text-lg font-semibold text-gray-800">
-              {10 - score} more to reach the trophy!
+              {15 - score} more to reach the trophy!
             </p>
           </div>
         </div>

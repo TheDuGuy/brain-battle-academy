@@ -59,12 +59,13 @@ export type EvaluateRewardsOutput = {
 const TIMEZONE = 'Europe/London'
 const DAILY_COMPLETION_SECONDS = 900 // 15 minutes
 
-// Accuracy reward requirements (10/10 perfect score earns £1)
-export const MIN_QUESTIONS_FOR_ACCURACY_REWARD = 10
+// Daily reward requirements: 15/15 perfect score + all 4 subjects played today
+export const MIN_QUESTIONS_FOR_ACCURACY_REWARD = 15
 export const REQUIRED_ACCURACY_FOR_REWARD = 1.0 // 100%
+const ALL_SUBJECTS: SubjectType[] = ['MATHS', 'ENGLISH', 'VR', 'NVR']
 
 const STREAK_TARGET_DAYS = 7
-const HIGH_ACCURACY_REWARD_PENCE = 100 // £1
+const DAILY_CHALLENGE_REWARD_PENCE = 100 // £1 for daily challenge
 const STREAK_REWARD_PENCE = 100 // £1
 
 // ============================================================================
@@ -182,19 +183,67 @@ function calculateStreak(allSessions: SessionInput[], newSession: SessionInput):
 }
 
 /**
- * Check if a HIGH_ACCURACY reward already exists for the current week
+ * Check if all 4 subjects have been played today (including the new session)
  */
-function hasHighAccuracyRewardThisWeek(
-  existingRewards: ExistingReward[],
-  weekStart: Date
+function hasPlayedAllSubjectsToday(
+  allSessions: SessionInput[],
+  newSession: SessionInput
 ): boolean {
-  const weekStartKey = weekStart.toISOString()
+  const today = getCalendarDay(new Date())
+  const todayKey = today.toISOString()
 
-  return existingRewards.some(
-    reward =>
-      reward.type === 'HIGH_ACCURACY' &&
-      reward.weekStart.toISOString() === weekStartKey
+  // Get all sessions from today (including the new one)
+  const allSessionsWithNew = [...allSessions, newSession]
+  const todaySessions = allSessionsWithNew.filter(session => {
+    const sessionDay = getCalendarDay(session.endedAt)
+    return sessionDay.toISOString() === todayKey
+  })
+
+  // Get unique subjects played today
+  const subjectsPlayedToday = new Set(todaySessions.map(s => s.subject))
+
+  // Check if all 4 subjects have been played
+  return ALL_SUBJECTS.every(subject => subjectsPlayedToday.has(subject))
+}
+
+/**
+ * Check if there's a 15/15 perfect score today (including the new session)
+ */
+function hasPerfectScoreToday(
+  allSessions: SessionInput[],
+  newSession: SessionInput
+): boolean {
+  const today = getCalendarDay(new Date())
+  const todayKey = today.toISOString()
+
+  // Get all sessions from today (including the new one)
+  const allSessionsWithNew = [...allSessions, newSession]
+  const todaySessions = allSessionsWithNew.filter(session => {
+    const sessionDay = getCalendarDay(session.endedAt)
+    return sessionDay.toISOString() === todayKey
+  })
+
+  // Check if any session has 15/15 perfect score
+  return todaySessions.some(session =>
+    session.totalQuestions >= MIN_QUESTIONS_FOR_ACCURACY_REWARD &&
+    session.correctAnswers === session.totalQuestions
   )
+}
+
+/**
+ * Check if a DAILY_CHALLENGE reward already exists for today
+ */
+function hasDailyChallengeRewardToday(
+  existingRewards: ExistingReward[]
+): boolean {
+  const today = getCalendarDay(new Date())
+  const todayKey = today.toISOString()
+
+  return existingRewards.some(reward => {
+    const rewardDay = getCalendarDay(reward.createdAt)
+    return reward.type === 'HIGH_ACCURACY' &&
+           rewardDay.toISOString() === todayKey
+  })
 }
 
 /**
@@ -221,7 +270,7 @@ function hasStreakRewardThisWeek(
  * Evaluate rewards for a new session
  *
  * This is a pure function that implements all reward business logic:
- * - HIGH_ACCURACY: £1 for 10/10 questions (100% accuracy, once per week)
+ * - DAILY_CHALLENGE (HIGH_ACCURACY): £1 for completing all 4 subjects + 15/15 perfect score (once per day)
  * - STREAK: £1 for 7 consecutive completed days (once per week)
  *
  * @param input - The new session and context (recent sessions, existing rewards)
@@ -231,30 +280,24 @@ export function evaluateRewards(input: EvaluateRewardsInput): EvaluateRewardsOut
   const { newSession, recentSessions, existingRewards } = input
   const newRewards: EvaluateRewardsOutput['newRewards'] = []
 
-  // Get current week start for reward tracking
+  // Get current week start for streak reward tracking
   const currentWeekStart = getWeekStart(newSession.endedAt)
 
   // -------------------------------------------------------------------------
-  // 1. Check HIGH_ACCURACY reward (stricter: requires 20+ questions and 100%)
+  // 1. Check DAILY CHALLENGE reward
+  //    Requirements: All 4 subjects played today + at least one 15/15 perfect score
   // -------------------------------------------------------------------------
-  const accuracy = newSession.totalQuestions > 0
-    ? newSession.correctAnswers / newSession.totalQuestions
-    : 0
+  const playedAllSubjects = hasPlayedAllSubjectsToday(recentSessions, newSession)
+  const hasPerfectScore = hasPerfectScoreToday(recentSessions, newSession)
+  const alreadyEarnedToday = hasDailyChallengeRewardToday(existingRewards)
 
-  const meetsAccuracyRequirements =
-    newSession.totalQuestions >= MIN_QUESTIONS_FOR_ACCURACY_REWARD &&
-    accuracy >= REQUIRED_ACCURACY_FOR_REWARD
-
-  if (meetsAccuracyRequirements) {
-    // Check if reward already granted this week
-    if (!hasHighAccuracyRewardThisWeek(existingRewards, currentWeekStart)) {
-      newRewards.push({
-        type: 'HIGH_ACCURACY',
-        amountPence: HIGH_ACCURACY_REWARD_PENCE,
-        reason: `Perfect score: ${newSession.correctAnswers}/${newSession.totalQuestions}`,
-        weekStart: currentWeekStart
-      })
-    }
+  if (playedAllSubjects && hasPerfectScore && !alreadyEarnedToday) {
+    newRewards.push({
+      type: 'HIGH_ACCURACY',
+      amountPence: DAILY_CHALLENGE_REWARD_PENCE,
+      reason: 'Daily Challenge Complete: All subjects + 15/15 perfect score!',
+      weekStart: currentWeekStart
+    })
   }
 
   // -------------------------------------------------------------------------
