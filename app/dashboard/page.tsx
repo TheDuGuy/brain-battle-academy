@@ -197,6 +197,16 @@ const verbalReasoningGames: GameCard[] = [
     difficulty: 4,
     subject: 'Verbal Reasoning',
     topics: ['Logic', 'Reasoning', 'Problem Solving']
+  },
+  {
+    id: 'hidden-words',
+    name: 'Hidden Words',
+    description: 'Find words hidden across sentences',
+    icon: '🔍',
+    color: 'from-lime-500 to-green-500',
+    difficulty: 3,
+    subject: 'Verbal Reasoning',
+    topics: ['Word Finding', 'Observation', 'Vocabulary']
   }
 ]
 

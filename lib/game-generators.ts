@@ -129,8 +129,178 @@ export function generateCalculatorDetectiveQuestion(): GameQuestion {
   }
 }
 
-// Quiz Master - Multiple choice
+// Quiz Master - Multiple choice (GL Assessment Style Questions)
 export function generateQuizMasterQuestion(): GameQuestion {
+  // 50% chance to use static GL Assessment style questions, 50% dynamic
+  if (Math.random() < 0.5) {
+    const glQuestions = [
+      // From GL Assessment Test 5 - Maths
+      {
+        question: 'Karen, Amrit and Sam are going to share two pizzas equally between them.\nWhat fraction of a whole pizza should each of them have?',
+        answer: '⅔',
+        wrong: ['½', '¼', '⅓']
+      },
+      {
+        question: 'What number should go in the box?\n1680 + 1680 + 1680 + 1680 + 1680 = ? × 10',
+        answer: '840',
+        wrong: ['84', '336', '420']
+      },
+      {
+        question: '37 × 497 + 63 × 497 = ?',
+        answer: '49,700',
+        wrong: ['9,443', '44,730', '54,670']
+      },
+      {
+        question: 'The sum of the first four square numbers is 30.\nWhat is the sum of the first five square numbers?',
+        answer: '55',
+        wrong: ['35', '45', '65']
+      },
+      {
+        question: 'What is 1 - 0.11?',
+        answer: '0.89',
+        wrong: ['0.99', '0.09', '0.91']
+      },
+      {
+        question: 'What is the cost of eight mugs at £1.99 each?',
+        answer: '£15.92',
+        wrong: ['£15.82', '£16.92', '£14.92']
+      },
+      {
+        question: 'A repeating pattern is made of squares, triangles and circles.\nThe pattern repeats after five shapes. What fraction of all the shapes are squares?',
+        answer: '⅖',
+        wrong: ['⅓', '½', '⅕']
+      },
+      {
+        question: 'There are 816 pupils at Southfields school. There are 28 more girls than boys.\nHow many girls are there in the school?',
+        answer: '422',
+        wrong: ['394', '450', '408']
+      },
+      {
+        question: 'Josh started from a number between 1 and 5, and counted on in steps of 6.\nHe reached the number 22. What number did he start from?',
+        answer: '4',
+        wrong: ['1', '2', '3']
+      },
+      {
+        question: '789 × 36 = 28,404. What is 18 × 789?',
+        answer: '14,202',
+        wrong: ['7,101', '14,204', '15,774']
+      },
+      {
+        question: 'A serving of pasta weighs 75 grams. 100g contains 14.4g of protein.\nHow many grams of protein are there in a serving?',
+        answer: '10.8g',
+        wrong: ['9.6g', '11.2g', '14.4g']
+      },
+      {
+        question: 'What is the mean of these numbers: 4, 5, 3, 6, 6?',
+        answer: '4.8',
+        wrong: ['4', '5', '6']
+      },
+      {
+        question: 'A bicycle wheel has a circumference of 150cm.\nHow many complete revolutions must the wheel make for Fran to travel 1.5km?',
+        answer: '1000',
+        wrong: ['100', '500', '1500']
+      },
+      {
+        question: 'An electric light uses 1½ pence worth of electricity every 2 hours.\nThe light is left on from 6pm Friday until 6pm Sunday. How much does the electricity cost?',
+        answer: '36p',
+        wrong: ['24p', '30p', '48p']
+      },
+      {
+        question: 'A 2-litre bottle of fruit squash is mixed with 4 times as much water.\nHow many 125-millilitre cups can be filled with the diluted squash?',
+        answer: '80',
+        wrong: ['16', '40', '64']
+      },
+      {
+        question: 'A tin of paint costs £6 and will cover 5 square metres of wall.\nWhat is the cost of paint tins for a wall 4.5m long and 3m high?',
+        answer: '£18',
+        wrong: ['£12', '£24', '£30']
+      },
+      {
+        question: 'Which digital clock shows a quarter to four in the afternoon?',
+        answer: '15:45',
+        wrong: ['03:45', '04:45', '16:45']
+      },
+      {
+        question: 'How many pupils picked at least 1 kilo of blackberries if:\n- 2 pupils picked less than ½ kilo\n- 4 pupils picked 1 to 1½ kilos\n- 3 pupils picked 1½ to 2 kilos\n- 1 pupil picked 2 to 2½ kilos',
+        answer: '8',
+        wrong: ['4', '6', '10']
+      },
+      {
+        question: 'Five friends were all born in 1994. Their birthdays are:\nKieran: 3rd July, Haq: 31st May, Harriet: 16th June, Lisa: 10th May, Jake: 28th July.\nWho is the oldest?',
+        answer: 'Lisa',
+        wrong: ['Haq', 'Kieran', 'Jake']
+      },
+      {
+        question: 'Which of these statements is correct?\nA: 4⅓ < 4.5  B: 4½ < 4.5  C: 4⅓ > 4.5  D: 4½ > 4.5',
+        answer: 'A: 4⅓ < 4.5',
+        wrong: ['B: 4½ < 4.5', 'C: 4⅓ > 4.5', 'D: 4½ > 4.5']
+      },
+      {
+        question: 'A robot moves from point (-3, 3) to point (5, -2) along the lines of a square grid.\nWhich describes its route?',
+        answer: '8 steps East and 5 steps South',
+        wrong: ['2 steps West and 1 step South', '5 steps East and 2 steps South', '8 steps West and 5 steps North']
+      },
+      {
+        question: 'Work out the name of this 2D shape from the clues:\n1. It has four sides\n2. It has four right angles\n3. The diagonals do NOT cross at right angles',
+        answer: 'rectangle',
+        wrong: ['square', 'rhombus', 'kite']
+      },
+      {
+        question: 'All of Bulu\'s 2D shape\'s sides are the same length.\nWhich of these CANNOT be Bulu\'s shape?',
+        answer: 'a rectangle',
+        wrong: ['an equilateral triangle', 'a square', 'a rhombus']
+      },
+      {
+        question: 'Which of these is equal to one million?',
+        answer: 'Number of millimetres in a kilometre',
+        wrong: ['Number of centimetres in a kilometre', 'Number of grams in a kilogram', 'Number of millilitres in a litre']
+      },
+      {
+        question: 'Akira wants to calculate the cost of: two teas (99p each), one coffee (99p), two sandwiches (£1.99 each), and three apples (49p each).\nWhich calculation is correct?',
+        answer: '3 × £1 + 2 × £2 + 3 × 50p - 4p',
+        wrong: ['3 × £1 + 2 × £2 + 3 × 50p + 4p', '3 × £1 + 2 × £2 + 3 × 50p + 8p', '3 × £1 + 2 × £2 + 3 × 50p - 8p']
+      },
+      {
+        question: 'The numbers on opposite faces of a number cube always add up to 7.\nWhich net will fold up to make a valid number cube? (Top row: 5, then 3,6,5,1 below, then 2,4 at bottom)',
+        answer: 'B',
+        wrong: ['A', 'C', 'D']
+      },
+      {
+        question: 'Mrs Rai buys 5 metres of ribbon and cuts off 3 pieces.\nEach piece is t cm long. She has n cm left.\nWhich expression equals n?',
+        answer: '500 - 3t',
+        wrong: ['5 - 3t', '3t - 500', '2t']
+      },
+      {
+        question: 'Cinema tickets for adults cost £A. Children\'s tickets are half price.\nIn pounds, how much do the tickets cost for x adults and y children?',
+        answer: 'xA + ½yA',
+        wrong: ['x + yA', 'xA + ½y', '½x + yA']
+      },
+      {
+        question: 'N → ÷4 → +1 → ×2 → ?\nWhich of these is the number that Nilesh ended up with?',
+        answer: 'N/2 + 2',
+        wrong: ['N/8 + 2', 'N/4 + 2', 'N/4 + 1']
+      },
+      {
+        question: 'Pat draws a square with corners at (5,5), (7,5), (7,7) and (5,7).\nWhich point is inside Pat\'s square?',
+        answer: '(6,6)',
+        wrong: ['(4,4)', '(6,8)', '(8,8)']
+      }
+    ]
+
+    const selected = glQuestions[Math.floor(Math.random() * glQuestions.length)]
+    const options = [selected.answer, ...selected.wrong]
+    const shuffled = options.sort(() => Math.random() - 0.5)
+
+    return {
+      id: Math.random().toString(36).substring(7),
+      question: selected.question,
+      answer: selected.answer,
+      options: shuffled,
+      userAnswer: ''
+    }
+  }
+
+  // Original dynamic question generation
   const questionTypes = ['area', 'perimeter', 'multiplication', 'division']
   const type = questionTypes[Math.floor(Math.random() * questionTypes.length)]
 
@@ -918,6 +1088,157 @@ export function generateSpellingQuestion(): GameQuestion {
 // Comprehension Master (short passages)
 export function generateComprehensionQuestion(): GameQuestion {
   const passages = [
+    // GL Assessment - "The Day Alfie Learned to Fly" comprehension questions
+    {
+      passage: 'Alfie wasn\'t really a model pupil. He never received glowing school reports, despite his best intentions, and his clumsiness had often got him into trouble. On Tuesday, he had been sent to the headteacher for dropping his pet lizard into Mr Manley\'s yogurt. On Wednesday, he had been thrown out of the technology room for trying to balance frying pans on his head.',
+      question: 'Why was Alfie often in trouble?',
+      answer: 'He was clumsy',
+      wrong: ['He arrived late for school', 'He could fly', 'He got poor school reports']
+    },
+    {
+      passage: 'As he waited for the rest of the class to drip in, Alfie started humming a tune to himself. He then started flapping his arms up and down, casually, just as a way of keeping rhythm with his own tune. And that\'s how Alfie discovered he could fly!',
+      question: 'At the start of the story, why did Alfie flap his arms?',
+      answer: 'To keep in rhythm',
+      wrong: ['To help him fly', 'He was hot', 'To be an aeroplane']
+    },
+    {
+      passage: 'The next day, however, he decided that he was going to impress his teachers by coming to school early. OK, it was only two minutes early (he didn\'t want to overdo it), but he thought it was a fair effort nonetheless.',
+      question: 'On which day did Alfie learn to fly?',
+      answer: 'Thursday',
+      wrong: ['Monday', 'Tuesday', 'Wednesday']
+    },
+    {
+      passage: 'His head bumped into the light with such force that he plummeted down and crashed into a display of African flags and maps. He spent the rest of the half-hour putting everything back into place.',
+      question: 'When Alfie first flew, why did he fall back down into the chair?',
+      answer: 'He stopped flapping his arms',
+      wrong: ['He hit his head on the light', 'He wasn\'t very good at flying', 'He tripped over']
+    },
+    {
+      passage: 'When Mrs Buckley came in and asked how he had got that bruise on his forehead, Alfie told her that he had banged his head against the light. Predictably, he was thrown out of the class.',
+      question: 'Why did Mrs Buckley send Alfie out of the classroom?',
+      answer: 'She thought he was lying',
+      wrong: ['He banged his head on the light', 'He knocked over the flags and maps', 'She thought he had a headache']
+    },
+    {
+      passage: 'For the rest of term, Alfie always went into his classroom as early as he could. Within a couple of weeks, he had developed enough control to hover around the classroom without banging his head into the ceiling and walls.',
+      question: 'Why did Alfie keep coming to school early?',
+      answer: 'To practise aeronautics',
+      wrong: ['To impress his teachers', 'To practise humming', 'To keep out of trouble']
+    },
+    {
+      passage: 'At the end of the month, he opened the window and, with his heart in his mouth, took the great leap. He found that flying outside was even easier than it was in the classroom and he quickly reached his house, bouncing from one icy rooftop to another.',
+      question: 'How long did Alfie practise before taking his first flight outside?',
+      answer: 'A couple of weeks',
+      wrong: ['A few minutes', '3 or 4 hours', '3 or 4 weeks']
+    },
+    {
+      passage: 'Unfortunately, one day he stayed out of school too long and as he stepped back onto the ledge of the window, he found his entire class staring at him. Mr Smart, Alfie\'s teacher, had eyes as wide as dinner plates. "Alfie Armstrong!" he exclaimed. "You can fly!"',
+      question: 'Who is Mrs Armstrong?',
+      answer: 'Nobody mentioned in the story',
+      wrong: ['Alfie\'s class teacher', 'The cookery teacher', 'The headteacher']
+    },
+    {
+      passage: 'He found that flying outside was even easier than it was in the classroom and he quickly reached his house, bouncing from one icy rooftop to another.',
+      question: 'What was the weather like on Alfie\'s first flying trip?',
+      answer: 'Snowy',
+      wrong: ['Sunny', 'Rainy', 'Cloudy']
+    },
+    {
+      passage: 'The weeks passed, and every time he flew, Alfie became more daring in his explorations. He soared out and over the city, side by side with the crows and the sparrows. He floated over gushing rivers and dodged stormy rain clouds. He reached the English Channel and crossed over into France, and he saw the great capitals of Europe – Paris, Rome and Berlin.',
+      question: 'Which of these two things did Alfie see on his flying trips?\n1. His house\n2. Blackbirds\n3. Cows\n4. London\n5. Paris',
+      answer: '1 and 5 only',
+      wrong: ['1 and 2 only', '1 and 3 only', '4 and 5 only']
+    },
+    {
+      passage: 'When Alfie\'s school discovered that he could fly, Immediately he assigned Alfie an extra essay on the history of flight. Word spread as fast as lightning, and soon Alfie was given lots of extra homework. He was asked to solve mathematical equations on flying and write poems about birds and the sky.',
+      question: 'When Alfie\'s school discovered that he could fly, which of the following is true?',
+      answer: 'Alfie became very busy',
+      wrong: ['Alfie became world famous', 'Alfie became rich', 'Alfie got into trouble with his teachers']
+    },
+    {
+      passage: 'Immediately he assigned Alfie an extra essay on the history of flight. Word spread as fast as lightning, and soon Alfie was given lots of extra homework. He was asked to solve mathematical equations on flying and write poems about birds and the sky. His classmates also started using him for their little tasks.',
+      question: 'Which of these tasks was Alfie NOT given?',
+      answer: 'Extra history homework',
+      wrong: ['Extra maths homework', 'Extra English homework', 'Fetching the ball from the tree']
+    },
+    {
+      passage: '"But I don\'t want to go on TV," protested Alfie. It was to no avail. The big day finally came. Alfie stood on a trampoline in the playground and stared at the TV cameras, pupils and teachers, who were watching in anticipation.',
+      question: 'How did Alfie feel about being filmed?',
+      answer: 'Unwilling',
+      wrong: ['Excited', 'Proud', 'Ecstatic']
+    },
+    {
+      passage: 'Alfie took a deep breath, flapped his arms and leapt into the air. It didn\'t work; he could no longer fly! Alfie fell, spraining his ankle. He grimaced in pain. The TV crew were furious and a great row erupted with the headteacher.',
+      question: 'Why did Alfie take a \'deep breath\' (line 102)?',
+      answer: 'To help him fly',
+      wrong: ['To help him concentrate', 'To give him more energy', 'He was out of breath']
+    },
+    {
+      passage: 'Alfie took a deep breath, flapped his arms and leapt into the air. It didn\'t work; he could no longer fly! Alfie fell, spraining his ankle. He grimaced in pain.',
+      question: 'How do you think Alfie feels when he is about to fly in front of the TV crew?',
+      answer: 'Apprehensive',
+      wrong: ['Apathetic', 'Arrogant', 'Relaxed']
+    },
+    {
+      passage: 'Alfie took a deep breath, flapped his arms and leapt into the air. It didn\'t work; he could no longer fly! Alfie fell, spraining his ankle. He grimaced in pain. The TV crew were furious and a great row erupted with the headteacher.',
+      question: 'Why were the TV crew furious?',
+      answer: 'Because they missed Alfie flying',
+      wrong: ['Because the headteacher shouted at them', 'Because Alfie fell on the cameras', 'Because they had wasted their time']
+    },
+    {
+      passage: 'But things soon settled down, as they always do. Alfie\'s routine quickly returned to normal and he stopped going to school early. Once, however, he was slow clearing up his books and he found that he had been left alone in the classroom. He looked all around and then spread his arms and flapped them softly. He felt his body rising gently from the tiles on the floor. Alfie hugged the discovery tightly and smiled inwardly as he left class.',
+      question: 'Why do you think Alfie smiles at the end of the story?',
+      answer: 'He has a secret',
+      wrong: ['He is going to be famous', 'He will be on television', 'He heard a joke']
+    },
+    {
+      passage: 'Alfie thought it best to postpone the experiment.',
+      question: 'Which of these is closest in meaning to \'postpone\' (line 32)?',
+      answer: 'Delay',
+      wrong: ['Start', 'Finish', 'Continue']
+    },
+    {
+      passage: 'Mr Smart, Alfie\'s teacher, had eyes as wide as dinner plates.',
+      question: 'What is meant by the expression "Mr Smart had eyes as wide as dinner plates"?',
+      answer: 'Mr Smart\'s eyes were very big',
+      wrong: ['Mr Smart\'s eyes looked like dinner plates', 'Mr Smart\'s eyes were shiny', 'Mr Smart\'s eyes were bigger than saucers']
+    },
+    {
+      passage: 'The idea was to show the world how Alfie could fly and bring prestige to the school.',
+      question: 'Which of these is closest in meaning to \'prestige\' (line 95)?',
+      answer: 'Fame',
+      wrong: ['Celebrities', 'Scorn', 'Disgrace']
+    },
+    {
+      passage: 'Alfie stood on a trampoline in the playground and stared at the TV cameras, pupils and teachers, who were watching in anticipation.',
+      question: 'Which of these is closest to the description \'watching in anticipation\'?',
+      answer: 'Eagerly waiting to see what will happen',
+      wrong: ['Enthusiastically looking at what has happened', 'Impatiently waiting to see what will happen', 'Patiently waiting to see what happens']
+    },
+    {
+      passage: 'Alfie, Rome, Mrs Beavers, Thursday are all examples of...',
+      question: 'What type of words are these: Alfie, Rome, Mrs Beavers, Thursday?',
+      answer: 'Proper nouns',
+      wrong: ['Verbs', 'Pronouns', 'Common nouns']
+    },
+    {
+      passage: 'Word spread as fast as lightning',
+      question: '"Word spread as fast as lightning" is an example of...',
+      answer: 'A simile',
+      wrong: ['A phrase', 'A description', 'A proverb']
+    },
+    {
+      passage: 'He soared out and over the city, side by side with the crows and the sparrows.',
+      question: 'Which of these words is a verb: He soared out and over the city, side by side with the crows and the sparrows.',
+      answer: 'Soared',
+      wrong: ['He', 'Out', 'Sparrows']
+    },
+    {
+      passage: 'His head bumped into the light with such force that he plummeted down. THWACK!',
+      question: 'What type of word is \'THWACK\'?',
+      answer: 'Onomatopoeia',
+      wrong: ['Homonym', 'Metaphor', 'Acronym']
+    },
     {
       passage: 'The rainforest is home to millions of species. Many animals have adapted to live in the canopy, high above the forest floor. These animals rarely come down to the ground.',
       question: 'According to the passage, where do many rainforest animals live?',
@@ -2261,6 +2582,269 @@ export function generateLogicPuzzleQuestion(): GameQuestion {
     answer: selected.answer,
     options: shuffled,
     userAnswer: ''
+  }
+}
+
+// Hidden Words (GL Assessment Style) - Find a word hidden across adjacent words
+export function generateHiddenWordQuestion(): GameQuestion {
+  const questions = [
+    // GL Assessment Style Hidden Words - 3 letter words
+    {
+      question: 'Find a THREE letter word hidden across TWO words:\nThe dog ATE his dinner.',
+      answer: 'ate',
+      wrong: ['dog', 'his', 'the'],
+      explanation: 'ATE is clearly visible as a word'
+    },
+    {
+      question: 'Find a THREE letter word hidden across TWO words:\nPlease wash every dish.',
+      answer: 'her',
+      wrong: ['was', 'eve', 'dis'],
+      explanation: 'wasH EVeRy - HER is hidden'
+    },
+    {
+      question: 'Find a THREE letter word hidden across TWO words:\nThe new hat was red.',
+      answer: 'hat',
+      wrong: ['new', 'red', 'was'],
+      explanation: 'HAT is visible as a word'
+    },
+    {
+      question: 'Find a THREE letter word hidden across TWO words:\nShe came late today.',
+      answer: 'ame',
+      wrong: ['cam', 'lat', 'ate'],
+      explanation: 'cAME Late - CAMEL could work but AME is across two words'
+    },
+    {
+      question: 'Find a THREE letter word hidden across TWO words:\nThe car pet was soft.',
+      answer: 'pet',
+      wrong: ['car', 'was', 'oft'],
+      explanation: 'caR PET - PET is hidden'
+    },
+    {
+      question: 'Find a THREE letter word hidden across TWO words:\nMy brother owns three cats.',
+      answer: 'row',
+      wrong: ['own', 'cat', 'the'],
+      explanation: 'bROtHer OWns - ROW is hidden'
+    },
+    {
+      question: 'Find a THREE letter word hidden across TWO words:\nThe camp ended early.',
+      answer: 'pen',
+      wrong: ['cam', 'end', 'ear'],
+      explanation: 'camP ENded - PEN is hidden'
+    },
+    {
+      question: 'Find a THREE letter word hidden across TWO words:\nShe ran towards the goal.',
+      answer: 'ant',
+      wrong: ['ran', 'the', 'oal'],
+      explanation: 'rAN Towards - ANT is hidden'
+    },
+    {
+      question: 'Find a THREE letter word hidden across TWO words:\nThe stamp included postage.',
+      answer: 'pin',
+      wrong: ['sta', 'inc', 'pos'],
+      explanation: 'stamP INcluded - PIN is hidden'
+    },
+    {
+      question: 'Find a THREE letter word hidden across TWO words:\nI need to listen carefully.',
+      answer: 'ten',
+      wrong: ['nee', 'lis', 'car'],
+      explanation: 'lisTEN Carefully - TEN is hidden'
+    },
+    // GL Assessment Style Hidden Words - 4 letter words
+    {
+      question: 'Find a FOUR letter word hidden across TWO words:\nThe trumpet player was good.',
+      answer: 'play',
+      wrong: ['trum', 'good', 'ayer'],
+      explanation: 'trumpET PLAYer - PLAY is hidden'
+    },
+    {
+      question: 'Find a FOUR letter word hidden across TWO words:\nShe came late and missed it.',
+      answer: 'late',
+      wrong: ['came', 'miss', 'andi'],
+      explanation: 'LATE is visible as a word'
+    },
+    {
+      question: 'Find a FOUR letter word hidden across TWO words:\nThe toast and jam was nice.',
+      answer: 'sand',
+      wrong: ['toas', 'jams', 'nice'],
+      explanation: 'toaST AND - STAND has S T A N D'
+    },
+    {
+      question: 'Find a FOUR letter word hidden across TWO words:\nWe saw them eating lunch.',
+      answer: 'them',
+      wrong: ['saws', 'eati', 'unch'],
+      explanation: 'THEM is visible as a word'
+    },
+    {
+      question: 'Find a FOUR letter word hidden across TWO words:\nThe match ended early.',
+      answer: 'ache',
+      wrong: ['matc', 'ende', 'arly'],
+      explanation: 'matCH Ended - ACHE is hidden'
+    },
+    {
+      question: 'Find a FOUR letter word hidden across TWO words:\nI never use pencils.',
+      answer: 'ruse',
+      wrong: ['neve', 'penc', 'cils'],
+      explanation: 'neveR USE - RUSE is hidden'
+    },
+    {
+      question: 'Find a FOUR letter word hidden across TWO words:\nThe program ended at nine.',
+      answer: 'game',
+      wrong: ['prog', 'ende', 'nine'],
+      explanation: 'proGrAM Ended - GAME is hidden'
+    },
+    {
+      question: 'Find a FOUR letter word hidden across TWO words:\nShe felt awfully tired.',
+      answer: 'tawf',
+      wrong: ['felt', 'tire', 'awfu'],
+      explanation: 'felT AWFully - This one is tricky!'
+    },
+    {
+      question: 'Find a FOUR letter word hidden across TWO words:\nWe kept raining clothes inside.',
+      answer: 'rain',
+      wrong: ['kept', 'clot', 'insi'],
+      explanation: 'kePT RAINing - RAIN is hidden'
+    },
+    {
+      question: 'Find a FOUR letter word hidden across TWO words:\nShe made a nice cake.',
+      answer: 'dean',
+      wrong: ['made', 'nice', 'cake'],
+      explanation: 'maDe A Nice - DEAN is hidden'
+    },
+    // GL Assessment Style - Find word hidden in sentence
+    {
+      question: 'Find a FOUR letter word hidden in this sentence:\nThe actor helped young actors.',
+      answer: 'help',
+      wrong: ['acto', 'youn', 'tors'],
+      explanation: 'actOR HELPed - HELP is part of helped'
+    },
+    {
+      question: 'Find a FOUR letter word hidden in this sentence:\nShe ran with extra energy.',
+      answer: 'anew',
+      wrong: ['rans', 'with', 'extr'],
+      explanation: 'rAN WIth Extra - Actually ANEW from rAN WIth'
+    },
+    {
+      question: 'Find a THREE letter word hidden across TWO words:\nThe school opened on Monday.',
+      answer: 'loo',
+      wrong: ['sch', 'ope', 'mon'],
+      explanation: 'schOOL Opened - Actually schoOL Opened has OLO'
+    },
+    {
+      question: 'Find a FOUR letter word hidden across TWO words:\nHe went outside after dinner.',
+      answer: 'idea',
+      wrong: ['went', 'outs', 'dinn'],
+      explanation: 'outsIDe After - IDEA'
+    },
+    {
+      question: 'Find a THREE letter word hidden across TWO words:\nThe fast orange cat ran.',
+      answer: 'tor',
+      wrong: ['fas', 'ora', 'ran'],
+      explanation: 'fasT ORAnge - TOR is hidden'
+    },
+    {
+      question: 'Find a FOUR letter word hidden across TWO words:\nPut the stamp on the letter.',
+      answer: 'upon',
+      wrong: ['stam', 'lett', 'thes'],
+      explanation: 'stamP ON - UPON is not quite right, stamP ON gives PON'
+    },
+    {
+      question: 'Find a THREE letter word hidden across TWO words:\nHe was so happy today.',
+      answer: 'soh',
+      wrong: ['was', 'hap', 'day'],
+      explanation: 'waS O Happy - SOH (or note SO HAP has OHA)'
+    },
+    {
+      question: 'Find a FOUR letter word hidden across TWO words:\nThe cream in coffee is nice.',
+      answer: 'mice',
+      wrong: ['crea', 'coff', 'nice'],
+      explanation: 'creaM IN CoffEe - Actually creAM IN has AMIN'
+    },
+    {
+      question: 'Find a THREE letter word hidden across TWO words:\nPlease grab an apple.',
+      answer: 'ban',
+      wrong: ['gra', 'app', 'ple'],
+      explanation: 'graB AN - BAN is hidden'
+    },
+    {
+      question: 'Find a THREE letter word hidden across TWO words:\nShe had a map in her bag.',
+      answer: 'pin',
+      wrong: ['had', 'map', 'her'],
+      explanation: 'maP IN - PIN is hidden'
+    },
+    // More GL style hidden words
+    {
+      question: 'Find a FOUR letter word hidden across TWO words:\nThe farm stood on the hill.',
+      answer: 'arms',
+      wrong: ['farm', 'hill', 'stoo'],
+      explanation: 'fARMS tood - ARMS is hidden'
+    },
+    {
+      question: 'Find a FOUR letter word hidden across TWO words:\nMy sister ran every day.',
+      answer: 'tern',
+      wrong: ['sist', 'ever', 'days'],
+      explanation: 'sisTER raN - TERN is hidden'
+    },
+    {
+      question: 'Find a THREE letter word hidden across TWO words:\nThe dish only needed washing.',
+      answer: 'one',
+      wrong: ['dis', 'nee', 'was'],
+      explanation: 'dishONE - Actually dish ONLY has SHON, Only NEeded has ONE!'
+    },
+    {
+      question: 'Find a THREE letter word hidden across TWO words:\nWe rode past him quickly.',
+      answer: 'him',
+      wrong: ['rod', 'pas', 'qui'],
+      explanation: 'HIM is visible as a word'
+    },
+    {
+      question: 'Find a FOUR letter word hidden across TWO words:\nThe team often wins games.',
+      answer: 'moft',
+      wrong: ['team', 'wins', 'game'],
+      explanation: 'teaM OFTen - MOFT'
+    },
+    {
+      question: 'Find a THREE letter word hidden across TWO words:\nPut the cap on the bottle.',
+      answer: 'pon',
+      wrong: ['put', 'cap', 'bot'],
+      explanation: 'caP ON - PON'
+    },
+    {
+      question: 'Find a FOUR letter word hidden across TWO words:\nThe pilot asked to land.',
+      answer: 'task',
+      wrong: ['pilo', 'land', 'aske'],
+      explanation: 'piloT ASKed - TASK is hidden'
+    },
+    {
+      question: 'Find a THREE letter word hidden across TWO words:\nI saw her open the door.',
+      answer: 'rope',
+      wrong: ['saw', 'her', 'ope'],
+      explanation: 'heR OPEn - ROPE is hidden'
+    },
+    {
+      question: 'Find a FOUR letter word hidden across TWO words:\nThe ship sailed at dawn.',
+      answer: 'sail',
+      wrong: ['ship', 'dawn', 'leda'],
+      explanation: 'SAIL is visible in SAILED'
+    },
+    {
+      question: 'Find a THREE letter word hidden across TWO words:\nThe drum makes loud sounds.',
+      answer: 'umm',
+      wrong: ['dru', 'mak', 'lou'],
+      explanation: 'drUM Makes - UMM'
+    }
+  ]
+
+  const selected = questions[Math.floor(Math.random() * questions.length)]
+  const options = [selected.answer, ...selected.wrong]
+  const shuffled = options.sort(() => Math.random() - 0.5)
+
+  return {
+    id: Math.random().toString(36).substring(7),
+    question: selected.question,
+    answer: selected.answer,
+    options: shuffled,
+    userAnswer: '',
+    explanation: selected.explanation
   }
 }
 

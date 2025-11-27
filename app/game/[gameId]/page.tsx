@@ -19,6 +19,7 @@ import {
   generateCodeQuestion,
   generateOddOneOutQuestion,
   generateLogicPuzzleQuestion,
+  generateHiddenWordQuestion,
   generateShapePatternQuestion,
   generateNumberSequenceQuestion,
   generateRotationQuestion,
@@ -157,6 +158,11 @@ const gameConfig: Record<string, { name: string; description: string; icon: stri
     name: 'Logic Puzzles',
     description: 'Solve reasoning challenges',
     icon: '🧠'
+  },
+  'hidden-words': {
+    name: 'Hidden Words',
+    description: 'Find words hidden across sentences',
+    icon: '🔍'
   },
   'shape-patterns': {
     name: 'Shape Patterns',
@@ -338,6 +344,8 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
         return generateOddOneOutQuestion()
       case 'logic-puzzles':
         return generateLogicPuzzleQuestion()
+      case 'hidden-words':
+        return generateHiddenWordQuestion()
       case 'shape-patterns':
         // Use skill-based difficulty for Shape Patterns (NVR)
         return generateShapePatternQuestion(skillLevel)
