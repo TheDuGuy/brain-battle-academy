@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 export default function LoginPage() {
   const [name, setName] = useState('')
@@ -60,9 +61,13 @@ export default function LoginPage() {
     <div className="min-h-screen bg-gradient-to-br from-brand-purple-light via-brand-pink-light to-white flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.12)] p-10 w-full max-w-md border border-gray-100">
         <div className="text-center mb-8">
-          <div className="bg-gradient-to-br from-brand-purple to-brand-pink w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-            <span className="text-white font-bold text-2xl">BB</span>
-          </div>
+          <Image
+            src="/brand/brain-battle-infinity.jpg"
+            alt="Brain Battle"
+            width={80}
+            height={120}
+            className="mx-auto mb-6 rounded-2xl shadow-lg"
+          />
           <h1 className="text-4xl font-bold text-brand-navy mb-2">
             Brain Battle Academy
           </h1>
