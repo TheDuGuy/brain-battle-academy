@@ -1,26 +1,202 @@
 @import "tailwindcss";
 
+/* ============================================================================
+   Brain Battle Club Brand Design System
+   ============================================================================ */
+
 :root {
+  /* Brand Colors - Primary Palette */
+  --brand-purple: #A55FEF;
+  --brand-purple-light: #F3EBFD;
+  --brand-purple-dark: #8F42E6;
+
+  --brand-pink: #E84A8A;
+  --brand-pink-light: #FDE7F1;
+  --brand-pink-dark: #D23670;
+
+  --brand-orange: #F59F2F;
+  --brand-orange-light: #FEF3E0;
+  --brand-orange-dark: #E88A1A;
+
+  --brand-yellow: #F8D34A;
+  --brand-yellow-light: #FEF9E7;
+  --brand-yellow-dark: #F0C030;
+
+  --brand-green: #7AC66C;
+  --brand-green-light: #EDF9EB;
+  --brand-green-dark: #5FB24F;
+
+  --brand-blue: #70C8F0;
+  --brand-blue-light: #E8F7FC;
+  --brand-blue-dark: #4BB8E8;
+
+  --brand-navy: #233B99;
+  --brand-navy-light: #475569;
+  --brand-navy-dark: #1A2A6E;
+
+  /* Semantic Colors */
+  --color-primary: var(--brand-purple);
+  --color-secondary: var(--brand-pink);
+  --color-accent: var(--brand-orange);
+  --color-success: var(--brand-green);
+  --color-info: var(--brand-blue);
+
+  /* Text Colors */
+  --text-primary: var(--brand-navy);
+  --text-secondary: #475569;
+  --text-light: #64748B;
+  --text-inverse: #ffffff;
+
+  /* Background */
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: var(--brand-navy);
+
+  /* Shadows */
+  --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-soft-lg: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-soft-xl: 0 8px 32px rgba(0, 0, 0, 0.12);
+  --shadow-glow-purple: 0 0 20px rgba(165, 95, 239, 0.3);
+  --shadow-glow-pink: 0 0 20px rgba(232, 74, 138, 0.3);
+  --shadow-glow-green: 0 0 20px rgba(122, 198, 108, 0.3);
+  --shadow-glow-blue: 0 0 20px rgba(112, 200, 240, 0.3);
 }
 
+/* Tailwind CSS v4 Theme Configuration */
 @theme inline {
+  /* Colors */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  /* Brand Colors */
+  --color-brand-purple: var(--brand-purple);
+  --color-brand-purple-light: var(--brand-purple-light);
+  --color-brand-purple-dark: var(--brand-purple-dark);
+
+  --color-brand-pink: var(--brand-pink);
+  --color-brand-pink-light: var(--brand-pink-light);
+  --color-brand-pink-dark: var(--brand-pink-dark);
+
+  --color-brand-orange: var(--brand-orange);
+  --color-brand-orange-light: var(--brand-orange-light);
+  --color-brand-orange-dark: var(--brand-orange-dark);
+
+  --color-brand-yellow: var(--brand-yellow);
+  --color-brand-yellow-light: var(--brand-yellow-light);
+  --color-brand-yellow-dark: var(--brand-yellow-dark);
+
+  --color-brand-green: var(--brand-green);
+  --color-brand-green-light: var(--brand-green-light);
+  --color-brand-green-dark: var(--brand-green-dark);
+
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-blue-light: var(--brand-blue-light);
+  --color-brand-blue-dark: var(--brand-blue-dark);
+
+  --color-brand-navy: var(--brand-navy);
+  --color-brand-navy-light: var(--brand-navy-light);
+  --color-brand-navy-dark: var(--brand-navy-dark);
+
+  /* Text Colors */
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-light: var(--text-light);
+
+  /* Font */
+  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+  /* Shadows */
+  --shadow-soft: var(--shadow-soft);
+  --shadow-soft-lg: var(--shadow-soft-lg);
+  --shadow-soft-xl: var(--shadow-soft-xl);
+  --shadow-glow-purple: var(--shadow-glow-purple);
+  --shadow-glow-pink: var(--shadow-glow-pink);
+  --shadow-glow-green: var(--shadow-glow-green);
+  --shadow-glow-blue: var(--shadow-glow-blue);
+
+  /* Animations */
+  --animate-float: float 3s ease-in-out infinite;
+  --animate-pulse-slow: pulse-slow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
+/* Keyframe Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* Dark mode support (optional - kids app may not need it) */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #0f172a;
+    --foreground: #f1f5f9;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
   }
 }
 
+/* Base Styles */
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Utility Classes for Brand */
+.btn-primary {
+  background-color: var(--brand-pink);
+  color: white;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--brand-pink-dark);
+  box-shadow: var(--shadow-glow-pink);
+  transform: scale(1.05);
+}
+
+.btn-secondary {
+  background-color: var(--brand-purple);
+  color: white;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background-color: var(--brand-purple-dark);
+  box-shadow: var(--shadow-glow-purple);
+  transform: scale(1.05);
+}
+
+.card-hover {
+  transition: all 0.2s ease;
+}
+
+.card-hover:hover {
+  box-shadow: var(--shadow-soft-lg);
+  transform: translateY(-2px);
+}
+
+/* Subject Color Classes */
+.subject-maths {
+  --subject-color: var(--brand-orange);
+  --subject-light: var(--brand-orange-light);
+}
+
+.subject-english {
+  --subject-color: var(--brand-blue);
+  --subject-light: var(--brand-blue-light);
+}
+
+.subject-verbal {
+  --subject-color: var(--brand-purple);
+  --subject-light: var(--brand-purple-light);
+}
+
+.subject-nonverbal {
+  --subject-color: var(--brand-green);
+  --subject-light: var(--brand-green-light);
 }

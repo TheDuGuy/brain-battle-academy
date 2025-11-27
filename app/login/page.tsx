@@ -57,16 +57,16 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-xl p-10 w-full max-w-md border border-gray-100">
+    <div className="min-h-screen bg-gradient-to-br from-brand-purple-light via-brand-pink-light to-white flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.12)] p-10 w-full max-w-md border border-gray-100">
         <div className="text-center mb-8">
-          <div className="bg-gradient-to-br from-purple-500 to-pink-500 w-20 h-20 rounded-2xl flex items-center justify-center text-5xl mx-auto mb-6 shadow-lg">
-            🎓
+          <div className="bg-gradient-to-br from-brand-purple to-brand-pink w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+            <span className="text-white font-bold text-2xl">BB</span>
           </div>
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">
+          <h1 className="text-4xl font-bold text-brand-navy mb-2">
             Brain Battle Academy
           </h1>
-          <p className="text-gray-600">Master your 11+ skills</p>
+          <p className="text-text-secondary">Master your 11+ skills</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -77,7 +77,7 @@ export default function LoginPage() {
           )}
 
           <div>
-            <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
+            <label htmlFor="name" className="block text-sm font-semibold text-brand-navy mb-2">
               Username
             </label>
             <input
@@ -87,14 +87,14 @@ export default function LoginPage() {
               onChange={(e) => setName(e.target.value)}
               required
               disabled={isLoading}
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all outline-none text-lg text-gray-900 font-semibold bg-white placeholder:text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-brand-purple focus:ring-2 focus:ring-brand-purple-light transition-all outline-none text-lg text-brand-navy font-semibold bg-white placeholder:text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
               placeholder="Enter your username"
               autoFocus
             />
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2">
+            <label htmlFor="password" className="block text-sm font-semibold text-brand-navy mb-2">
               Password
             </label>
             <input
@@ -104,7 +104,7 @@ export default function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               required
               disabled={isLoading}
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all outline-none text-lg text-gray-900 font-semibold bg-white placeholder:text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-brand-purple focus:ring-2 focus:ring-brand-purple-light transition-all outline-none text-lg text-brand-navy font-semibold bg-white placeholder:text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
               placeholder="Enter your password"
             />
           </div>
@@ -112,7 +112,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={!name.trim() || !password.trim() || isLoading}
-            className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-4 rounded-xl font-bold text-lg hover:from-purple-600 hover:to-pink-600 transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-brand-pink text-white py-4 rounded-xl font-bold text-lg hover:bg-brand-pink-dark hover:shadow-[0_0_20px_rgba(232,74,138,0.3)] transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? 'Logging in...' : 'Start Learning!'}
           </button>

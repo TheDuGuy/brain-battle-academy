@@ -443,28 +443,28 @@ export default function DashboardPage() {
   if (!user) return null
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-brand-purple-light via-brand-pink-light to-white flex items-center justify-center">
         <div className="text-center">
           <div className="text-6xl mb-4">🎮</div>
-          <p className="text-xl font-semibold text-gray-700">Loading your academy...</p>
+          <p className="text-xl font-semibold text-brand-navy">Loading your academy...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-brand-purple-light via-brand-pink-light to-white">
       {/* Header */}
       <div className="bg-white border-b-2 border-gray-100 shadow-sm">
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl p-3 shadow-lg">
+              <div className="bg-gradient-to-br from-brand-purple to-brand-pink rounded-2xl p-3 shadow-lg">
                 <span className="text-4xl">{user.avatar}</span>
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-gray-800">{user.name}&apos;s Academy</h1>
-                <p className="text-gray-600">Master your 11+ skills</p>
+                <h1 className="text-3xl font-bold text-brand-navy">{user.name}&apos;s Academy</h1>
+                <p className="text-text-secondary">Master your 11+ skills</p>
               </div>
             </div>
             <div className="flex items-center gap-4">
@@ -511,7 +511,7 @@ export default function DashboardPage() {
 
         {/* Today's Mission Card */}
         <div className="mb-8">
-          <div className="bg-gradient-to-br from-purple-500 via-pink-500 to-rose-500 rounded-3xl p-8 shadow-2xl border-2 border-white/20">
+          <div className="bg-gradient-to-br from-brand-purple via-brand-pink to-brand-orange rounded-3xl p-8 shadow-2xl border-2 border-white/20">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-4">
@@ -541,7 +541,7 @@ export default function DashboardPage() {
                 </div>
 
                 <Link href="/game/quick-fire">
-                  <button className="bg-white text-purple-600 px-8 py-4 rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl hover:scale-105 transition-all">
+                  <button className="bg-white text-brand-pink px-8 py-4 rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl hover:scale-105 transition-all">
                     Continue Today&apos;s Mission →
                   </button>
                 </Link>
@@ -829,8 +829,8 @@ export default function DashboardPage() {
         {/* Recommended for Today Section */}
         <div className="mb-8">
           <div className="mb-6">
-            <h2 className="text-3xl font-bold text-gray-800 mb-2">Recommended for Today</h2>
-            <p className="text-gray-600">Start with these to complete your mission faster</p>
+            <h2 className="text-3xl font-bold text-brand-navy mb-2">Recommended for Today</h2>
+            <p className="text-text-secondary">Start with these to complete your mission faster</p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -894,10 +894,10 @@ export default function DashboardPage() {
         <div className="mb-8">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-3xl font-bold text-gray-800">Maths Games</h2>
-              <p className="text-gray-600">Choose a game to start practicing</p>
+              <h2 className="text-3xl font-bold text-brand-navy">Maths Games</h2>
+              <p className="text-text-secondary">Choose a game to start practicing</p>
             </div>
-            <div className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold">
+            <div className="bg-brand-orange-light text-brand-orange-dark px-4 py-2 rounded-full text-sm font-semibold">
               {mathsGames.length} games available
             </div>
           </div>
@@ -965,10 +965,10 @@ export default function DashboardPage() {
         <div className="mb-8">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-3xl font-bold text-gray-800">English & Comprehension</h2>
-              <p className="text-gray-600">Build your vocabulary and language skills</p>
+              <h2 className="text-3xl font-bold text-brand-navy">English & Comprehension</h2>
+              <p className="text-text-secondary">Build your vocabulary and language skills</p>
             </div>
-            <div className="bg-indigo-100 text-indigo-700 px-4 py-2 rounded-full text-sm font-semibold">
+            <div className="bg-brand-blue-light text-brand-blue-dark px-4 py-2 rounded-full text-sm font-semibold">
               {englishGames.length} games available
             </div>
           </div>
@@ -1036,10 +1036,10 @@ export default function DashboardPage() {
         <div className="mb-8">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-3xl font-bold text-gray-800">Verbal Reasoning</h2>
-              <p className="text-gray-600">Develop logical thinking and problem solving</p>
+              <h2 className="text-3xl font-bold text-brand-navy">Verbal Reasoning</h2>
+              <p className="text-text-secondary">Develop logical thinking and problem solving</p>
             </div>
-            <div className="bg-teal-100 text-teal-700 px-4 py-2 rounded-full text-sm font-semibold">
+            <div className="bg-brand-purple-light text-brand-purple-dark px-4 py-2 rounded-full text-sm font-semibold">
               {verbalReasoningGames.length} games available
             </div>
           </div>
@@ -1107,10 +1107,10 @@ export default function DashboardPage() {
         <div>
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-3xl font-bold text-gray-800">Non-Verbal Reasoning</h2>
-              <p className="text-gray-600">Master patterns, shapes and spatial skills</p>
+              <h2 className="text-3xl font-bold text-brand-navy">Non-Verbal Reasoning</h2>
+              <p className="text-text-secondary">Master patterns, shapes and spatial skills</p>
             </div>
-            <div className="bg-orange-100 text-orange-700 px-4 py-2 rounded-full text-sm font-semibold">
+            <div className="bg-brand-green-light text-brand-green-dark px-4 py-2 rounded-full text-sm font-semibold">
               {nonVerbalReasoningGames.length} games available
             </div>
           </div>
