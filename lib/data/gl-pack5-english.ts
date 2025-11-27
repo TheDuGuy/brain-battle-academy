@@ -734,5 +734,3 @@ export const glPack5EnglishAnswers = {
   // Oh, Yes, You Can!
   q43: 'N', q44: 'C', q45: 'A', q46: 'N', q47: 'N', q48: 'C', q49: 'B', q50: 'N'
 }
-
-export type { EnglishQuestion, EnglishQuestionType }
