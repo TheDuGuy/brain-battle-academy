@@ -124,9 +124,11 @@ export default function LandingPage() {
                 </div>
 
                 {/* CTA Button */}
-                <button className="w-full bg-brand-purple text-white px-6 py-3 rounded-full font-semibold text-sm hover:bg-brand-purple-dark transition-all mb-6">
-                  Continue Today&apos;s Mission →
-                </button>
+                <Link href="/login">
+                  <button className="w-full bg-brand-purple text-white px-6 py-3 rounded-full font-semibold text-sm hover:bg-brand-purple-dark transition-all mb-6">
+                    Continue Today&apos;s Mission →
+                  </button>
+                </Link>
 
                 {/* Game tiles */}
                 <div className="grid grid-cols-2 gap-3">
@@ -500,25 +502,28 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-brand-navy text-gray-400 py-12">
+      <footer className="bg-white border-t border-gray-100 py-12">
         <div className="max-w-6xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
-              <Image
-                src="/brand/brain-battle-infinity.jpg"
-                alt="Brain Battle"
-                width={32}
-                height={48}
-                className="rounded-lg"
-              />
-              <span className="text-white font-semibold">Brain Battle Academy</span>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <Image
+                  src="/brand/brain-battle-infinity.jpg"
+                  alt="Brain Battle"
+                  width={32}
+                  height={48}
+                  className="rounded-lg"
+                />
+                <span className="text-brand-navy font-semibold">Brain Battle Academy</span>
+              </div>
+              <p className="text-gray-500 text-sm">Part of the Brain Battle learning universe</p>
             </div>
             <div className="flex items-center gap-6 text-sm">
-              <a href="#" className="hover:text-white transition-colors">Privacy</a>
-              <a href="#" className="hover:text-white transition-colors">Terms</a>
+              <a href="#" className="text-gray-500 hover:text-brand-navy transition-colors">Privacy</a>
+              <a href="#" className="text-gray-500 hover:text-brand-navy transition-colors">Terms</a>
             </div>
           </div>
-          <div className="text-center md:text-left mt-6 text-sm">
+          <div className="text-center mt-8 pt-6 border-t border-gray-100 text-sm text-gray-400">
             © {currentYear} Brain Battle Academy. All rights reserved.
           </div>
         </div>
