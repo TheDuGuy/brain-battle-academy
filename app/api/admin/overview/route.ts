@@ -210,7 +210,7 @@ export async function GET(request: Request) {
         parentId: player.parentId,
         minutesThisWeek: Math.round(minutesThisWeek),
         sessionsThisWeek,
-        avgAccuracyThisWeek: Math.round(avgAccuracyThisWeek * 100),
+        avgAccuracyThisWeek: Math.round(avgAccuracyThisWeek),
         currentStreakDays,
         rewardsThisWeekPence,
         lastPlayedAt: lastPlayedAt?.toISOString() || null
@@ -219,7 +219,7 @@ export async function GET(request: Request) {
 
     // Calculate global avg accuracy (weighted by sessions)
     const globalAvgAccuracy = totalSessionsForAvg > 0
-      ? Math.round((totalAccuracy / totalSessionsForAvg) * 100)
+      ? Math.round(totalAccuracy / totalSessionsForAvg)
       : 0
 
     const response: AdminOverviewResponse = {
