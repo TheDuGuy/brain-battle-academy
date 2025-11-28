@@ -58,31 +58,31 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-brand-purple-light via-brand-pink-light to-white flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.12)] p-10 w-full max-w-md border border-gray-100">
+    <div className="min-h-screen bg-[#FDFCFB] flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl p-10 w-full max-w-md border border-gray-100">
         <div className="text-center mb-8">
           <Image
             src="/brand/brain-battle-infinity.jpg"
             alt="Brain Battle"
-            width={80}
-            height={120}
-            className="mx-auto mb-6 rounded-2xl shadow-lg"
+            width={64}
+            height={96}
+            className="mx-auto mb-4 rounded-xl"
           />
-          <h1 className="text-4xl font-bold text-brand-navy mb-2">
-            Brain Battle Academy
+          <h1 className="text-3xl font-bold text-brand-navy mb-2">
+            Brain Battle <span className="text-brand-purple">Academy</span>
           </h1>
-          <p className="text-text-secondary">Master your 11+ skills</p>
+          <p className="text-gray-500">Master your 11+ skills</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-5">
           {error && (
-            <div className="bg-red-50 border-2 border-red-300 rounded-xl p-4">
-              <p className="text-red-700 text-sm font-medium">{error}</p>
+            <div className="bg-red-50 border border-red-200 rounded-xl p-4">
+              <p className="text-red-600 text-sm font-medium">{error}</p>
             </div>
           )}
 
           <div>
-            <label htmlFor="name" className="block text-sm font-semibold text-brand-navy mb-2">
+            <label htmlFor="name" className="block text-sm font-medium text-brand-navy mb-2">
               Username
             </label>
             <input
@@ -92,14 +92,14 @@ export default function LoginPage() {
               onChange={(e) => setName(e.target.value)}
               required
               disabled={isLoading}
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-brand-purple focus:ring-2 focus:ring-brand-purple-light transition-all outline-none text-lg text-brand-navy font-semibold bg-white placeholder:text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:border-brand-purple focus:ring-2 focus:ring-brand-purple-light transition-all outline-none text-base text-brand-navy bg-white placeholder:text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
               placeholder="Enter your username"
               autoFocus
             />
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-semibold text-brand-navy mb-2">
+            <label htmlFor="password" className="block text-sm font-medium text-brand-navy mb-2">
               Password
             </label>
             <input
@@ -109,7 +109,7 @@ export default function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               required
               disabled={isLoading}
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-brand-purple focus:ring-2 focus:ring-brand-purple-light transition-all outline-none text-lg text-brand-navy font-semibold bg-white placeholder:text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:border-brand-purple focus:ring-2 focus:ring-brand-purple-light transition-all outline-none text-base text-brand-navy bg-white placeholder:text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
               placeholder="Enter your password"
             />
           </div>
@@ -117,7 +117,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={!name.trim() || !password.trim() || isLoading}
-            className="w-full bg-brand-pink text-white py-4 rounded-xl font-bold text-lg hover:bg-brand-pink-dark hover:shadow-[0_0_20px_rgba(232,74,138,0.3)] transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-brand-purple text-white py-3.5 rounded-full font-semibold text-base hover:bg-brand-purple-dark transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? 'Logging in...' : 'Start Learning!'}
           </button>
