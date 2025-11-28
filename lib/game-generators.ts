@@ -1,3 +1,25 @@
+import { glPack4MathsQuestions } from './data/gl-pack4-maths'
+import {
+  glPack4SynonymPairs,
+  glPack4WordAnalogies,
+  glPack4LetterSequences,
+  glPack4OddOneOutQuestions,
+  glPack4LogicPuzzles,
+  glPack4HiddenWords,
+  glPack4MissingLetterQuestions,
+  glPack4NumberSequences
+} from './data/gl-pack4-vr'
+import {
+  glPack6SynonymPairs,
+  glPack6WordAnalogies,
+  glPack6LetterSequences,
+  glPack6OddOneOutQuestions,
+  glPack6LogicPuzzles,
+  glPack6HiddenWords,
+  glPack6MissingLetterQuestions,
+  glPack6NumberSequences
+} from './data/gl-pack6-vr'
+
 export interface GameQuestion {
   id: string
   question: string
@@ -133,161 +155,7 @@ export function generateCalculatorDetectiveQuestion(): GameQuestion {
 export function generateQuizMasterQuestion(): GameQuestion {
   // 50% chance to use static GL Assessment style questions, 50% dynamic
   if (Math.random() < 0.5) {
-    const glQuestions = [
-      // From GL Assessment Test 5 - Maths
-      {
-        question: 'Karen, Amrit and Sam are going to share two pizzas equally between them.\nWhat fraction of a whole pizza should each of them have?',
-        answer: '⅔',
-        wrong: ['½', '¼', '⅓']
-      },
-      {
-        question: 'What number should go in the box?\n1680 + 1680 + 1680 + 1680 + 1680 = ? × 10',
-        answer: '840',
-        wrong: ['84', '336', '420']
-      },
-      {
-        question: '37 × 497 + 63 × 497 = ?',
-        answer: '49,700',
-        wrong: ['9,443', '44,730', '54,670']
-      },
-      {
-        question: 'The sum of the first four square numbers is 30.\nWhat is the sum of the first five square numbers?',
-        answer: '55',
-        wrong: ['35', '45', '65']
-      },
-      {
-        question: 'What is 1 - 0.11?',
-        answer: '0.89',
-        wrong: ['0.99', '0.09', '0.91']
-      },
-      {
-        question: 'What is the cost of eight mugs at £1.99 each?',
-        answer: '£15.92',
-        wrong: ['£15.82', '£16.92', '£14.92']
-      },
-      {
-        question: 'A repeating pattern is made of squares, triangles and circles.\nThe pattern repeats after five shapes. What fraction of all the shapes are squares?',
-        answer: '⅖',
-        wrong: ['⅓', '½', '⅕']
-      },
-      {
-        question: 'There are 816 pupils at Southfields school. There are 28 more girls than boys.\nHow many girls are there in the school?',
-        answer: '422',
-        wrong: ['394', '450', '408']
-      },
-      {
-        question: 'Josh started from a number between 1 and 5, and counted on in steps of 6.\nHe reached the number 22. What number did he start from?',
-        answer: '4',
-        wrong: ['1', '2', '3']
-      },
-      {
-        question: '789 × 36 = 28,404. What is 18 × 789?',
-        answer: '14,202',
-        wrong: ['7,101', '14,204', '15,774']
-      },
-      {
-        question: 'A serving of pasta weighs 75 grams. 100g contains 14.4g of protein.\nHow many grams of protein are there in a serving?',
-        answer: '10.8g',
-        wrong: ['9.6g', '11.2g', '14.4g']
-      },
-      {
-        question: 'What is the mean of these numbers: 4, 5, 3, 6, 6?',
-        answer: '4.8',
-        wrong: ['4', '5', '6']
-      },
-      {
-        question: 'A bicycle wheel has a circumference of 150cm.\nHow many complete revolutions must the wheel make for Fran to travel 1.5km?',
-        answer: '1000',
-        wrong: ['100', '500', '1500']
-      },
-      {
-        question: 'An electric light uses 1½ pence worth of electricity every 2 hours.\nThe light is left on from 6pm Friday until 6pm Sunday. How much does the electricity cost?',
-        answer: '36p',
-        wrong: ['24p', '30p', '48p']
-      },
-      {
-        question: 'A 2-litre bottle of fruit squash is mixed with 4 times as much water.\nHow many 125-millilitre cups can be filled with the diluted squash?',
-        answer: '80',
-        wrong: ['16', '40', '64']
-      },
-      {
-        question: 'A tin of paint costs £6 and will cover 5 square metres of wall.\nWhat is the cost of paint tins for a wall 4.5m long and 3m high?',
-        answer: '£18',
-        wrong: ['£12', '£24', '£30']
-      },
-      {
-        question: 'Which digital clock shows a quarter to four in the afternoon?',
-        answer: '15:45',
-        wrong: ['03:45', '04:45', '16:45']
-      },
-      {
-        question: 'How many pupils picked at least 1 kilo of blackberries if:\n- 2 pupils picked less than ½ kilo\n- 4 pupils picked 1 to 1½ kilos\n- 3 pupils picked 1½ to 2 kilos\n- 1 pupil picked 2 to 2½ kilos',
-        answer: '8',
-        wrong: ['4', '6', '10']
-      },
-      {
-        question: 'Five friends were all born in 1994. Their birthdays are:\nKieran: 3rd July, Haq: 31st May, Harriet: 16th June, Lisa: 10th May, Jake: 28th July.\nWho is the oldest?',
-        answer: 'Lisa',
-        wrong: ['Haq', 'Kieran', 'Jake']
-      },
-      {
-        question: 'Which of these statements is correct?\nA: 4⅓ < 4.5  B: 4½ < 4.5  C: 4⅓ > 4.5  D: 4½ > 4.5',
-        answer: 'A: 4⅓ < 4.5',
-        wrong: ['B: 4½ < 4.5', 'C: 4⅓ > 4.5', 'D: 4½ > 4.5']
-      },
-      {
-        question: 'A robot moves from point (-3, 3) to point (5, -2) along the lines of a square grid.\nWhich describes its route?',
-        answer: '8 steps East and 5 steps South',
-        wrong: ['2 steps West and 1 step South', '5 steps East and 2 steps South', '8 steps West and 5 steps North']
-      },
-      {
-        question: 'Work out the name of this 2D shape from the clues:\n1. It has four sides\n2. It has four right angles\n3. The diagonals do NOT cross at right angles',
-        answer: 'rectangle',
-        wrong: ['square', 'rhombus', 'kite']
-      },
-      {
-        question: 'All of Bulu\'s 2D shape\'s sides are the same length.\nWhich of these CANNOT be Bulu\'s shape?',
-        answer: 'a rectangle',
-        wrong: ['an equilateral triangle', 'a square', 'a rhombus']
-      },
-      {
-        question: 'Which of these is equal to one million?',
-        answer: 'Number of millimetres in a kilometre',
-        wrong: ['Number of centimetres in a kilometre', 'Number of grams in a kilogram', 'Number of millilitres in a litre']
-      },
-      {
-        question: 'Akira wants to calculate the cost of: two teas (99p each), one coffee (99p), two sandwiches (£1.99 each), and three apples (49p each).\nWhich calculation is correct?',
-        answer: '3 × £1 + 2 × £2 + 3 × 50p - 4p',
-        wrong: ['3 × £1 + 2 × £2 + 3 × 50p + 4p', '3 × £1 + 2 × £2 + 3 × 50p + 8p', '3 × £1 + 2 × £2 + 3 × 50p - 8p']
-      },
-      {
-        question: 'The numbers on opposite faces of a number cube always add up to 7.\nWhich net will fold up to make a valid number cube? (Top row: 5, then 3,6,5,1 below, then 2,4 at bottom)',
-        answer: 'B',
-        wrong: ['A', 'C', 'D']
-      },
-      {
-        question: 'Mrs Rai buys 5 metres of ribbon and cuts off 3 pieces.\nEach piece is t cm long. She has n cm left.\nWhich expression equals n?',
-        answer: '500 - 3t',
-        wrong: ['5 - 3t', '3t - 500', '2t']
-      },
-      {
-        question: 'Cinema tickets for adults cost £A. Children\'s tickets are half price.\nIn pounds, how much do the tickets cost for x adults and y children?',
-        answer: 'xA + ½yA',
-        wrong: ['x + yA', 'xA + ½y', '½x + yA']
-      },
-      {
-        question: 'N → ÷4 → +1 → ×2 → ?\nWhich of these is the number that Nilesh ended up with?',
-        answer: 'N/2 + 2',
-        wrong: ['N/8 + 2', 'N/4 + 2', 'N/4 + 1']
-      },
-      {
-        question: 'Pat draws a square with corners at (5,5), (7,5), (7,7) and (5,7).\nWhich point is inside Pat\'s square?',
-        answer: '(6,6)',
-        wrong: ['(4,4)', '(6,8)', '(8,8)']
-      }
-    ]
-
-    const selected = glQuestions[Math.floor(Math.random() * glQuestions.length)]
+    const selected = glPack4MathsQuestions[Math.floor(Math.random() * glPack4MathsQuestions.length)]
     const options = [selected.answer, ...selected.wrong]
     const shuffled = options.sort(() => Math.random() - 0.5)
 
@@ -585,7 +453,7 @@ export function generateVocabularyQuestion(): GameQuestion {
 // Synonym Finder with skill-based difficulty
 export function generateSynonymQuestion(skillLevel: number = 1): GameQuestion {
   // Level 1: Short, high-frequency words
-  const level1Pairs = [
+  const baseLevel1Pairs = [
     { word: 'happy', synonym: 'joyful', wrong: ['sad', 'angry', 'tired'] },
     { word: 'big', synonym: 'large', wrong: ['tiny', 'narrow', 'short'] },
     { word: 'fast', synonym: 'quick', wrong: ['slow', 'heavy', 'tall'] },
@@ -636,6 +504,13 @@ export function generateSynonymQuestion(skillLevel: number = 1): GameQuestion {
     { word: 'break', synonym: 'shatter', wrong: ['fix', 'mend', 'repair'] },
     { word: 'pull', synonym: 'drag', wrong: ['push', 'shove', 'press'] },
     { word: 'hide', synonym: 'conceal', wrong: ['show', 'reveal', 'display'] }
+  ]
+
+  // Combine base pairs with imported GL pack pairs for level 1
+  const level1Pairs = [
+    ...baseLevel1Pairs,
+    ...glPack4SynonymPairs,
+    ...glPack6SynonymPairs
   ]
 
   // Level 2: Slightly less common / longer words
@@ -1329,7 +1204,7 @@ export function generateComprehensionQuestion(): GameQuestion {
 // Word Analogies with skill-based difficulty
 export function generateAnalogyQuestion(skillLevel: number = 1): GameQuestion {
   // Level 1: Simple, concrete relationships
-  const level1Analogies = [
+  const baseLevel1Analogies = [
     {
       question: 'Hot is to Cold as Day is to...',
       answer: 'Night',
@@ -1398,6 +1273,12 @@ export function generateAnalogyQuestion(skillLevel: number = 1): GameQuestion {
   ]
 
   // Level 2: Common relationships, slightly more abstract
+  const level1Analogies = [
+    ...baseLevel1Analogies,
+    ...glPack4WordAnalogies,
+    ...glPack6WordAnalogies
+  ]
+
   const level2Analogies = [
     {
       question: 'Doctor is to Hospital as Teacher is to...',
@@ -1555,17 +1436,42 @@ export function generateAnalogyQuestion(skillLevel: number = 1): GameQuestion {
     }
   ]
 
-  // Select based on skill level
-  let analogies
-  if (skillLevel <= 1) {
-    analogies = level1Analogies
-  } else if (skillLevel === 2) {
-    analogies = level2Analogies
-  } else {
-    analogies = level3Analogies
-  }
+  // Combine all levels for better variety, weighted by skill level
+  // At lower levels, favor easier questions but still include harder ones occasionally
+  const allAnalogies = [...level1Analogies, ...level2Analogies, ...level3Analogies]
 
-  const selected = analogies[Math.floor(Math.random() * analogies.length)]
+  let selected
+  if (skillLevel <= 1) {
+    // 70% level 1, 25% level 2, 5% level 3
+    const rand = Math.random()
+    if (rand < 0.70) {
+      selected = level1Analogies[Math.floor(Math.random() * level1Analogies.length)]
+    } else if (rand < 0.95) {
+      selected = level2Analogies[Math.floor(Math.random() * level2Analogies.length)]
+    } else {
+      selected = level3Analogies[Math.floor(Math.random() * level3Analogies.length)]
+    }
+  } else if (skillLevel === 2) {
+    // 30% level 1, 50% level 2, 20% level 3
+    const rand = Math.random()
+    if (rand < 0.30) {
+      selected = level1Analogies[Math.floor(Math.random() * level1Analogies.length)]
+    } else if (rand < 0.80) {
+      selected = level2Analogies[Math.floor(Math.random() * level2Analogies.length)]
+    } else {
+      selected = level3Analogies[Math.floor(Math.random() * level3Analogies.length)]
+    }
+  } else {
+    // 10% level 1, 30% level 2, 60% level 3
+    const rand = Math.random()
+    if (rand < 0.10) {
+      selected = level1Analogies[Math.floor(Math.random() * level1Analogies.length)]
+    } else if (rand < 0.40) {
+      selected = level2Analogies[Math.floor(Math.random() * level2Analogies.length)]
+    } else {
+      selected = level3Analogies[Math.floor(Math.random() * level3Analogies.length)]
+    }
+  }
   const options = [selected.answer, ...selected.wrong]
   const shuffled = options.sort(() => Math.random() - 0.5)
 
@@ -1580,7 +1486,7 @@ export function generateAnalogyQuestion(skillLevel: number = 1): GameQuestion {
 
 // Letter Sequences
 export function generateSequenceQuestion(): GameQuestion {
-  const sequences = [
+  const baseSequences = [
     {
       question: 'What comes next in the sequence?\nA, C, E, G, ?',
       answer: 'I',
@@ -1827,6 +1733,12 @@ export function generateSequenceQuestion(): GameQuestion {
       wrong: ['R', 'T', 'P'],
       explanation: 'Backwards by 2 each time (-2)'
     }
+  ]
+
+  const sequences = [
+    ...baseSequences,
+    ...glPack4LetterSequences,
+    ...glPack6LetterSequences
   ]
 
   const selected = sequences[Math.floor(Math.random() * sequences.length)]
@@ -2110,7 +2022,7 @@ export function generateCodeQuestion(): GameQuestion {
 
 // Odd One Out
 export function generateOddOneOutQuestion(): GameQuestion {
-  const questions = [
+  const baseQuestions = [
     {
       question: 'Which word is the odd one out?',
       answer: 'Carrot',
@@ -2353,6 +2265,12 @@ export function generateOddOneOutQuestion(): GameQuestion {
     }
   ]
 
+  const questions = [
+    ...baseQuestions,
+    ...glPack4OddOneOutQuestions,
+    ...glPack6OddOneOutQuestions
+  ]
+
   const selected = questions[Math.floor(Math.random() * questions.length)]
   const options = [selected.answer, ...selected.wrong]
   const shuffled = options.sort(() => Math.random() - 0.5)
@@ -2369,7 +2287,7 @@ export function generateOddOneOutQuestion(): GameQuestion {
 
 // Logic Puzzles
 export function generateLogicPuzzleQuestion(): GameQuestion {
-  const puzzles = [
+  const basePuzzles = [
     {
       question: 'Tom is taller than Sarah. Sarah is taller than Mike. Who is the shortest?',
       answer: 'Mike',
@@ -2572,6 +2490,12 @@ export function generateLogicPuzzleQuestion(): GameQuestion {
     }
   ]
 
+  const puzzles = [
+    ...basePuzzles,
+    ...glPack4LogicPuzzles,
+    ...glPack6LogicPuzzles
+  ]
+
   const selected = puzzles[Math.floor(Math.random() * puzzles.length)]
   const options = [selected.answer, ...selected.wrong]
   const shuffled = options.sort(() => Math.random() - 0.5)
@@ -2587,7 +2511,7 @@ export function generateLogicPuzzleQuestion(): GameQuestion {
 
 // Hidden Words (GL Assessment Style) - Find a word hidden across adjacent words
 export function generateHiddenWordQuestion(): GameQuestion {
-  const questions = [
+  const baseHiddenWordQuestions = [
     // GL Assessment Style Hidden Words - 3 letter words
     {
       question: 'Find a THREE letter word hidden across TWO words:\nThe dog ATE his dinner.',
@@ -2832,6 +2756,14 @@ export function generateHiddenWordQuestion(): GameQuestion {
       wrong: ['dru', 'mak', 'lou'],
       explanation: 'drUM Makes - UMM'
     }
+  ]
+
+  const questions = [
+    ...baseHiddenWordQuestions,
+    ...glPack4HiddenWords,
+    ...glPack4MissingLetterQuestions,
+    ...glPack6HiddenWords,
+    ...glPack6MissingLetterQuestions
   ]
 
   const selected = questions[Math.floor(Math.random() * questions.length)]
@@ -3158,7 +3090,7 @@ export function generateShapePatternQuestion(skillLevel: number = 1): GameQuesti
 
 // Number Sequences (Non-Verbal)
 export function generateNumberSequenceQuestion(): GameQuestion {
-  const sequences = [
+  const baseSequences = [
     {
       question: 'What comes next?\n2, 4, 6, 8, ?',
       answer: '10',
@@ -3399,6 +3331,12 @@ export function generateNumberSequenceQuestion(): GameQuestion {
       wrong: ['0', '0.5', '10'],
       explanation: 'Divide by 10 each time (÷10)'
     }
+  ]
+
+  const sequences = [
+    ...baseSequences,
+    ...glPack4NumberSequences,
+    ...glPack6NumberSequences
   ]
 
   const selected = sequences[Math.floor(Math.random() * sequences.length)]
