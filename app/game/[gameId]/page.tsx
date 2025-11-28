@@ -2,6 +2,7 @@
 
 import { useEffect, useState, use } from 'react'
 import { useRouter } from 'next/navigation'
+import Confetti from 'react-confetti'
 import { getGameTheme } from '@/lib/game-themes'
 import {
   generateQuickFireQuestion,
@@ -664,9 +665,19 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
     const stars = Math.floor((sessionStats.accuracy / 100) * 3)
     const perfectScore = sessionStats.correct === sessionStats.total && sessionStats.total === 15
     const wrongAnswers = questions.filter(q => q.isCorrect === false)
+    const showConfetti = sessionStats.accuracy >= 80 // Show confetti for 80%+ accuracy
 
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center p-4">
+        {showConfetti && (
+          <Confetti
+            width={typeof window !== 'undefined' ? window.innerWidth : 1200}
+            height={typeof window !== 'undefined' ? window.innerHeight : 800}
+            recycle={false}
+            numberOfPieces={perfectScore ? 500 : 200}
+            gravity={0.3}
+          />
+        )}
         <div className="bg-white rounded-2xl shadow-xl p-10 max-w-2xl w-full border border-gray-100 max-h-[90vh] overflow-y-auto">
           <div className="text-center">
             <div className="text-7xl mb-4">🎉</div>

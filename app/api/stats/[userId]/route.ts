@@ -52,6 +52,28 @@ export async function GET(
 
     const currentStreak = streakRecord?.currentStreak || 0
 
+    // Get today's play time (in minutes)
+    const todayStart = new Date()
+    todayStart.setHours(0, 0, 0, 0)
+
+    const todaySessions = await prisma.session.findMany({
+      where: {
+        userId,
+        startTime: {
+          gte: todayStart
+        }
+      }
+    })
+
+    // Calculate total play time in minutes
+    const todayPlayTimeMs = todaySessions.reduce((total, session) => {
+      if (session.endTime) {
+        return total + (session.endTime.getTime() - session.startTime.getTime())
+      }
+      return total
+    }, 0)
+    const todayPlayTimeMinutes = Math.round(todayPlayTimeMs / 60000)
+
     // Get recent sessions
     const recentSessions = await prisma.session.findMany({
       where: { userId },
@@ -114,6 +136,7 @@ export async function GET(
       totalEarnings,
       weekEarnings,
       currentStreak,
+      todayPlayTimeMinutes,
       totalGames,
       avgAccuracy,
       recentSessions,

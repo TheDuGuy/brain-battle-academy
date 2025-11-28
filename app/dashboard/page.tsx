@@ -382,7 +382,7 @@ function formatGameName(gameType: string): string {
 
 export default function DashboardPage() {
   const [user, setUser] = useState<User | null>(null)
-  const [stats, setStats] = useState({ totalStars: 0, earnings: 0, weekEarnings: 0, streak: 0 })
+  const [stats, setStats] = useState({ totalStars: 0, earnings: 0, weekEarnings: 0, streak: 0, todayPlayTime: 0 })
   const [leaderboard, setLeaderboard] = useState<PlayerStats[]>([])
   const [gameProgress, setGameProgress] = useState<GameProgress[]>([])
   const [lastPerfectScore, setLastPerfectScore] = useState<LastPerfectScore | null>(null)
@@ -421,7 +421,8 @@ export default function DashboardPage() {
           totalStars: statsData.totalStars || 0,
           earnings: statsData.totalEarnings || 0,
           weekEarnings: statsData.weekEarnings || 0,
-          streak: statsData.currentStreak || 0
+          streak: statsData.currentStreak || 0,
+          todayPlayTime: statsData.todayPlayTimeMinutes || 0
         })
         setGameProgress(statsData.gameProgress || [])
         setLastPerfectScore(statsData.lastPerfectScore || null)
@@ -518,16 +519,41 @@ export default function DashboardPage() {
                   <span className="text-5xl">🎯</span>
                   <h2 className="text-3xl font-bold text-white">Today&apos;s Mission</h2>
                 </div>
-                <p className="text-white/95 text-lg mb-6">
-                  Play 15 minutes today
-                </p>
+
+                {/* Play Time Progress */}
+                <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-4 mb-6">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-2xl">⏱️</span>
+                      <span className="text-white font-semibold">Time played today</span>
+                    </div>
+                    <span className="text-white font-bold text-xl">
+                      {stats.todayPlayTime} / 15 min
+                    </span>
+                  </div>
+                  <div className="w-full bg-white/30 rounded-full h-4">
+                    <div
+                      className={`h-4 rounded-full transition-all duration-500 ${
+                        stats.todayPlayTime >= 15
+                          ? 'bg-green-400'
+                          : 'bg-white'
+                      }`}
+                      style={{ width: `${Math.min((stats.todayPlayTime / 15) * 100, 100)}%` }}
+                    ></div>
+                  </div>
+                  {stats.todayPlayTime >= 15 && (
+                    <p className="text-green-200 text-sm mt-2 font-medium">
+                      ✓ Daily goal complete! Keep playing to improve your skills.
+                    </p>
+                  )}
+                </div>
 
                 <div className="space-y-3 mb-6">
                   {/* Daily play status */}
                   <div className="flex items-center gap-3">
-                    <span className="text-2xl">{stats.streak > 0 ? '✅' : '⭕'}</span>
+                    <span className="text-2xl">{stats.todayPlayTime >= 15 ? '✅' : '⭕'}</span>
                     <span className="text-white/90 font-medium">
-                      {stats.streak > 0 ? 'Daily play done' : 'Play 15 minutes today'}
+                      {stats.todayPlayTime >= 15 ? 'Daily play done!' : `Play ${15 - stats.todayPlayTime} more minutes today`}
                     </span>
                   </div>
 
@@ -545,7 +571,6 @@ export default function DashboardPage() {
                     Continue Today&apos;s Mission →
                   </button>
                 </Link>
-                {/* TODO: Smart game selection based on user's weaknesses/progress */}
               </div>
             </div>
           </div>
