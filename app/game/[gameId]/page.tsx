@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, use } from 'react'
+import { useEffect, useState, use, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Confetti from 'react-confetti'
 import { getGameTheme } from '@/lib/game-themes'
@@ -214,8 +214,16 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
   const [showAnswer, setShowAnswer] = useState(false)
   const [isWrong, setIsWrong] = useState(false)
   const [gameStartTime, setGameStartTime] = useState<Date | null>(null)
-  const [earnedRewards, setEarnedRewards] = useState<any[]>([])
+  const [earnedRewards, setEarnedRewards] = useState<{ type: string; amountPence: number; reason: string }[]>([])
   const router = useRouter()
+
+  // Ref to always have access to the latest questions state
+  const questionsRef = useRef<GameQuestion[]>([])
+
+  // Keep the ref in sync with state
+  useEffect(() => {
+    questionsRef.current = questions
+  }, [questions])
 
   const hasTimer = gameId === 'quick-fire'
 
@@ -230,40 +238,40 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
 
   // Fetch skill level when user is set
   useEffect(() => {
+    const fetchSkillLevel = async () => {
+      if (!user) return
+
+      try {
+        // Determine subject based on gameId
+        const subject = gameId.includes('quick-fire') || gameId.includes('calculator') ||
+                       gameId.includes('quiz') || gameId.includes('fraction') ||
+                       gameId.includes('power') || gameId.includes('problem')
+                       ? 'MATHS'
+                       : gameId.includes('vocabulary') || gameId.includes('synonym') ||
+                         gameId.includes('grammar') || gameId.includes('spelling') ||
+                         gameId.includes('comprehension')
+                       ? 'ENGLISH'
+                       : gameId.includes('word') || gameId.includes('letter') ||
+                         gameId.includes('code') || gameId.includes('odd') ||
+                         gameId.includes('logic')
+                       ? 'VR'
+                       : 'NVR'
+
+        const res = await fetch(`/api/progress/${user.id}/${gameId}/${subject}`)
+        if (res.ok) {
+          const data = await res.json()
+          setSkillLevel(data.skillLevel || 1)
+        }
+      } catch (error) {
+        console.error('Failed to fetch skill level:', error)
+        setSkillLevel(1) // Default to level 1 on error
+      }
+    }
+
     if (user && gameId) {
       fetchSkillLevel()
     }
   }, [user, gameId])
-
-  const fetchSkillLevel = async () => {
-    if (!user) return
-
-    try {
-      // Determine subject based on gameId
-      const subject = gameId.includes('quick-fire') || gameId.includes('calculator') ||
-                     gameId.includes('quiz') || gameId.includes('fraction') ||
-                     gameId.includes('power') || gameId.includes('problem')
-                     ? 'MATHS'
-                     : gameId.includes('vocabulary') || gameId.includes('synonym') ||
-                       gameId.includes('grammar') || gameId.includes('spelling') ||
-                       gameId.includes('comprehension')
-                     ? 'ENGLISH'
-                     : gameId.includes('word') || gameId.includes('letter') ||
-                       gameId.includes('code') || gameId.includes('odd') ||
-                       gameId.includes('logic')
-                     ? 'VR'
-                     : 'NVR'
-
-      const res = await fetch(`/api/progress/${user.id}/${gameId}/${subject}`)
-      if (res.ok) {
-        const data = await res.json()
-        setSkillLevel(data.skillLevel || 1)
-      }
-    } catch (error) {
-      console.error('Failed to fetch skill level:', error)
-      setSkillLevel(1) // Default to level 1 on error
-    }
-  }
 
   // Load saved progress when user is set
   useEffect(() => {
@@ -271,7 +279,9 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
       const savedProgress = localStorage.getItem(`game_progress_${user.id}_${gameId}`)
       if (savedProgress) {
         const progress = JSON.parse(savedProgress)
-        setQuestions(progress.questions || [])
+        const loadedQuestions = progress.questions || []
+        setQuestions(loadedQuestions)
+        questionsRef.current = loadedQuestions // Also update the ref
         setCurrentIndex(progress.currentIndex || 0)
         setScore(progress.score || 0)
         setLives(progress.lives || 3)
@@ -369,6 +379,7 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
   const startGame = () => {
     const initialQuestions = Array.from({ length: 15 }, generateQuestion)
     setQuestions(initialQuestions)
+    questionsRef.current = initialQuestions // Initialize the ref with the questions
     setGameStarted(true)
     setGameStartTime(new Date())
     setTimeLeft(60)
@@ -401,13 +412,16 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
     const currentQuestion = questions[currentIndex]
     const isCorrect = userAnswer.trim().toLowerCase() === currentQuestion.answer.toString().toLowerCase()
 
-    const updatedQuestions = [...questions]
-    updatedQuestions[currentIndex] = {
-      ...currentQuestion,
-      userAnswer,
-      isCorrect
-    }
+    // Use the ref to get the latest questions state and update it
+    const latestQuestions = questionsRef.current
+    const updatedQuestions = latestQuestions.map((q, idx) =>
+      idx === currentIndex
+        ? { ...q, userAnswer, isCorrect }
+        : q
+    )
     setQuestions(updatedQuestions)
+    // Also update the ref immediately so subsequent calls have the latest data
+    questionsRef.current = updatedQuestions
 
     if (isCorrect) {
       setScore(score + 1)
@@ -419,7 +433,7 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
         if (currentIndex < questions.length - 1) {
           setCurrentIndex(currentIndex + 1)
         } else {
-          endGame()
+          endGame(updatedQuestions)
         }
       }, 500)
     } else {
@@ -429,7 +443,7 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
 
       if (lives - 1 <= 0) {
         setTimeout(() => {
-          endGame()
+          endGame(updatedQuestions)
         }, 2000)
       }
     }
@@ -439,24 +453,50 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
     const currentQuestion = questions[currentIndex]
     const isCorrect = option === currentQuestion.answer.toString()
 
-    const updatedQuestions = [...questions]
-    updatedQuestions[currentIndex] = {
-      ...currentQuestion,
-      userAnswer: option,
-      isCorrect
+    // Debug: log the answer check
+    if (process.env.NODE_ENV === 'development') {
+      console.log('🎯 Answer Check:', {
+        questionIndex: currentIndex,
+        selectedOption: option,
+        correctAnswer: currentQuestion.answer,
+        isCorrect,
+        currentScore: score
+      })
     }
+
+    // Use the ref to get the latest questions state and update it
+    const latestQuestions = questionsRef.current
+    const updatedQuestions = latestQuestions.map((q, idx) =>
+      idx === currentIndex
+        ? { ...q, userAnswer: option, isCorrect }
+        : q
+    )
     setQuestions(updatedQuestions)
+    // Also update the ref immediately so subsequent calls have the latest data
+    questionsRef.current = updatedQuestions
 
     if (isCorrect) {
-      setScore(score + 1)
+      const newScore = score + 1
+      setScore(newScore)
       setShowAnswer(false)
       setIsWrong(false)
+
+      // Debug: log before endGame
+      if (currentIndex === questions.length - 1 && process.env.NODE_ENV === 'development') {
+        const correctCount = updatedQuestions.filter(q => q.isCorrect === true).length
+        console.log('🏁 Final Question Answered:', {
+          newScore,
+          correctCountFromArray: correctCount,
+          allQuestions: updatedQuestions.map((q, i) => ({ i, isCorrect: q.isCorrect }))
+        })
+      }
 
       setTimeout(() => {
         if (currentIndex < questions.length - 1) {
           setCurrentIndex(currentIndex + 1)
         } else {
-          endGame()
+          // Pass the updated questions array to ensure all answers are counted
+          endGame(updatedQuestions)
         }
       }, 800)
     } else {
@@ -467,7 +507,7 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
 
       if (lives - 1 <= 0) {
         setTimeout(() => {
-          endGame()
+          endGame(updatedQuestions)
         }, 2000)
       }
     }
@@ -481,7 +521,8 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
     if (currentIndex < questions.length - 1) {
       setCurrentIndex(currentIndex + 1)
     } else {
-      endGame()
+      // Pass current questions state to avoid stale closure issues
+      endGame(questions)
     }
   }
 
@@ -495,15 +536,34 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
     }
   }
 
-  const endGame = async () => {
+  const endGame = async (finalQuestions?: typeof questions) => {
     setGameEnded(true)
     const gameEndTime = new Date()
 
-    // FIX: Use questions.length (total in game) not just answered questions
-    const total = questions.length
-    const correct = questions.filter(q => q.isCorrect).length
-    const accuracy = total > 0 ? (correct / total) * 100 : 0
+    // Use passed questions to avoid stale closure issue
+    const questionsToUse = finalQuestions || questions
+    const total = questionsToUse.length
+    // Count questions that were explicitly marked correct (isCorrect === true)
+    const correct = questionsToUse.filter(q => q.isCorrect === true).length
+    const accuracy = total > 0 ? Math.round((correct / total) * 1000) / 10 : 0 // Round to 1 decimal
     const stars = Math.floor((accuracy / 100) * 3)
+
+    // Debug: log the questions array to see isCorrect values
+    if (process.env.NODE_ENV === 'development') {
+      console.log('📊 End Game Debug:', {
+        totalQuestions: total,
+        correctCount: correct,
+        calculatedAccuracy: accuracy,
+        questionsSource: finalQuestions ? 'passed' : 'state',
+        questionDetails: questionsToUse.map((q, i) => ({
+          index: i,
+          isCorrect: q.isCorrect,
+          userAnswer: q.userAnswer,
+          correctAnswer: q.answer
+        }))
+      })
+    }
+
     setSessionStats({ correct, total, accuracy })
 
     // Save session to database

@@ -74,7 +74,7 @@ function normalizeSubject(subject: string): 'MATHS' | 'ENGLISH' | 'VR' | 'NVR' {
 /**
  * Compute per-subject stats from sessions
  */
-function computeSubjectStats(sessions: any[]): SubjectStats[] {
+function computeSubjectStats(sessions: { subject: string; duration?: number | null; accuracy?: number | null }[]): SubjectStats[] {
   const subjectMap = new Map<string, { minutes: number; count: number; totalAccuracy: number }>()
 
   for (const session of sessions) {

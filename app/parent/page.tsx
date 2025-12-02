@@ -143,7 +143,7 @@ export default function ParentDashboard() {
           <div className="flex items-center justify-between mb-4">
             <div>
               <h1 className="text-4xl font-bold text-gray-800 mb-2">Parent Dashboard</h1>
-              <p className="text-gray-600 text-lg">Overview of your children's 11+ practice</p>
+              <p className="text-gray-600 text-lg">Overview of your children&apos;s 11+ practice</p>
             </div>
             <button
               onClick={() => router.push('/dashboard')}

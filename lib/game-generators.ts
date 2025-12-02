@@ -1,25 +1,3 @@
-import { glPack4MathsQuestions } from './data/gl-pack4-maths'
-import {
-  glPack4SynonymPairs,
-  glPack4WordAnalogies,
-  glPack4LetterSequences,
-  glPack4OddOneOutQuestions,
-  glPack4LogicPuzzles,
-  glPack4HiddenWords,
-  glPack4MissingLetterQuestions,
-  glPack4NumberSequences
-} from './data/gl-pack4-vr'
-import {
-  glPack6SynonymPairs,
-  glPack6WordAnalogies,
-  glPack6LetterSequences,
-  glPack6OddOneOutQuestions,
-  glPack6LogicPuzzles,
-  glPack6HiddenWords,
-  glPack6MissingLetterQuestions,
-  glPack6NumberSequences
-} from './data/gl-pack6-vr'
-
 export interface GameQuestion {
   id: string
   question: string
@@ -155,7 +133,312 @@ export function generateCalculatorDetectiveQuestion(): GameQuestion {
 export function generateQuizMasterQuestion(): GameQuestion {
   // 50% chance to use static GL Assessment style questions, 50% dynamic
   if (Math.random() < 0.5) {
-    const selected = glPack4MathsQuestions[Math.floor(Math.random() * glPack4MathsQuestions.length)]
+    const glQuestions = [
+      // From GL Assessment Test 5 - Maths
+      {
+        question: 'Karen, Amrit and Sam are going to share two pizzas equally between them.\nWhat fraction of a whole pizza should each of them have?',
+        answer: '⅔',
+        wrong: ['½', '¼', '⅓']
+      },
+      {
+        question: 'What number should go in the box?\n1680 + 1680 + 1680 + 1680 + 1680 = ? × 10',
+        answer: '840',
+        wrong: ['84', '336', '420']
+      },
+      {
+        question: '37 × 497 + 63 × 497 = ?',
+        answer: '49,700',
+        wrong: ['9,443', '44,730', '54,670']
+      },
+      {
+        question: 'The sum of the first four square numbers is 30.\nWhat is the sum of the first five square numbers?',
+        answer: '55',
+        wrong: ['35', '45', '65']
+      },
+      {
+        question: 'What is 1 - 0.11?',
+        answer: '0.89',
+        wrong: ['0.99', '0.09', '0.91']
+      },
+      {
+        question: 'What is the cost of eight mugs at £1.99 each?',
+        answer: '£15.92',
+        wrong: ['£15.82', '£16.92', '£14.92']
+      },
+      {
+        question: 'A repeating pattern is made of squares, triangles and circles.\nThe pattern repeats after five shapes. What fraction of all the shapes are squares?',
+        answer: '⅖',
+        wrong: ['⅓', '½', '⅕']
+      },
+      {
+        question: 'There are 816 pupils at Southfields school. There are 28 more girls than boys.\nHow many girls are there in the school?',
+        answer: '422',
+        wrong: ['394', '450', '408']
+      },
+      {
+        question: 'Josh started from a number between 1 and 5, and counted on in steps of 6.\nHe reached the number 22. What number did he start from?',
+        answer: '4',
+        wrong: ['1', '2', '3']
+      },
+      {
+        question: '789 × 36 = 28,404. What is 18 × 789?',
+        answer: '14,202',
+        wrong: ['7,101', '14,204', '15,774']
+      },
+      {
+        question: 'A serving of pasta weighs 75 grams. 100g contains 14.4g of protein.\nHow many grams of protein are there in a serving?',
+        answer: '10.8g',
+        wrong: ['9.6g', '11.2g', '14.4g']
+      },
+      {
+        question: 'What is the mean of these numbers: 4, 5, 3, 6, 6?',
+        answer: '4.8',
+        wrong: ['4', '5', '6']
+      },
+      {
+        question: 'A bicycle wheel has a circumference of 150cm.\nHow many complete revolutions must the wheel make for Fran to travel 1.5km?',
+        answer: '1000',
+        wrong: ['100', '500', '1500']
+      },
+      {
+        question: 'An electric light uses 1½ pence worth of electricity every 2 hours.\nThe light is left on from 6pm Friday until 6pm Sunday. How much does the electricity cost?',
+        answer: '36p',
+        wrong: ['24p', '30p', '48p']
+      },
+      {
+        question: 'A 2-litre bottle of fruit squash is mixed with 4 times as much water.\nHow many 125-millilitre cups can be filled with the diluted squash?',
+        answer: '80',
+        wrong: ['16', '40', '64']
+      },
+      {
+        question: 'A tin of paint costs £6 and will cover 5 square metres of wall.\nWhat is the cost of paint tins for a wall 4.5m long and 3m high?',
+        answer: '£18',
+        wrong: ['£12', '£24', '£30']
+      },
+      {
+        question: 'Which digital clock shows a quarter to four in the afternoon?',
+        answer: '15:45',
+        wrong: ['03:45', '04:45', '16:45']
+      },
+      {
+        question: 'How many pupils picked at least 1 kilo of blackberries if:\n- 2 pupils picked less than ½ kilo\n- 4 pupils picked 1 to 1½ kilos\n- 3 pupils picked 1½ to 2 kilos\n- 1 pupil picked 2 to 2½ kilos',
+        answer: '8',
+        wrong: ['4', '6', '10']
+      },
+      {
+        question: 'Five friends were all born in 1994. Their birthdays are:\nKieran: 3rd July, Haq: 31st May, Harriet: 16th June, Lisa: 10th May, Jake: 28th July.\nWho is the oldest?',
+        answer: 'Lisa',
+        wrong: ['Haq', 'Kieran', 'Jake']
+      },
+      {
+        question: 'Which of these statements is correct?\nA: 4⅓ < 4.5  B: 4½ < 4.5  C: 4⅓ > 4.5  D: 4½ > 4.5',
+        answer: 'A: 4⅓ < 4.5',
+        wrong: ['B: 4½ < 4.5', 'C: 4⅓ > 4.5', 'D: 4½ > 4.5']
+      },
+      {
+        question: 'A robot moves from point (-3, 3) to point (5, -2) along the lines of a square grid.\nWhich describes its route?',
+        answer: '8 steps East and 5 steps South',
+        wrong: ['2 steps West and 1 step South', '5 steps East and 2 steps South', '8 steps West and 5 steps North']
+      },
+      {
+        question: 'Work out the name of this 2D shape from the clues:\n1. It has four sides\n2. It has four right angles\n3. The diagonals do NOT cross at right angles',
+        answer: 'rectangle',
+        wrong: ['square', 'rhombus', 'kite']
+      },
+      {
+        question: 'All of Bulu\'s 2D shape\'s sides are the same length.\nWhich of these CANNOT be Bulu\'s shape?',
+        answer: 'a rectangle',
+        wrong: ['an equilateral triangle', 'a square', 'a rhombus']
+      },
+      {
+        question: 'Which of these is equal to one million?',
+        answer: 'Number of millimetres in a kilometre',
+        wrong: ['Number of centimetres in a kilometre', 'Number of grams in a kilogram', 'Number of millilitres in a litre']
+      },
+      {
+        question: 'Akira wants to calculate the cost of: two teas (99p each), one coffee (99p), two sandwiches (£1.99 each), and three apples (49p each).\nWhich calculation is correct?',
+        answer: '3 × £1 + 2 × £2 + 3 × 50p - 4p',
+        wrong: ['3 × £1 + 2 × £2 + 3 × 50p + 4p', '3 × £1 + 2 × £2 + 3 × 50p + 8p', '3 × £1 + 2 × £2 + 3 × 50p - 8p']
+      },
+      {
+        question: 'The numbers on opposite faces of a number cube always add up to 7.\nWhich net will fold up to make a valid number cube? (Top row: 5, then 3,6,5,1 below, then 2,4 at bottom)',
+        answer: 'B',
+        wrong: ['A', 'C', 'D']
+      },
+      {
+        question: 'Mrs Rai buys 5 metres of ribbon and cuts off 3 pieces.\nEach piece is t cm long. She has n cm left.\nWhich expression equals n?',
+        answer: '500 - 3t',
+        wrong: ['5 - 3t', '3t - 500', '2t']
+      },
+      {
+        question: 'Cinema tickets for adults cost £A. Children\'s tickets are half price.\nIn pounds, how much do the tickets cost for x adults and y children?',
+        answer: 'xA + ½yA',
+        wrong: ['x + yA', 'xA + ½y', '½x + yA']
+      },
+      {
+        question: 'N → ÷4 → +1 → ×2 → ?\nWhich of these is the number that Nilesh ended up with?',
+        answer: 'N/2 + 2',
+        wrong: ['N/8 + 2', 'N/4 + 2', 'N/4 + 1']
+      },
+      {
+        question: 'Pat draws a square with corners at (5,5), (7,5), (7,7) and (5,7).\nWhich point is inside Pat\'s square?',
+        answer: '(6,6)',
+        wrong: ['(4,4)', '(6,8)', '(8,8)']
+      },
+      // From GL Assessment Test 4 (Pack 11D) - Maths
+      {
+        question: '3209\nWhat is this number in words?',
+        answer: 'Three thousand two hundred and nine',
+        wrong: ['Three thousand two hundred and ninety', 'Thirty-two thousand and nine', 'Three thousand and twenty-nine']
+      },
+      {
+        question: 'Which of these words does NOT have a horizontal line of symmetry?\nBOB, HOD, TOT, KID, COOK',
+        answer: 'KID',
+        wrong: ['BOB', 'HOD', 'TOT']
+      },
+      {
+        question: 'How should the time of 6.30 in the evening be written in 24-hour format?',
+        answer: '18:30',
+        wrong: ['16:30', '20:30', '06:30']
+      },
+      {
+        question: 'Carmel draws a plan of her school using a scale of 1 cm to 5 m.\nOn the plan the playground is 6 cm long. What is the real length?',
+        answer: '30 m',
+        wrong: ['6 m', '11 m', '45 m']
+      },
+      {
+        question: 'One display cabinet holds 38 DVDs.\nHow many cabinets will be needed to hold 646 DVDs?',
+        answer: '17',
+        wrong: ['16', '18', '19']
+      },
+      {
+        question: 'Which answer is NOT a square number?\n16, 9, 25, 12, 36',
+        answer: '12',
+        wrong: ['16', '25', '36']
+      },
+      {
+        question: '525 raffle tickets were sold by 25 pupils.\nOn average, how many tickets did each pupil sell?',
+        answer: '21',
+        wrong: ['19', '20', '31']
+      },
+      {
+        question: 'In the school chess club, there are 22 boys and 33 girls.\nWhat fraction of the club is made up of girls?',
+        answer: '⅗',
+        wrong: ['⅖', '½', '⅔']
+      },
+      {
+        question: 'Lucy\'s activities cost: Gymnastics £1.65, Brownies £1, Piano £2.10, Flute £1.50, German £3.50.\nWhat is the total cost each week?',
+        answer: '£9.75',
+        wrong: ['£9.15', '£9.65', '£10.75']
+      },
+      {
+        question: 'In a parallelogram, angle y measures 110°.\nWhat is the size of angle x (adjacent to y)?',
+        answer: '70°',
+        wrong: ['60°', '80°', '110°']
+      },
+      {
+        question: 'In a survey of 85 people, every fifth person had a pierced ear.\nWhich calculation shows how many people had a pierced ear?',
+        answer: '85 × ⅕',
+        wrong: ['0.5 × 85', '5 ÷ 85', '85 × 0.25']
+      },
+      {
+        question: 'Rucksacks are being packed into trunks. Each trunk holds 9 rucksacks.\nHow many trunks are needed for 79 rucksacks?',
+        answer: '9',
+        wrong: ['8', '7', '10']
+      },
+      {
+        question: 'Jonathan gets £2.50 pocket money each week. His brother David gets half as much.\nIf David saves all his pocket money for a whole year, how much will he have?',
+        answer: '£65',
+        wrong: ['£52', '£130', '£1.25']
+      },
+      {
+        question: 'Ian is now twice his sister\'s age. In 4 years\' time Ian will be 16.\nHow old will his sister be then?',
+        answer: '10',
+        wrong: ['8', '12', '6']
+      },
+      {
+        question: 'Which one of these is the smallest?\n3.6%, 1/25, 0.05, 3.49%, 1/15',
+        answer: '1/25',
+        wrong: ['3.6%', '0.05', '3.49%']
+      },
+      {
+        question: 'Leon is going on a school holiday which costs £180.\nHe pays £15 each week and has paid £75 so far. How many more weekly payments?',
+        answer: '7',
+        wrong: ['5', '6', '12']
+      },
+      {
+        question: 'The ratio of cars to vans in a car park is 14:3.\nIf there are 15 vans, how many cars are there?',
+        answer: '70',
+        wrong: ['56', '42', '29']
+      },
+      {
+        question: 'How many of these shapes have at least one pair of parallel sides?\nRegular hexagon, regular pentagon, rhombus, isosceles triangle, trapezium',
+        answer: '4',
+        wrong: ['2', '3', '5']
+      },
+      {
+        question: 'There are 66 seats on a bus. At stops: +12, +15, +19 and -4, +23 and -8 people.\nHow many empty seats are there now?',
+        answer: '9',
+        wrong: ['5', '10', '11']
+      },
+      {
+        question: 'A spinner has numbers 1, 4, 9, 18, 22, 30.\nWhat is the probability it lands on an even number?',
+        answer: '⅔',
+        wrong: ['½', '⅓', '⅚']
+      },
+      {
+        question: 'The perimeter of a rectangle is 18 cm.\nWhat could be the area of the rectangle?',
+        answer: '18 cm²',
+        wrong: ['24 cm²', '81 cm²', '36 cm²']
+      },
+      {
+        question: 'Which answer is different to the others?\n0.25 of 100, 25% of 100, ⅖ of 100, 0.4 of 100, ¼ of 100',
+        answer: '0.4 of 100',
+        wrong: ['0.25 of 100', '25% of 100', '¼ of 100']
+      },
+      {
+        question: 'A map of Germany is drawn to a scale of 1:750,000.\nWhat real distance is represented by 1 cm on the map?',
+        answer: '7.5 km',
+        wrong: ['700 km', '750 km', '75 km']
+      },
+      {
+        question: 'Two sisters eat Weetbisks. A box has 24 biscuits. Georgina eats m per day, Jennifer eats n.\nAfter 4 days, 4 are left. Which is correct?',
+        answer: 'm = 3 and n = 2',
+        wrong: ['m = 2 and n = 3', 'm = 4 and n = 2', 'm = 1 and n = 4']
+      },
+      {
+        question: 'Large cans hold 330 ml, small cans hold 150 ml.\nKerry drank: 1 large, 2 small, 1 small. Sam drank half of Kerry\'s total. How much did Sam drink?',
+        answer: '390 ml',
+        wrong: ['450 ml', '480 ml', '630 ml']
+      },
+      {
+        question: 'St Gregory\'s School Book Fair sold 250 books at £2.99 each.\nWhat was the total amount spent?',
+        answer: '£747.50',
+        wrong: ['£74.75', '£209.30', '£2093.00']
+      },
+      {
+        question: 'Patrick is 4 feet 11 inches tall.\nWhich is closest to his height in metres?',
+        answer: '1.5 m',
+        wrong: ['1.3 m', '1.4 m', '1.7 m']
+      },
+      {
+        question: 'Sam gets x pounds each month from parents and y pounds each week from paper round.\nHow much does Sam get in one year, in pounds?',
+        answer: '12x + 52y',
+        wrong: ['64(x + y)', '52x + 12y', '12(x + y)']
+      },
+      {
+        question: 'Daily fruit bill: 4kg apples (50p/kg), 6kg oranges (75p/kg), 5kg bananas (45p/kg), 3kg grapes (£1.20/kg), 2kg strawberries (90p/kg).\nTotal daily bill?',
+        answer: '£14.15',
+        wrong: ['£3.80', '£20.00', '£38.00']
+      },
+      {
+        question: 'Which answer has the greatest value?\n20% of 220, ½ of 220, ²⁄₁₀ of 220, 10², 0.2 of 220',
+        answer: '½ of 220',
+        wrong: ['20% of 220', '10²', '0.2 of 220']
+      }
+    ]
+
+    const selected = glQuestions[Math.floor(Math.random() * glQuestions.length)]
     const options = [selected.answer, ...selected.wrong]
     const shuffled = options.sort(() => Math.random() - 0.5)
 
@@ -453,7 +736,7 @@ export function generateVocabularyQuestion(): GameQuestion {
 // Synonym Finder with skill-based difficulty
 export function generateSynonymQuestion(skillLevel: number = 1): GameQuestion {
   // Level 1: Short, high-frequency words
-  const baseLevel1Pairs = [
+  const level1Pairs = [
     { word: 'happy', synonym: 'joyful', wrong: ['sad', 'angry', 'tired'] },
     { word: 'big', synonym: 'large', wrong: ['tiny', 'narrow', 'short'] },
     { word: 'fast', synonym: 'quick', wrong: ['slow', 'heavy', 'tall'] },
@@ -503,14 +786,15 @@ export function generateSynonymQuestion(skillLevel: number = 1): GameQuestion {
     { word: 'scary', synonym: 'frightening', wrong: ['safe', 'comforting', 'calm'] },
     { word: 'break', synonym: 'shatter', wrong: ['fix', 'mend', 'repair'] },
     { word: 'pull', synonym: 'drag', wrong: ['push', 'shove', 'press'] },
-    { word: 'hide', synonym: 'conceal', wrong: ['show', 'reveal', 'display'] }
-  ]
-
-  // Combine base pairs with imported GL pack pairs for level 1
-  const level1Pairs = [
-    ...baseLevel1Pairs,
-    ...glPack4SynonymPairs,
-    ...glPack6SynonymPairs
+    { word: 'hide', synonym: 'conceal', wrong: ['show', 'reveal', 'display'] },
+    // GL Assessment Pack 4 VR - Synonyms (Q66-72)
+    { word: 'dirty', synonym: 'unclean', wrong: ['soap', 'dust', 'bath'] },
+    { word: 'hog', synonym: 'pig', wrong: ['sty', 'tractor', 'farm'] },
+    { word: 'burn', synonym: 'scorch', wrong: ['flame', 'time', 'dusk'] },
+    { word: 'alter', synonym: 'change', wrong: ['error', 'size', 'shape'] },
+    { word: 'act', synonym: 'perform', wrong: ['stage', 'music', 'theatre'] },
+    { word: 'cost', synonym: 'price', wrong: ['money', 'coin', 'label'] },
+    { word: 'dodge', synonym: 'avoid', wrong: ['hit', 'trick', 'secret'] }
   ]
 
   // Level 2: Slightly less common / longer words
@@ -1204,7 +1488,7 @@ export function generateComprehensionQuestion(): GameQuestion {
 // Word Analogies with skill-based difficulty
 export function generateAnalogyQuestion(skillLevel: number = 1): GameQuestion {
   // Level 1: Simple, concrete relationships
-  const baseLevel1Analogies = [
+  const level1Analogies = [
     {
       question: 'Hot is to Cold as Day is to...',
       answer: 'Night',
@@ -1269,16 +1553,81 @@ export function generateAnalogyQuestion(skillLevel: number = 1): GameQuestion {
       question: 'Apple is to Fruit as Carrot is to...',
       answer: 'Vegetable',
       wrong: ['Orange', 'Food', 'Garden']
+    },
+    // From GL Assessment Pack 4 (Test 11D) - VR
+    {
+      question: 'May is to Month as Friday is to...',
+      answer: 'Day',
+      wrong: ['End', 'Thursday', 'Week']
+    },
+    {
+      question: 'Key is to Lock as String is to...',
+      answer: 'Violin',
+      wrong: ['Ball', 'Wind', 'Piano']
+    },
+    {
+      question: 'Wing is to Bird as Leg is to...',
+      answer: 'Walk',
+      wrong: ['Arm', 'Fly', 'Black']
+    },
+    {
+      question: 'Restore is to Fix as Break is to...',
+      answer: 'Damage',
+      wrong: ['Holiday', 'New', 'Shop']
+    },
+    {
+      question: 'Leave is to Go as Arrive is to...',
+      answer: 'Come',
+      wrong: ['On', 'Off', 'Door']
+    },
+    {
+      question: 'Hard is to Firm as Easy is to...',
+      answer: 'Simple',
+      wrong: ['Soft', 'Chair', 'Difficult']
+    },
+    {
+      question: 'Danger is to Risk as Safety is to...',
+      answer: 'Security',
+      wrong: ['Sit', 'Belt', 'Knife']
+    },
+    {
+      question: 'Dirty is to Unclean as Soap is to...',
+      answer: 'Bath',
+      wrong: ['Dust', 'Drudge', 'Wash']
+    },
+    {
+      question: 'Sty is to Pig as Farm is to...',
+      answer: 'Tractor',
+      wrong: ['Hog', 'Bacon', 'Animal']
+    },
+    {
+      question: 'Flame is to Burn as Dusk is to...',
+      answer: 'Dark',
+      wrong: ['Time', 'Scorch', 'Light']
+    },
+    {
+      question: 'Error is to Alter as Change is to...',
+      answer: 'Shape',
+      wrong: ['Size', 'Dress', 'Same']
+    },
+    {
+      question: 'Stage is to Act as Theatre is to...',
+      answer: 'Play',
+      wrong: ['Music', 'Perform', 'Watch']
+    },
+    {
+      question: 'Money is to Cost as Coin is to...',
+      answer: 'Price',
+      wrong: ['Label', 'Buy', 'Spend']
+    },
+    {
+      question: 'Hit is to Dodge as Avoid is to...',
+      answer: 'Secret',
+      wrong: ['Trick', 'Shy', 'Hide']
     }
   ]
 
   // Level 2: Common relationships, slightly more abstract
-  const level1Analogies = [
-    ...baseLevel1Analogies,
-    ...glPack4WordAnalogies,
-    ...glPack6WordAnalogies
-  ]
-
   const level2Analogies = [
     {
       question: 'Doctor is to Hospital as Teacher is to...',
@@ -1486,7 +1835,7 @@ export function generateAnalogyQuestion(skillLevel: number = 1): GameQuestion {
 
 // Letter Sequences
 export function generateSequenceQuestion(): GameQuestion {
-  const baseSequences = [
+  const sequences = [
     {
       question: 'What comes next in the sequence?\nA, C, E, G, ?',
       answer: 'I',
@@ -1732,13 +2081,50 @@ export function generateSequenceQuestion(): GameQuestion {
       answer: 'Q',
       wrong: ['R', 'T', 'P'],
       explanation: 'Backwards by 2 each time (-2)'
+    },
+    // GL Assessment Pack 4 VR - Letter Sequence Analogies (Q37-43)
+    {
+      question: 'HI is to KL as NO is to ?',
+      answer: 'QR',
+      wrong: ['PQ', 'RS', 'OP'],
+      explanation: 'Add 3 to each letter: H+3=K, I+3=L; so N+3=Q, O+3=R'
+    },
+    {
+      question: 'AB is to DE as GH is to ?',
+      answer: 'JK',
+      wrong: ['IJ', 'KL', 'HI'],
+      explanation: 'Add 3 to each letter: A+3=D, B+3=E; so G+3=J, H+3=K'
+    },
+    {
+      question: 'ZY is to XW as VU is to ?',
+      answer: 'TS',
+      wrong: ['ST', 'UT', 'RQ'],
+      explanation: 'Subtract 2 from each letter: Z-2=X, Y-2=W; so V-2=T, U-2=S'
+    },
+    {
+      question: 'CF is to IL as OR is to ?',
+      answer: 'UX',
+      wrong: ['TW', 'VY', 'SV'],
+      explanation: 'Add 6 to each letter: C+6=I, F+6=L; so O+6=U, R+6=X'
+    },
+    {
+      question: 'ZW is to TQ as NK is to ?',
+      answer: 'HE',
+      wrong: ['GD', 'IF', 'JG'],
+      explanation: 'Subtract 6 from each letter: Z-6=T, W-6=Q; so N-6=H, K-6=E'
+    },
+    {
+      question: 'CD is to GH as KL is to ?',
+      answer: 'OP',
+      wrong: ['MN', 'NP', 'PQ'],
+      explanation: 'Add 4 to each letter: C+4=G, D+4=H; so K+4=O, L+4=P'
+    },
+    {
+      question: 'AD is to GJ as MP is to ?',
+      answer: 'SV',
+      wrong: ['RU', 'TW', 'QT'],
+      explanation: 'Add 6 to each letter: A+6=G, D+6=J; so M+6=S, P+6=V'
     }
-  ]
-
-  const sequences = [
-    ...baseSequences,
-    ...glPack4LetterSequences,
-    ...glPack6LetterSequences
   ]
 
   const selected = sequences[Math.floor(Math.random() * sequences.length)]
@@ -2022,7 +2408,7 @@ export function generateCodeQuestion(): GameQuestion {
 
 // Odd One Out
 export function generateOddOneOutQuestion(): GameQuestion {
-  const baseQuestions = [
+  const questions = [
     {
       question: 'Which word is the odd one out?',
       answer: 'Carrot',
@@ -2262,13 +2648,92 @@ export function generateOddOneOutQuestion(): GameQuestion {
       answer: 'Volcano',
       wrong: ['Mountain', 'Hill', 'Valley'],
       explanation: 'Volcano can erupt, the others are passive landforms'
+    },
+    // GL Assessment Pack 4 VR - Odd One Out (Q44-50)
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Sea',
+      wrong: ['Country', 'Town', 'Village'],
+      explanation: 'Sea is a body of water, the others are types of settlements'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'River',
+      wrong: ['Country', 'Town', 'Village'],
+      explanation: 'River is a body of water, the others are types of settlements'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Run',
+      wrong: ['Coach', 'Bus', 'Train'],
+      explanation: 'Run is an action/verb, the others are vehicles'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Swim',
+      wrong: ['Coach', 'Bus', 'Train'],
+      explanation: 'Swim is an action/verb, the others are vehicles'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Table',
+      wrong: ['Chair', 'Sofa', 'Bench'],
+      explanation: 'Table is not for sitting, the others are seating furniture'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Bed',
+      wrong: ['Chair', 'Sofa', 'Bench'],
+      explanation: 'Bed is for lying down, the others are for sitting'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Top',
+      wrong: ['Leg', 'Chest', 'Head'],
+      explanation: 'Top is a position word, the others are body parts'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Under',
+      wrong: ['Leg', 'Chest', 'Head'],
+      explanation: 'Under is a position word, the others are body parts'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Red',
+      wrong: ['Lemon', 'Melon', 'Banana'],
+      explanation: 'Red is a colour, the others are fruits'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Blue',
+      wrong: ['Lemon', 'Melon', 'Banana'],
+      explanation: 'Blue is a colour, the others are fruits'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Spade',
+      wrong: ['Dig', 'Cultivate', 'Grow'],
+      explanation: 'Spade is a noun (tool), the others are gardening verbs'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Bulb',
+      wrong: ['Dig', 'Cultivate', 'Grow'],
+      explanation: 'Bulb is a noun (plant part), the others are gardening verbs'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Angry',
+      wrong: ['Triangle', 'Square', 'Cross'],
+      explanation: 'Angry is an emotion/feeling, the others are shapes'
+    },
+    {
+      question: 'Which word is the odd one out?',
+      answer: 'Feeling',
+      wrong: ['Triangle', 'Square', 'Cross'],
+      explanation: 'Feeling is an emotion, the others are shapes'
     }
-  ]
-
-  const questions = [
-    ...baseQuestions,
-    ...glPack4OddOneOutQuestions,
-    ...glPack6OddOneOutQuestions
   ]
 
   const selected = questions[Math.floor(Math.random() * questions.length)]
@@ -2287,7 +2752,7 @@ export function generateOddOneOutQuestion(): GameQuestion {
 
 // Logic Puzzles
 export function generateLogicPuzzleQuestion(): GameQuestion {
-  const basePuzzles = [
+  const puzzles = [
     {
       question: 'Tom is taller than Sarah. Sarah is taller than Mike. Who is the shortest?',
       answer: 'Mike',
@@ -2487,13 +2952,33 @@ export function generateLogicPuzzleQuestion(): GameQuestion {
       question: 'Peter lives further from school than Quinn. Quinn lives further than Ruby. Who lives closest?',
       answer: 'Ruby',
       wrong: ['Peter', 'Quinn', 'Cannot tell']
+    },
+    // From GL Assessment Pack 4 (Test 11D) - VR Logic Puzzles
+    {
+      question: 'James, Rajeesh and Callum go to the park every afternoon.\nThere are swings, a slide and a climbing frame.\nJames likes swings best, Callum prefers the climbing frame and slide.\nWhich statement MUST be true?',
+      answer: 'Callum likes the swings least',
+      wrong: ['Rajeesh likes the slide best', 'James plays on swings in the morning', 'Rajeesh and Callum never go on swings']
+    },
+    {
+      question: 'Malcolm, Mohammed, Lucy, Sally and Robin all have pets.\nMalcolm, Mohammed and Robin each have a dog.\nMalcolm has a cat. Sally has a rabbit and snake.\nMohammed also has a snake. Lucy and Robin have a parrot each.\nWho keeps the least pets?',
+      answer: 'Lucy',
+      wrong: ['Malcolm', 'Robin', 'Sally']
+    },
+    {
+      question: 'Five children are in a queue. Amy is behind Ben. Charlie is in front of Ben.\nDaniel is behind Amy. Who is at the back of the queue?',
+      answer: 'Daniel',
+      wrong: ['Amy', 'Ben', 'Charlie']
+    },
+    {
+      question: 'In a race, Tom finished before Sarah. Sarah finished before James.\nMike finished after James but before Lisa. Who came third?',
+      answer: 'James',
+      wrong: ['Tom', 'Sarah', 'Mike']
+    },
+    {
+      question: 'All the children in Class 5 have a pet. Sam is in Class 5.\nSome children in Class 5 have a dog. What can we definitely say about Sam?',
+      answer: 'Sam has a pet',
+      wrong: ['Sam has a dog', 'Sam does not have a dog', 'Sam has two pets']
     }
-  ]
-
-  const puzzles = [
-    ...basePuzzles,
-    ...glPack4LogicPuzzles,
-    ...glPack6LogicPuzzles
   ]
 
   const selected = puzzles[Math.floor(Math.random() * puzzles.length)]
@@ -2511,7 +2996,7 @@ export function generateLogicPuzzleQuestion(): GameQuestion {
 
 // Hidden Words (GL Assessment Style) - Find a word hidden across adjacent words
 export function generateHiddenWordQuestion(): GameQuestion {
-  const baseHiddenWordQuestions = [
+  const questions = [
     // GL Assessment Style Hidden Words - 3 letter words
     {
       question: 'Find a THREE letter word hidden across TWO words:\nThe dog ATE his dinner.',
@@ -2755,15 +3240,93 @@ export function generateHiddenWordQuestion(): GameQuestion {
       answer: 'umm',
       wrong: ['dru', 'mak', 'lou'],
       explanation: 'drUM Makes - UMM'
+    },
+    // GL Assessment Pack 4 VR - Hidden Words (Q58-64)
+    {
+      question: 'Find a FOUR letter word hidden across TWO words:\nShe is our team\'s best player.',
+      answer: 'sour',
+      wrong: ['team', 'best', 'play'],
+      explanation: 'iS OUR - SOUR is hidden across "is our"'
+    },
+    {
+      question: 'Find a FOUR letter word hidden across TWO words:\nI\'ll be home at four o\'clock.',
+      answer: 'meat',
+      wrong: ['home', 'four', 'beam'],
+      explanation: 'hoME AT - MEAT is hidden across "home at"'
+    },
+    {
+      question: 'Find a FOUR letter word hidden across TWO words:\nThere is some risk in flying.',
+      answer: 'skin',
+      wrong: ['risk', 'some', 'flew'],
+      explanation: 'riSK IN - SKIN is hidden across "risk in"'
+    },
+    {
+      question: 'Find a FOUR letter word hidden across TWO words:\nCoat the wall with emulsion paint.',
+      answer: 'them',
+      wrong: ['wall', 'coat', 'pain'],
+      explanation: 'wiTH EMulsion - THEM is hidden across "with emulsion"'
+    },
+    {
+      question: 'Find a FOUR letter word hidden across TWO words:\nCan I pay my fee later?',
+      answer: 'feel',
+      wrong: ['late', 'pays', 'free'],
+      explanation: 'FEE Later - FEEL is hidden across "fee later"'
+    },
+    {
+      question: 'Find a FOUR letter word hidden across TWO words:\nCan you jump over your gate?',
+      answer: 'very',
+      wrong: ['jump', 'gate', 'your'],
+      explanation: 'oVER Your - VERY is hidden across "over your"'
+    },
+    {
+      question: 'Find a FOUR letter word hidden across TWO words:\nThis carpet is very badly stained.',
+      answer: 'scar',
+      wrong: ['very', 'carp', 'stai'],
+      explanation: 'thiS CARpet - SCAR is hidden across "this carpet"'
+    },
+    // GL Assessment Pack 4 VR - Missing Letters in Words (Q51-57)
+    {
+      question: 'What THREE letter word completes this sentence?\nThe boy kicked S___ES along the street.',
+      answer: 'ton',
+      wrong: ['one', 'ide', 'ome'],
+      explanation: 'S + TON + ES = STONES'
+    },
+    {
+      question: 'What THREE letter word completes this sentence?\nThe doctor asked how she was F___ING today.',
+      answer: 'eel',
+      wrong: ['all', 'ail', 'ind'],
+      explanation: 'F + EEL + ING = FEELING'
+    },
+    {
+      question: 'What THREE letter word completes this sentence?\nThey will be ___INNING the race soon.',
+      answer: 'beg',
+      wrong: ['win', 'run', 'fin'],
+      explanation: 'BEG + INNING = BEGINNING'
+    },
+    {
+      question: 'What THREE letter word completes this sentence?\nHis hair looked N___R after it was cut.',
+      answer: 'eat',
+      wrong: ['ice', 'ear', 'eed'],
+      explanation: 'N + EAT + R = NEATER'
+    },
+    {
+      question: 'What THREE letter word completes this sentence?\nThey collected for the church A___L.',
+      answer: 'pea',
+      wrong: ['ppl', 'ble', 'ide'],
+      explanation: 'A + PP + EA + L = APPEAL (with PEA removed from the middle)'
+    },
+    {
+      question: 'What THREE letter word completes this sentence?\nThe girl FR___ED when her mother would not let her go.',
+      answer: 'own',
+      wrong: ['ied', 'oze', 'eak'],
+      explanation: 'FR + OWN + ED = FROWNED'
+    },
+    {
+      question: 'What THREE letter word completes this sentence?\nWhen the bees S___MED it was quite frightening.',
+      answer: 'war',
+      wrong: ['wam', 'torm', 'eem'],
+      explanation: 'S + WAR + MED = SWARMED'
     }
-  ]
-
-  const questions = [
-    ...baseHiddenWordQuestions,
-    ...glPack4HiddenWords,
-    ...glPack4MissingLetterQuestions,
-    ...glPack6HiddenWords,
-    ...glPack6MissingLetterQuestions
   ]
 
   const selected = questions[Math.floor(Math.random() * questions.length)]
@@ -3090,7 +3653,7 @@ export function generateShapePatternQuestion(skillLevel: number = 1): GameQuesti
 
 // Number Sequences (Non-Verbal)
 export function generateNumberSequenceQuestion(): GameQuestion {
-  const baseSequences = [
+  const sequences = [
     {
       question: 'What comes next?\n2, 4, 6, 8, ?',
       answer: '10',
@@ -3330,13 +3893,44 @@ export function generateNumberSequenceQuestion(): GameQuestion {
       answer: '0.1',
       wrong: ['0', '0.5', '10'],
       explanation: 'Divide by 10 each time (÷10)'
+    },
+    // GL Assessment Pack 4 VR - Number Sequences (Q73-78)
+    {
+      question: 'What comes next?\n21, 16, 28, 23, ?',
+      answer: '35',
+      wrong: ['30', '28', '18'],
+      explanation: 'Two interleaved sequences: odd positions (21, 28, 35) add 7; even positions (16, 23, 30) add 7'
+    },
+    {
+      question: 'What comes next?\n47, 41, 36, 32, ?',
+      answer: '29',
+      wrong: ['28', '30', '27'],
+      explanation: 'Subtract decreasing amounts: -6, -5, -4, -3'
+    },
+    {
+      question: 'What comes next?\n18, 23, 21, 26, 24, 29, ?',
+      answer: '27',
+      wrong: ['34', '31', '25'],
+      explanation: 'Alternating pattern: +5, -2, +5, -2, +5, -2'
+    },
+    {
+      question: 'What comes next?\n38, 19, 32, 26, 26, 33, ?',
+      answer: '20',
+      wrong: ['40', '27', '19'],
+      explanation: 'Two interleaved sequences: odd positions (38, 32, 26, 20) subtract 6; even positions (19, 26, 33) add 7'
+    },
+    {
+      question: 'What comes next?\n41, 25, 39, 27, 36, 30, ?',
+      answer: '32',
+      wrong: ['33', '27', '35'],
+      explanation: 'Two interleaved sequences: odd positions (41, 39, 36, 32) decrease; even positions (25, 27, 30) increase'
+    },
+    {
+      question: 'What comes next?\n3, 5, 9, 17, 33, ?',
+      answer: '65',
+      wrong: ['49', '66', '57'],
+      explanation: 'Differences double each time: +2, +4, +8, +16, +32'
     }
-  ]
-
-  const sequences = [
-    ...baseSequences,
-    ...glPack4NumberSequences,
-    ...glPack6NumberSequences
   ]
 
   const selected = sequences[Math.floor(Math.random() * sequences.length)]

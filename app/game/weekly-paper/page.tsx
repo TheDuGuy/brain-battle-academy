@@ -166,7 +166,7 @@ export default function WeeklyPaperChallenge() {
                 </li>
                 <li className="flex items-start">
                   <span className="text-2xl mr-3">🔒</span>
-                  <span><strong>Unlocked by 7-day streak</strong> - you've earned this!</span>
+                  <span><strong>Unlocked by 7-day streak</strong> - you&apos;ve earned this!</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-2xl mr-3">⭐</span>
