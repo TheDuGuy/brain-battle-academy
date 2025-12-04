@@ -145,7 +145,13 @@ function isDayCompleted(daySummary: DaySummary): boolean {
 }
 
 /**
- * Calculate current streak: consecutive completed days ending today
+ * Calculate current streak: consecutive completed days
+ *
+ * Streak rules:
+ * - If today is completed, count backwards from today
+ * - If today is NOT completed but yesterday was, count backwards from yesterday
+ *   (player still has until end of today to continue their streak)
+ * - If neither today nor yesterday are completed, streak is 0 (streak broken)
  */
 function calculateStreak(allSessions: SessionInput[], newSession: SessionInput): number {
   // Combine all sessions including the new one
@@ -162,19 +168,30 @@ function calculateStreak(allSessions: SessionInput[], newSession: SessionInput):
     return 0
   }
 
-  // Today must be completed for a streak to exist
   const today = getCalendarDay(new Date())
-  const todayKey = today.toISOString()
+  const yesterday = toLondonTime(today).minus({ days: 1 }).startOf('day').toJSDate()
   const mostRecentCompletedDay = getCalendarDay(completedDays[0])
 
-  // If most recent completed day is not today, streak is 0
-  if (mostRecentCompletedDay.getTime() !== today.getTime()) {
+  // Determine the starting point for streak calculation
+  let streakStartDay: Date
+  let initialStreak: number
+
+  if (mostRecentCompletedDay.getTime() === today.getTime()) {
+    // Today is completed - count from today
+    streakStartDay = today
+    initialStreak = 1
+  } else if (mostRecentCompletedDay.getTime() === yesterday.getTime()) {
+    // Yesterday was completed, today not yet - streak still valid, count from yesterday
+    streakStartDay = yesterday
+    initialStreak = 1
+  } else {
+    // Neither today nor yesterday completed - streak is broken
     return 0
   }
 
-  // Count consecutive days backwards from today
-  let streak = 1
-  let expectedPrevDay = toLondonTime(today).minus({ days: 1 }).startOf('day')
+  // Count consecutive days backwards from the starting point
+  let streak = initialStreak
+  let expectedPrevDay = toLondonTime(streakStartDay).minus({ days: 1 }).startOf('day')
 
   for (let i = 1; i < completedDays.length; i++) {
     const dayDate = getCalendarDay(completedDays[i])
@@ -365,4 +382,65 @@ export function getWeekStartDate(date: Date): Date {
  */
 export function getCalendarDayStart(date: Date): Date {
   return getCalendarDay(date)
+}
+
+/**
+ * Calculate streak from existing sessions only (for dashboard display)
+ * This is similar to calculateStreak but doesn't require a new session
+ */
+export function calculateCurrentStreak(sessions: SessionInput[]): number {
+  if (sessions.length === 0) {
+    return 0
+  }
+
+  const dayMap = groupSessionsByDay(sessions)
+
+  // Get completed days sorted descending (most recent first)
+  const completedDays = Array.from(dayMap.values())
+    .filter(isDayCompleted)
+    .map(d => d.date)
+    .sort((a, b) => b.getTime() - a.getTime())
+
+  if (completedDays.length === 0) {
+    return 0
+  }
+
+  const today = getCalendarDay(new Date())
+  const yesterday = toLondonTime(today).minus({ days: 1 }).startOf('day').toJSDate()
+  const mostRecentCompletedDay = getCalendarDay(completedDays[0])
+
+  // Determine the starting point for streak calculation
+  let streakStartDay: Date
+  let initialStreak: number
+
+  if (mostRecentCompletedDay.getTime() === today.getTime()) {
+    // Today is completed - count from today
+    streakStartDay = today
+    initialStreak = 1
+  } else if (mostRecentCompletedDay.getTime() === yesterday.getTime()) {
+    // Yesterday was completed, today not yet - streak still valid, count from yesterday
+    streakStartDay = yesterday
+    initialStreak = 1
+  } else {
+    // Neither today nor yesterday completed - streak is broken
+    return 0
+  }
+
+  // Count consecutive days backwards from the starting point
+  let streak = initialStreak
+  let expectedPrevDay = toLondonTime(streakStartDay).minus({ days: 1 }).startOf('day')
+
+  for (let i = 1; i < completedDays.length; i++) {
+    const dayDate = getCalendarDay(completedDays[i])
+
+    if (dayDate.getTime() === expectedPrevDay.toJSDate().getTime()) {
+      streak++
+      expectedPrevDay = expectedPrevDay.minus({ days: 1 })
+    } else {
+      // Gap found, streak ends
+      break
+    }
+  }
+
+  return streak
 }

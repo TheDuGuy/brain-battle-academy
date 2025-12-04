@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { MIN_QUESTIONS_FOR_ACCURACY_REWARD } from '@/lib/rewards'
+import { MIN_QUESTIONS_FOR_ACCURACY_REWARD, calculateCurrentStreak, type SessionInput, type SubjectType } from '@/lib/rewards'
 
 // GET /api/stats/[userId] - Get user stats for dashboard
 export async function GET(
@@ -39,13 +39,32 @@ export async function GET(
       .filter(r => r.weekStart.getTime() === weekStart.getTime())
       .reduce((sum, r) => sum + r.amountPence, 0)
 
-    // Get current streak - look for most recent streak record (not just current week)
-    const streakRecord = await prisma.streak.findFirst({
-      where: { userId },
-      orderBy: { lastPlayedDate: 'desc' }
+    // Calculate current streak from actual session data (last 30 days)
+    // This is more accurate than relying on stored streak values
+    const thirtyDaysAgo = new Date()
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+
+    const sessionsForStreak = await prisma.session.findMany({
+      where: {
+        userId,
+        completed: true,
+        endTime: { gte: thirtyDaysAgo }
+      },
+      orderBy: { endTime: 'desc' }
     })
 
-    const currentStreak = streakRecord?.currentStreak || 0
+    // Convert to SessionInput format for streak calculation
+    const sessionInputs: SessionInput[] = sessionsForStreak.map(s => ({
+      userId: s.userId,
+      gameId: s.gameType,
+      subject: s.subject as SubjectType,
+      startedAt: s.startTime,
+      endedAt: s.endTime || s.startTime,
+      totalQuestions: s.totalQuestions,
+      correctAnswers: s.correctAnswers
+    }))
+
+    const currentStreak = calculateCurrentStreak(sessionInputs)
 
     // Get today's play time (in minutes)
     const todayStart = new Date()
