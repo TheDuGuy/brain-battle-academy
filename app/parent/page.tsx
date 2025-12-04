@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import SwitchToChildButton from '@/components/SwitchToChildButton'
+import AnimatedCoin from '@/components/AnimatedCoin'
 
 // ============================================================================
 // Types
@@ -104,9 +105,9 @@ export default function ParentDashboard() {
     return mins > 0 ? `${hours}h ${mins}m` : `${hours}h`
   }
 
-  // Format pence to pounds
-  const formatPounds = (pence: number): string => {
-    return `£${(pence / 100).toFixed(2)}`
+  // Format coins (DB stores as "pence" for backwards compatibility, but now represents coins)
+  const formatCoins = (coins: number): string => {
+    return `${coins} coins`
   }
 
   if (loading) {
@@ -190,12 +191,12 @@ export default function ParentDashboard() {
 
             {/* Rewards */}
             <div className="bg-white rounded-2xl p-6 shadow-lg">
-              <div className="text-4xl mb-3">💰</div>
+              <div className="mb-3"><AnimatedCoin size="lg" /></div>
               <div className="text-3xl font-bold text-gray-800 mb-1">
-                {formatPounds(overview.family.totalRewardsThisWeekPence)}
+                {formatCoins(overview.family.totalRewardsThisWeekPence)}
               </div>
-              <div className="text-gray-600 font-medium">Rewards This Week</div>
-              <div className="text-sm text-gray-500 mt-1">Total pocket money</div>
+              <div className="text-gray-600 font-medium">Coins This Week</div>
+              <div className="text-sm text-gray-500 mt-1">You decide what coins are worth!</div>
             </div>
           </div>
         </div>
@@ -247,15 +248,17 @@ export default function ParentDashboard() {
                     </div>
 
                     <div className="flex items-center justify-between">
-                      <span className="text-gray-600 font-medium">Rewards:</span>
-                      <span className="text-gray-800 font-bold">{formatPounds(child.rewardsThisWeekPence)}</span>
+                      <span className="text-gray-600 font-medium">Coins:</span>
+                      <span className="text-gray-800 font-bold">{formatCoins(child.rewardsThisWeekPence)}</span>
                     </div>
                   </div>
 
                   {/* Reward explanation */}
-                  <div className="mt-4 bg-emerald-50 rounded-lg p-3 border border-emerald-100">
-                    <p className="text-xs text-emerald-700">
-                      💡 They can earn a £1 bonus for a perfect 10/10 once per week.
+                  <div className="mt-4 bg-amber-50 rounded-lg p-3 border border-amber-100">
+                    <p className="text-xs text-amber-700">
+                      🪙 <strong>Daily challenge:</strong> 50 coins for playing all 4 subjects + 15/15 perfect.
+                      <br />
+                      <strong>7-day streak:</strong> 50 coins bonus. You decide what coins are worth!
                     </p>
                   </div>
 

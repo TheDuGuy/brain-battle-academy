@@ -1,7 +1,10 @@
 /**
  * Pure domain logic for rewards and streak calculation
- * All business rules for money and streaks are contained here
+ * All business rules for coins and streaks are contained here
  * This module has zero dependencies on database or HTTP layers
+ *
+ * NOTE: The database field is still called "amountPence" for backwards compatibility,
+ * but we now treat it as "coins" (not real currency). Parents decide what coins are worth.
  */
 
 import { DateTime } from 'luxon'
@@ -27,7 +30,7 @@ export type RewardType = 'HIGH_ACCURACY' | 'STREAK'
 export type ExistingReward = {
   type: RewardType
   createdAt: Date
-  amountPence: number
+  amountPence: number // NOTE: This is now "coins" (kept as amountPence for DB compatibility)
   weekStart: Date
 }
 
@@ -45,7 +48,7 @@ export type EvaluateRewardsInput = {
 export type EvaluateRewardsOutput = {
   newRewards: {
     type: RewardType
-    amountPence: number
+    amountPence: number // NOTE: This is now "coins" (kept as amountPence for DB compatibility)
     reason: string
     weekStart: Date
   }[]
@@ -65,8 +68,14 @@ export const REQUIRED_ACCURACY_FOR_REWARD = 1.0 // 100%
 const ALL_SUBJECTS: SubjectType[] = ['MATHS', 'ENGLISH', 'VR', 'NVR']
 
 const STREAK_TARGET_DAYS = 7
-const DAILY_CHALLENGE_REWARD_PENCE = 100 // £1 for daily challenge
-const STREAK_REWARD_PENCE = 100 // £1
+
+// Coin rewards (parents decide what coins are worth)
+export const PERFECT_SESSION_COINS = 50 // Coins for daily challenge (15/15 perfect + all subjects)
+export const STREAK_REWARD_COINS = 50 // Coins for 7-day streak
+
+// Legacy names kept for DB compatibility (these map to coins now)
+const DAILY_CHALLENGE_REWARD_PENCE = PERFECT_SESSION_COINS
+const STREAK_REWARD_PENCE = STREAK_REWARD_COINS
 
 // ============================================================================
 // Helper Functions
@@ -270,8 +279,10 @@ function hasStreakRewardThisWeek(
  * Evaluate rewards for a new session
  *
  * This is a pure function that implements all reward business logic:
- * - DAILY_CHALLENGE (HIGH_ACCURACY): £1 for completing all 4 subjects + 15/15 perfect score (once per day)
- * - STREAK: £1 for 7 consecutive completed days (once per week)
+ * - DAILY_CHALLENGE (HIGH_ACCURACY): 50 coins for completing all 4 subjects + 15/15 perfect score (once per day)
+ * - STREAK: 50 coins for 7 consecutive completed days (once per week)
+ *
+ * Parents decide what coins are worth (pocket money, screen time, treats, or just progress tracking).
  *
  * @param input - The new session and context (recent sessions, existing rewards)
  * @returns New rewards to grant and updated streak count
@@ -295,7 +306,7 @@ export function evaluateRewards(input: EvaluateRewardsInput): EvaluateRewardsOut
     newRewards.push({
       type: 'HIGH_ACCURACY',
       amountPence: DAILY_CHALLENGE_REWARD_PENCE,
-      reason: 'Daily Challenge Complete: All subjects + 15/15 perfect score!',
+      reason: `Daily Challenge Complete! +${PERFECT_SESSION_COINS} coins`,
       weekStart: currentWeekStart
     })
   }
@@ -311,7 +322,7 @@ export function evaluateRewards(input: EvaluateRewardsInput): EvaluateRewardsOut
       newRewards.push({
         type: 'STREAK',
         amountPence: STREAK_REWARD_PENCE,
-        reason: `Completed ${currentStreakDays}-day learning streak`,
+        reason: `${currentStreakDays}-day streak! +${STREAK_REWARD_COINS} coins`,
         weekStart: currentWeekStart
       })
     }
@@ -328,10 +339,18 @@ export function evaluateRewards(input: EvaluateRewardsInput): EvaluateRewardsOut
 // ============================================================================
 
 /**
- * Calculate total earnings from reward records
+ * Calculate total coins from reward records
+ * (Field is called amountPence for DB compatibility, but represents coins)
  */
 export function calculateTotalEarnings(rewards: ExistingReward[]): number {
   return rewards.reduce((sum, reward) => sum + reward.amountPence, 0)
+}
+
+/**
+ * Alias for calculateTotalEarnings - clearer name for coin system
+ */
+export function calculateTotalCoins(rewards: ExistingReward[]): number {
+  return calculateTotalEarnings(rewards)
 }
 
 /**

@@ -4,8 +4,11 @@ import { prisma } from '@/lib/prisma'
 // GET /api/leaderboard - Get leaderboard with all players
 export async function GET() {
   try {
-    // Get all users with their progress and rewards
+    // Get only PLAYER users with their progress and rewards (exclude PARENT and ADMIN)
     const users = await prisma.user.findMany({
+      where: {
+        role: 'PLAYER'
+      },
       include: {
         progress: true,
         rewards: true,
@@ -22,9 +25,8 @@ export async function GET() {
     const leaderboard = users.map(user => {
       const totalStars = user.progress.reduce((sum, p) => sum + p.totalStars, 0)
 
-      // Calculate total earnings from rewards (stored in pence)
-      const totalEarningsPence = user.rewards.reduce((sum, r) => sum + r.amountPence, 0)
-      const totalEarnings = totalEarningsPence / 100 // Convert pence to pounds
+      // Calculate total coins from rewards (field is called amountPence for DB compatibility, but stores coins)
+      const totalCoins = user.rewards.reduce((sum, r) => sum + r.amountPence, 0)
 
       const gamesPlayed = user.sessions.length
       const avgAccuracy = gamesPlayed > 0
@@ -35,7 +37,7 @@ export async function GET() {
         name: user.name,
         avatar: user.avatar || '🎮',
         totalStars,
-        earnings: totalEarnings,
+        earnings: totalCoins, // Now represents coins, not pounds
         gamesPlayed,
         accuracy: Math.round(avgAccuracy)
       }

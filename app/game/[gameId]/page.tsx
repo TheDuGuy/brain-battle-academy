@@ -4,6 +4,8 @@ import { useEffect, useState, use, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Confetti from 'react-confetti'
 import { getGameTheme } from '@/lib/game-themes'
+import { useSoundEffects } from '@/lib/useSoundEffects'
+import AnimatedCoin from '@/components/AnimatedCoin'
 import {
   generateQuickFireQuestion,
   generateCalculatorDetectiveQuestion,
@@ -216,6 +218,7 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
   const [gameStartTime, setGameStartTime] = useState<Date | null>(null)
   const [earnedRewards, setEarnedRewards] = useState<{ type: string; amountPence: number; reason: string }[]>([])
   const router = useRouter()
+  const { playCorrect, playWrong, playCoins, playMilestone, playGameStart } = useSoundEffects()
 
   // Ref to always have access to the latest questions state
   const questionsRef = useRef<GameQuestion[]>([])
@@ -392,6 +395,9 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
     setGameEnded(false)
     setEarnedRewards([]) // Reset rewards for new game
 
+    // Play game start sound
+    playGameStart()
+
     // Clear any saved progress when starting new game
     if (user) {
       localStorage.removeItem(`game_progress_${user.id}_${gameId}`)
@@ -424,6 +430,7 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
     questionsRef.current = updatedQuestions
 
     if (isCorrect) {
+      playCorrect() // Play correct sound
       setScore(score + 1)
       setShowAnswer(false)
       setIsWrong(false)
@@ -437,6 +444,7 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
         }
       }, 500)
     } else {
+      playWrong() // Play wrong sound
       setIsWrong(true)
       setShowAnswer(true)
       setLives(lives - 1)
@@ -476,6 +484,7 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
     questionsRef.current = updatedQuestions
 
     if (isCorrect) {
+      playCorrect() // Play correct sound
       const newScore = score + 1
       setScore(newScore)
       setShowAnswer(false)
@@ -500,6 +509,7 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
         }
       }, 800)
     } else {
+      playWrong() // Play wrong sound
       setIsWrong(true)
       setShowAnswer(true)
       setUserAnswer(option)
@@ -615,6 +625,13 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
           // Capture rewards from API response
           if (data.newRewards && data.newRewards.length > 0) {
             setEarnedRewards(data.newRewards)
+            // Play coin sound when rewards are earned
+            playCoins()
+          }
+
+          // Play milestone sound for perfect score
+          if (correct === total && total === 15) {
+            setTimeout(() => playMilestone(), 300) // Slight delay after coins sound
           }
 
           // Debug: Log reward info
@@ -693,8 +710,8 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
                   <span>Use the cheat sheet anytime for help</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="bg-green-100 text-green-700 font-bold w-6 h-6 rounded-full flex items-center justify-center text-sm flex-shrink-0">£</span>
-                  <span className="font-semibold">Complete all 4 subjects with 15/15 to earn £1 daily!</span>
+                  <span className="bg-amber-100 text-amber-700 font-bold w-6 h-6 rounded-full flex items-center justify-center text-sm flex-shrink-0">🪙</span>
+                  <span className="font-semibold">Complete all 4 subjects with 15/15 to earn 50 coins daily!</span>
                 </li>
               </ul>
             </div>
@@ -766,9 +783,11 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
 
             {earnedRewards.length > 0 && (
               <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 mb-6 border-2 border-green-300">
-                <div className="text-5xl mb-3">💰</div>
+                <div className="flex justify-center mb-3">
+                  <AnimatedCoin size="xl" />
+                </div>
                 <h3 className="text-2xl font-bold text-green-700 mb-1">
-                  You earned £{((earnedRewards[0]?.amountPence || 0) / 100).toFixed(2)}!
+                  You earned {earnedRewards[0]?.amountPence || 0} coins!
                 </h3>
                 <p className="text-green-600">{earnedRewards[0]?.reason || 'Perfect score!'}</p>
               </div>
@@ -780,7 +799,7 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
                 <h3 className="text-2xl font-bold text-blue-700 mb-1">
                   Perfect Score!
                 </h3>
-                <p className="text-blue-600">Complete all 4 subjects today to earn £1!</p>
+                <p className="text-blue-600">Complete all 4 subjects today to earn 50 coins!</p>
               </div>
             )}
 

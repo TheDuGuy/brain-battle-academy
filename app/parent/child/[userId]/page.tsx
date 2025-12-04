@@ -107,8 +107,9 @@ export default function ChildDetailPage() {
     return mins > 0 ? `${hours}h ${mins}m` : `${hours}h`
   }
 
-  const formatPounds = (pence: number): string => {
-    return `£${(pence / 100).toFixed(2)}`
+  // Format coins (DB stores as "pence" for backwards compatibility, but now represents coins)
+  const formatCoins = (coins: number): string => {
+    return `${coins} coins`
   }
 
   const formatDate = (isoString: string): string => {
@@ -210,7 +211,7 @@ export default function ChildDetailPage() {
 
             <div className="bg-white rounded-2xl p-6 shadow-lg">
               <div className="text-3xl mb-2">💰</div>
-              <div className="text-2xl font-bold text-gray-800">{formatPounds(childDetail.rewardsThisWeekPence)}</div>
+              <div className="text-2xl font-bold text-gray-800">{formatCoins(childDetail.rewardsThisWeekPence)}</div>
               <div className="text-sm text-gray-600">Rewards</div>
             </div>
           </div>

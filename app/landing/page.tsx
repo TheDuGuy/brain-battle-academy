@@ -119,7 +119,7 @@ export default function LandingPage() {
                   </div>
                   <div className="flex items-center gap-3">
                     <span className="text-lg">⭕</span>
-                    <span className="text-gray-600 text-sm">Get 20/20 for £1</span>
+                    <span className="text-gray-600 text-sm">Get 15/15 for 50 coins</span>
                   </div>
                 </div>
 
@@ -189,11 +189,11 @@ export default function LandingPage() {
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
                   <span className="text-brand-purple mt-0.5">✓</span>
-                  <span className="text-gray-600">Set simple reward rules (like £1 for a perfect game)</span>
+                  <span className="text-gray-600">Kids earn coins for perfect scores and streaks</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-brand-purple mt-0.5">✓</span>
-                  <span className="text-gray-600">See weekly earnings and streaks</span>
+                  <span className="text-gray-600">You decide what coins are worth (pocket money, treats, screen time)</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-brand-purple mt-0.5">✓</span>
@@ -358,10 +358,10 @@ export default function LandingPage() {
 
           <div className="bg-white border border-gray-100 rounded-2xl p-6 max-w-2xl mx-auto">
             <p className="text-brand-navy text-center">
-              <span className="font-bold">You decide the reward rules</span> – for example, kids can earn £1 for a perfect 20/20 game once per week.
+              <span className="font-bold">You decide what coins are worth</span> – kids earn 50 coins for completing all 4 subjects with a 15/15 perfect score, and 50 coins for a 7-day streak.
             </p>
             <p className="text-gray-500 text-center text-sm mt-2">
-              Brain Battle Academy just tracks the scores – you choose the rewards.
+              Brain Battle Academy tracks the coins – you decide if they&apos;re worth pocket money, treats, screen time, or just bragging rights!
             </p>
           </div>
         </div>
@@ -446,7 +446,7 @@ export default function LandingPage() {
               </button>
               {openFaq === 3 && (
                 <div className="px-6 pb-4 text-text-secondary">
-                  Kids can earn £1 for a perfect 10/10 game (once per week). The system tracks it automatically, but you control whether and how to implement rewards. Some parents give pocket money, others use it for motivation tracking only.
+                  Kids earn coins for achievements: 50 coins for completing all 4 subjects with a perfect 15/15 score (daily), and 50 coins for maintaining a 7-day streak. The system tracks coins automatically, but <strong>you decide what coins are worth</strong> – pocket money, treats, screen time, or just progress tracking.
                 </div>
               )}
             </div>

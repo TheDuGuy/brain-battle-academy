@@ -110,8 +110,9 @@ export default function AdminDashboard() {
     return mins > 0 ? `${hours}h ${mins}m` : `${hours}h`
   }
 
-  const formatPounds = (pence: number): string => {
-    return `£${(pence / 100).toFixed(2)}`
+  // Format coins (DB stores as "pence" for backwards compatibility, but now represents coins)
+  const formatCoins = (coins: number): string => {
+    return `${coins} coins`
   }
 
   if (loading) {
@@ -204,7 +205,7 @@ export default function AdminDashboard() {
             <div className="bg-white rounded-2xl p-6 shadow-lg">
               <div className="text-4xl mb-3">💰</div>
               <div className="text-3xl font-bold text-gray-800 mb-1">
-                {formatPounds(overview.global.totalRewardsThisWeekPence)}
+                {formatCoins(overview.global.totalRewardsThisWeekPence)}
               </div>
               <div className="text-gray-600 font-medium">Total Rewards</div>
             </div>
@@ -277,7 +278,7 @@ export default function AdminDashboard() {
 
                         {/* Rewards */}
                         <td className="px-6 py-4 text-sm text-gray-700">
-                          {formatPounds(child.rewardsThisWeekPence)}
+                          {formatCoins(child.rewardsThisWeekPence)}
                         </td>
 
                         {/* Actions */}

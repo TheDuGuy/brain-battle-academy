@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import AnimatedCoin from '@/components/AnimatedCoin'
 
 interface User {
   id: string
@@ -561,7 +562,7 @@ export default function DashboardPage() {
                   <div className="flex items-center gap-3">
                     <span className="text-2xl">⭕</span>
                     <span className="text-white/90 font-medium">
-                      Complete all 4 subjects + 15/15 for £1
+                      Complete all 4 subjects + 15/15 for 50 coins
                     </span>
                   </div>
                 </div>
@@ -578,14 +579,14 @@ export default function DashboardPage() {
 
         {/* Stats Cards */}
         <div className="grid md:grid-cols-3 gap-6 mb-8">
-          {/* Earnings Card */}
+          {/* Coins Card */}
           <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow p-6 border border-gray-100">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-gray-600 font-semibold">Your Earnings</h3>
-              <span className="text-3xl">💰</span>
+              <h3 className="text-gray-600 font-semibold">Your Coins</h3>
+              <AnimatedCoin size="lg" />
             </div>
-            <p className="text-4xl font-bold text-amber-500">£{stats.earnings.toFixed(2)}</p>
-            <p className="text-sm text-gray-500 mt-2">This week: £{stats.weekEarnings.toFixed(2)}</p>
+            <p className="text-4xl font-bold text-amber-500">{stats.earnings} coins</p>
+            <p className="text-sm text-gray-500 mt-2">This week: {stats.weekEarnings} coins</p>
           </div>
 
           {/* Stars Card */}
@@ -619,7 +620,7 @@ export default function DashboardPage() {
             <p className="text-sm text-amber-800 mb-2">
               This week:{" "}
               <span className="font-bold text-lg">
-                £{stats.weekEarnings.toFixed(2)}
+                {stats.weekEarnings} coins
               </span>
             </p>
 
@@ -658,7 +659,7 @@ export default function DashboardPage() {
             <div className="space-y-2">
               <div className="flex items-center justify-between mb-1">
                 <span className="text-sm font-medium text-purple-800">{stats.streak}/7 days</span>
-                <span className="text-sm font-bold text-purple-600">Reward: £1</span>
+                <span className="text-sm font-bold text-purple-600">Reward: 50 coins</span>
               </div>
               <div className="w-full bg-purple-200 rounded-full h-3">
                 <div
@@ -676,7 +677,7 @@ export default function DashboardPage() {
                 <span className="text-3xl">🎖️</span>
               </div>
               <div>
-                <h3 className="text-xl font-bold text-green-900">Daily £1 Challenge</h3>
+                <h3 className="text-xl font-bold text-green-900">Daily Coin Challenge</h3>
                 <p className="text-green-700 text-sm">Complete all 4 subjects + get 15/15 in one game</p>
               </div>
             </div>
@@ -701,7 +702,7 @@ export default function DashboardPage() {
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-green-800">+ 15/15 perfect</span>
-                <span className="text-sm font-bold text-green-600">Reward: £1/day</span>
+                <span className="text-sm font-bold text-green-600">Reward: 50 coins/day</span>
               </div>
             </div>
           </div>
@@ -832,7 +833,7 @@ export default function DashboardPage() {
                             <span>{player.totalStars}</span>
                             <span>⭐</span>
                           </div>
-                          <div className="text-sm text-gray-600 mt-1">£{player.earnings.toFixed(2)}</div>
+                          <div className="text-sm text-gray-600 mt-1">{player.earnings} coins</div>
                         </div>
                       </div>
                     )
