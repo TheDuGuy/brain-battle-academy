@@ -74,11 +74,11 @@ export async function GET(
     }, 0)
     const todayPlayTimeMinutes = Math.round(todayPlayTimeMs / 60000)
 
-    // Get recent sessions
+    // Get recent sessions (last 30 for better recommendation data)
     const recentSessions = await prisma.session.findMany({
       where: { userId },
       orderBy: { startTime: 'desc' },
-      take: 10
+      take: 30
     })
 
     // Calculate overall stats

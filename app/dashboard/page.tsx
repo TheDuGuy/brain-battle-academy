@@ -312,45 +312,124 @@ function getGameProgress(
   return { level, percentage }
 }
 
-// Helper to get recommended games based on progress
+// Subject mapping for consistent comparison
+const SUBJECT_MAP: Record<string, string> = {
+  'Maths': 'MATHS',
+  'English': 'ENGLISH',
+  'Verbal Reasoning': 'VR',
+  'Non-Verbal Reasoning': 'NVR'
+}
+
+// Helper to get smart recommended games based on child's needs
 function getRecommendedGames(
   allGames: GameCard[],
-  gameProgressData: GameProgress[]
+  gameProgressData: GameProgress[],
+  recentSessions: Array<{ gameType: string; subject: string; accuracy: number; startTime: string }> = [],
+  todayPlayTimeMinutes: number = 0
 ): GameCard[] {
-  // Find games with low plays or low accuracy
-  const gamesWithProgress = allGames.map(game => {
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+
+  // Get subjects played today from recent sessions
+  const subjectsPlayedToday = new Set(
+    recentSessions
+      .filter(s => new Date(s.startTime) >= today)
+      .map(s => s.subject)
+  )
+
+  // All subjects we need for daily challenge
+  const ALL_SUBJECTS = ['MATHS', 'ENGLISH', 'VR', 'NVR']
+  const subjectsNotPlayedToday = ALL_SUBJECTS.filter(s => !subjectsPlayedToday.has(s))
+
+  // Build game scores with multiple factors
+  const gamesWithScores = allGames.map(game => {
+    const gameSubject = SUBJECT_MAP[game.subject] || game.subject.toUpperCase().replace(/\s/g, '_')
+
     const progress = gameProgressData.find(
-      p => p.gameType === game.id &&
-           p.subject.toUpperCase() === game.subject.toUpperCase().replace(/\s/g, '_')
+      p => p.gameType === game.id && p.subject === gameSubject
     )
+
+    const gamesPlayed = progress?.gamesPlayed || 0
+    const bestAccuracy = progress?.bestAccuracy || 0
+    const skillLevel = progress?.skillLevel || 1
+
+    // Get recent performance in this specific game (last 7 days)
+    const recentGameSessions = recentSessions.filter(s =>
+      s.gameType === game.id &&
+      new Date(s.startTime) >= new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+    )
+    const recentAvgAccuracy = recentGameSessions.length > 0
+      ? recentGameSessions.reduce((sum, s) => sum + s.accuracy, 0) / recentGameSessions.length
+      : bestAccuracy
+
+    // Calculate priority score (higher = more recommended)
+    let score = 0
+
+    // PRIORITY 1: Subject not played today (for daily challenge completion)
+    if (subjectsNotPlayedToday.includes(gameSubject)) {
+      score += 100
+    }
+
+    // PRIORITY 2: Low accuracy = needs practice (scale 0-50)
+    if (gamesPlayed > 0) {
+      // Lower accuracy gets higher score
+      score += Math.max(0, 50 - (recentAvgAccuracy * 50))
+    }
+
+    // PRIORITY 3: Games with few plays but not zero (learning phase)
+    if (gamesPlayed > 0 && gamesPlayed < 10) {
+      score += 30
+    }
+
+    // PRIORITY 4: Never played games (discovery)
+    if (gamesPlayed === 0) {
+      score += 20
+    }
+
+    // PRIORITY 5: Recent struggles (accuracy dropped in last sessions)
+    if (recentAvgAccuracy < bestAccuracy - 0.1) {
+      score += 25 // Recent performance worse than best
+    }
+
+    // PRIORITY 6: Variety bonus - avoid recommending same subject twice
+    // (Will be handled in final selection)
+
     return {
       game,
-      gamesPlayed: progress?.gamesPlayed || 0,
-      bestAccuracy: progress?.bestAccuracy || 0
+      gameSubject,
+      score,
+      gamesPlayed,
+      bestAccuracy,
+      recentAvgAccuracy,
+      needsPractice: gamesPlayed > 0 && recentAvgAccuracy < 0.7
     }
   })
 
-  // Prioritize games with low plays or low accuracy
-  const recommended = gamesWithProgress
-    .filter(g => g.gamesPlayed < 5 || g.bestAccuracy < 0.7)
-    .sort((a, b) => {
-      // Sort by: fewer plays first, then lower accuracy
-      if (a.gamesPlayed !== b.gamesPlayed) {
-        return a.gamesPlayed - b.gamesPlayed
-      }
-      return a.bestAccuracy - b.bestAccuracy
-    })
-    .map(g => g.game)
-    .slice(0, 3)
+  // Sort by score descending
+  gamesWithScores.sort((a, b) => b.score - a.score)
 
-  // Fallback to static list if not enough candidates
-  if (recommended.length < 3) {
-    const fallbackIds = ['quick-fire', 'synonym-finder', 'word-codes']
-    const fallback = allGames.filter(g => fallbackIds.includes(g.id))
-    return [...recommended, ...fallback].slice(0, 3)
+  // Select games ensuring subject variety
+  const recommended: GameCard[] = []
+  const subjectsIncluded = new Set<string>()
+
+  for (const item of gamesWithScores) {
+    // First pass: prioritize different subjects
+    if (recommended.length < 4 && !subjectsIncluded.has(item.gameSubject)) {
+      recommended.push(item.game)
+      subjectsIncluded.add(item.gameSubject)
+    }
   }
 
-  return recommended
+  // If we don't have 4 yet, add highest scoring remaining games
+  for (const item of gamesWithScores) {
+    if (recommended.length >= 4) break
+    if (!recommended.includes(item.game)) {
+      recommended.push(item.game)
+    }
+  }
+
+  // Return top 4 (or 3 if not enough)
+  return recommended.slice(0, 4)
 }
 
 // Helper to format game names
@@ -386,13 +465,14 @@ export default function DashboardPage() {
   const [stats, setStats] = useState({ totalStars: 0, earnings: 0, weekEarnings: 0, streak: 0, todayPlayTime: 0 })
   const [leaderboard, setLeaderboard] = useState<PlayerStats[]>([])
   const [gameProgress, setGameProgress] = useState<GameProgress[]>([])
+  const [recentSessions, setRecentSessions] = useState<Array<{ gameType: string; subject: string; accuracy: number; startTime: string }>>([])
   const [lastPerfectScore, setLastPerfectScore] = useState<LastPerfectScore | null>(null)
   const [loading, setLoading] = useState(true)
   const [isViewingAsChild, setIsViewingAsChild] = useState(false)
   const router = useRouter()
 
   const allGames = [...mathsGames, ...englishGames, ...verbalReasoningGames, ...nonVerbalReasoningGames]
-  const recommendedGames = getRecommendedGames(allGames, gameProgress)
+  const recommendedGames = getRecommendedGames(allGames, gameProgress, recentSessions, stats.todayPlayTime)
 
   useEffect(() => {
     const userData = localStorage.getItem('user')
@@ -426,6 +506,7 @@ export default function DashboardPage() {
           todayPlayTime: statsData.todayPlayTimeMinutes || 0
         })
         setGameProgress(statsData.gameProgress || [])
+        setRecentSessions(statsData.recentSessions || [])
         setLastPerfectScore(statsData.lastPerfectScore || null)
       }
 
