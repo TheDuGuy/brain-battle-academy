@@ -6,6 +6,7 @@ import Confetti from 'react-confetti'
 import { getGameTheme } from '@/lib/game-themes'
 import { useSoundEffects } from '@/lib/useSoundEffects'
 import AnimatedCoin from '@/components/AnimatedCoin'
+import { getCheatSheetDefinition, getSubjectFromGameId } from '@/lib/cheatSheetConfig'
 import {
   generateQuickFireQuestion,
   generateCalculatorDetectiveQuestion,
@@ -37,49 +38,6 @@ interface User {
   avatar: string
   color: string
 }
-
-const cheatSheetData = [
-  {
-    title: 'Square Numbers',
-    symbol: '2²',
-    icon: '📦',
-    description: 'Multiply a number by itself (up to 12×12)',
-    color: 'from-blue-400 to-cyan-500',
-    numbers: '1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144'
-  },
-  {
-    title: 'Cube Numbers',
-    symbol: '2³',
-    icon: '🧊',
-    description: 'Multiply a number by itself twice (2×2×2 = 8)',
-    color: 'from-purple-400 to-pink-500',
-    numbers: '1, 8, 27, 64, 125, 216'
-  },
-  {
-    title: 'Prime Numbers',
-    symbol: 'P',
-    icon: '🔢',
-    description: 'Numbers that divide only by themselves and 1',
-    color: 'from-green-400 to-emerald-500',
-    numbers: '2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97'
-  },
-  {
-    title: 'Factors',
-    symbol: '÷',
-    icon: '🔨',
-    description: 'Whole numbers that divide into a number exactly',
-    color: 'from-orange-400 to-red-500',
-    numbers: 'Example: Factors of 12 are 1, 2, 3, 4, 6, 12'
-  },
-  {
-    title: 'Multiples',
-    symbol: '×',
-    icon: '✖️',
-    description: 'Numbers you get when you multiply',
-    color: 'from-pink-400 to-rose-500',
-    numbers: 'Example: Multiples of 3 are 3, 6, 9, 12, 15, 18...'
-  }
-]
 
 const gameConfig: Record<string, { name: string; description: string; icon: string }> = {
   'quick-fire': {
@@ -199,6 +157,12 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
   const gameId = resolvedParams.gameId
   const gameTheme = getGameTheme(gameId)
   const config = gameConfig[gameId] || gameConfig['quick-fire']
+
+  // Get subject-aware cheat sheet content
+  const cheatSheetSubject = getSubjectFromGameId(gameId)
+  const cheatSheetDef = getCheatSheetDefinition(cheatSheetSubject)
+  // Combine general + subject-specific sections for display
+  const cheatSheetSections = [...cheatSheetDef.subjectSpecific, ...cheatSheetDef.general]
 
   const [user, setUser] = useState<User | null>(null)
   const [skillLevel, setSkillLevel] = useState<number>(1)
@@ -865,7 +829,7 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
               <div className="flex items-center justify-between text-white">
                 <div>
                   <h2 className="text-2xl font-bold flex items-center gap-2">
-                    📖 Special Numbers Cheat Sheet
+                    📖 {cheatSheetDef.title}
                   </h2>
                   <p className="text-purple-100 text-sm">Quick reference guide for {user.name}</p>
                 </div>
@@ -879,7 +843,7 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
             </div>
 
             <div className="p-6 space-y-4">
-              {cheatSheetData.map((section, index) => (
+              {cheatSheetSections.map((section, index) => (
                 <div key={index} className="border-2 border-gray-200 rounded-xl overflow-hidden">
                   <button
                     onClick={() => setExpandedSection(expandedSection === index ? null : index)}
@@ -889,7 +853,7 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
                       <div className="text-3xl">{section.icon}</div>
                       <div className="text-left">
                         <div className="text-xl font-bold text-white flex items-center gap-2">
-                          <span className="text-lg opacity-80">{section.symbol}</span>
+                          {section.symbol && <span className="text-lg opacity-80">{section.symbol}</span>}
                           {section.title}
                         </div>
                         <p className="text-white text-xs opacity-90">{section.description}</p>
@@ -901,9 +865,14 @@ export default function GamePage({ params }: { params: Promise<{ gameId: string 
                   </button>
                   {expandedSection === index && (
                     <div className="bg-white p-4">
-                      <p className="text-lg text-gray-800 font-mono">
-                        {section.numbers}
-                      </p>
+                      <ul className="space-y-2">
+                        {section.items.map((item, itemIndex) => (
+                          <li key={itemIndex} className="text-gray-800 flex items-start gap-2">
+                            <span className="text-purple-500 mt-1">•</span>
+                            <span className="font-mono text-sm">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   )}
                 </div>
