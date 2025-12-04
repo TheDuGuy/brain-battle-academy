@@ -27,27 +27,22 @@ export async function GET(
 
     const totalStars = progressRecords.reduce((sum, p) => sum + p.totalStars, 0)
 
-    // Get total earnings from rewards (stored in pence)
+    // Get total earnings from rewards (stored as coins directly in amountPence field)
     const rewards = await prisma.reward.findMany({
       where: { userId }
     })
 
-    const totalEarningsPence = rewards.reduce((sum, r) => sum + r.amountPence, 0)
-    const totalEarnings = totalEarningsPence / 100 // Convert to pounds
+    // amountPence now stores coins directly (not pence)
+    const totalEarnings = rewards.reduce((sum, r) => sum + r.amountPence, 0)
 
-    const weekEarningsPence = rewards
+    const weekEarnings = rewards
       .filter(r => r.weekStart.getTime() === weekStart.getTime())
       .reduce((sum, r) => sum + r.amountPence, 0)
-    const weekEarnings = weekEarningsPence / 100 // Convert to pounds
 
-    // Get current streak
-    const streakRecord = await prisma.streak.findUnique({
-      where: {
-        userId_weekStart: {
-          userId,
-          weekStart
-        }
-      }
+    // Get current streak - look for most recent streak record (not just current week)
+    const streakRecord = await prisma.streak.findFirst({
+      where: { userId },
+      orderBy: { lastPlayedDate: 'desc' }
     })
 
     const currentStreak = streakRecord?.currentStreak || 0
@@ -97,6 +92,24 @@ export async function GET(
       skillLevel: p.skillLevel
     }))
 
+    // Get focus areas (tutor-identified weak areas)
+    const focusAreasRaw = await prisma.focusArea.findMany({
+      where: { userId },
+      orderBy: [
+        { priority: 'asc' },
+        { status: 'asc' } // DEVELOPING comes before IMPROVING alphabetically
+      ]
+    })
+
+    const focusAreas = focusAreasRaw.map(fa => ({
+      subject: fa.subject,
+      topic: fa.topic,
+      status: fa.status,
+      priority: fa.priority,
+      targetGames: fa.targetGames ? JSON.parse(fa.targetGames) : [],
+      source: fa.source
+    }))
+
     // Get last perfect score (10/10 or better)
     // Look at recent sessions (last 90 days) for the most recent perfect score
     const ninetyDaysAgo = new Date()
@@ -141,6 +154,7 @@ export async function GET(
       avgAccuracy,
       recentSessions,
       gameProgress,
+      focusAreas,
       lastPerfectScore
     })
   } catch (error) {

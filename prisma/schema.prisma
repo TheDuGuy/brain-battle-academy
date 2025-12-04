@@ -31,6 +31,29 @@ model User {
   achievements  Achievement[]
   rewards       Reward[]
   streaks       Streak[]
+  focusAreas    FocusArea[]
+}
+
+// Tutor-identified areas that need improvement
+model FocusArea {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  subject       String    // MATHS, ENGLISH, VR, NVR
+  topic         String    // e.g. "long multiplication", "comprehension", "spelling"
+  status        String    // DEVELOPING (needs most support), IMPROVING, SECURE
+  priority      Int       @default(1) // 1=highest priority, higher=lower priority
+
+  // Which games target this topic
+  targetGames   String?   // JSON array of game IDs that help with this topic
+
+  source        String?   // e.g. "Griffin Teaching Report - Autumn 2025"
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@unique([userId, subject, topic])
+  @@index([userId, subject])
 }
 
 model Session {

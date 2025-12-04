@@ -320,12 +320,23 @@ const SUBJECT_MAP: Record<string, string> = {
   'Non-Verbal Reasoning': 'NVR'
 }
 
-// Helper to get smart recommended games based on child's needs
+// Focus area type from tutor report
+interface FocusArea {
+  subject: string
+  topic: string
+  status: string // DEVELOPING, IMPROVING, SECURE
+  priority: number
+  targetGames: string[]
+  source?: string
+}
+
+// Helper to get smart recommended games based on child's needs + tutor focus areas
 function getRecommendedGames(
   allGames: GameCard[],
   gameProgressData: GameProgress[],
   recentSessions: Array<{ gameType: string; subject: string; accuracy: number; startTime: string }> = [],
-  todayPlayTimeMinutes: number = 0
+  todayPlayTimeMinutes: number = 0,
+  focusAreas: FocusArea[] = []
 ): GameCard[] {
   const today = new Date()
   today.setHours(0, 0, 0, 0)
@@ -341,6 +352,18 @@ function getRecommendedGames(
   const ALL_SUBJECTS = ['MATHS', 'ENGLISH', 'VR', 'NVR']
   const subjectsNotPlayedToday = ALL_SUBJECTS.filter(s => !subjectsPlayedToday.has(s))
 
+  // Build a set of games targeted by focus areas (tutor recommendations)
+  const focusGameIds = new Set<string>()
+  const developingGameIds = new Set<string>() // Highest priority - DEVELOPING status
+  focusAreas.forEach(fa => {
+    fa.targetGames.forEach(gameId => {
+      focusGameIds.add(gameId)
+      if (fa.status === 'DEVELOPING') {
+        developingGameIds.add(gameId)
+      }
+    })
+  })
+
   // Build game scores with multiple factors
   const gamesWithScores = allGames.map(game => {
     const gameSubject = SUBJECT_MAP[game.subject] || game.subject.toUpperCase().replace(/\s/g, '_')
@@ -351,7 +374,6 @@ function getRecommendedGames(
 
     const gamesPlayed = progress?.gamesPlayed || 0
     const bestAccuracy = progress?.bestAccuracy || 0
-    const skillLevel = progress?.skillLevel || 1
 
     // Get recent performance in this specific game (last 7 days)
     const recentGameSessions = recentSessions.filter(s =>
@@ -365,34 +387,41 @@ function getRecommendedGames(
     // Calculate priority score (higher = more recommended)
     let score = 0
 
-    // PRIORITY 1: Subject not played today (for daily challenge completion)
+    // PRIORITY 0 (HIGHEST): Tutor-identified DEVELOPING areas (needs most support)
+    if (developingGameIds.has(game.id)) {
+      score += 200
+    }
+
+    // PRIORITY 1: Tutor-identified focus areas (IMPROVING status)
+    if (focusGameIds.has(game.id) && !developingGameIds.has(game.id)) {
+      score += 150
+    }
+
+    // PRIORITY 2: Subject not played today (for daily challenge completion)
     if (subjectsNotPlayedToday.includes(gameSubject)) {
       score += 100
     }
 
-    // PRIORITY 2: Low accuracy = needs practice (scale 0-50)
+    // PRIORITY 3: Low accuracy = needs practice (scale 0-50)
     if (gamesPlayed > 0) {
       // Lower accuracy gets higher score
       score += Math.max(0, 50 - (recentAvgAccuracy * 50))
     }
 
-    // PRIORITY 3: Games with few plays but not zero (learning phase)
+    // PRIORITY 4: Games with few plays but not zero (learning phase)
     if (gamesPlayed > 0 && gamesPlayed < 10) {
       score += 30
     }
 
-    // PRIORITY 4: Never played games (discovery)
+    // PRIORITY 5: Never played games (discovery)
     if (gamesPlayed === 0) {
       score += 20
     }
 
-    // PRIORITY 5: Recent struggles (accuracy dropped in last sessions)
+    // PRIORITY 6: Recent struggles (accuracy dropped in last sessions)
     if (recentAvgAccuracy < bestAccuracy - 0.1) {
       score += 25 // Recent performance worse than best
     }
-
-    // PRIORITY 6: Variety bonus - avoid recommending same subject twice
-    // (Will be handled in final selection)
 
     return {
       game,
@@ -401,7 +430,8 @@ function getRecommendedGames(
       gamesPlayed,
       bestAccuracy,
       recentAvgAccuracy,
-      needsPractice: gamesPlayed > 0 && recentAvgAccuracy < 0.7
+      isFocusArea: focusGameIds.has(game.id),
+      isDeveloping: developingGameIds.has(game.id)
     }
   })
 
@@ -467,12 +497,13 @@ export default function DashboardPage() {
   const [gameProgress, setGameProgress] = useState<GameProgress[]>([])
   const [recentSessions, setRecentSessions] = useState<Array<{ gameType: string; subject: string; accuracy: number; startTime: string }>>([])
   const [lastPerfectScore, setLastPerfectScore] = useState<LastPerfectScore | null>(null)
+  const [focusAreas, setFocusAreas] = useState<FocusArea[]>([])
   const [loading, setLoading] = useState(true)
   const [isViewingAsChild, setIsViewingAsChild] = useState(false)
   const router = useRouter()
 
   const allGames = [...mathsGames, ...englishGames, ...verbalReasoningGames, ...nonVerbalReasoningGames]
-  const recommendedGames = getRecommendedGames(allGames, gameProgress, recentSessions, stats.todayPlayTime)
+  const recommendedGames = getRecommendedGames(allGames, gameProgress, recentSessions, stats.todayPlayTime, focusAreas)
 
   useEffect(() => {
     const userData = localStorage.getItem('user')
@@ -508,6 +539,7 @@ export default function DashboardPage() {
         setGameProgress(statsData.gameProgress || [])
         setRecentSessions(statsData.recentSessions || [])
         setLastPerfectScore(statsData.lastPerfectScore || null)
+        setFocusAreas(statsData.focusAreas || [])
       }
 
       // Fetch leaderboard
@@ -723,6 +755,73 @@ export default function DashboardPage() {
             )}
           </div>
         </div>
+
+        {/* Focus Areas from Tutor Report */}
+        {focusAreas.length > 0 && (
+          <div className="mb-8">
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border-2 border-blue-200 shadow-md">
+              <h3 className="text-lg font-semibold text-blue-900 mb-4 flex items-center gap-2">
+                <span className="text-2xl">🎯</span>
+                Tutor Focus Areas
+                <span className="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded-full ml-2">From Report</span>
+              </h3>
+
+              {/* DEVELOPING areas - highest priority */}
+              {focusAreas.filter(fa => fa.status === 'DEVELOPING').length > 0 && (
+                <div className="mb-4">
+                  <p className="text-sm font-semibold text-red-700 mb-2 flex items-center gap-1">
+                    <span className="w-2 h-2 bg-red-500 rounded-full"></span>
+                    Needs Most Support
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {focusAreas
+                      .filter(fa => fa.status === 'DEVELOPING')
+                      .map(fa => (
+                        <span
+                          key={`${fa.subject}-${fa.topic}`}
+                          className="bg-red-100 text-red-800 px-3 py-1.5 rounded-lg text-sm font-medium border border-red-200"
+                        >
+                          {fa.subject}: {fa.topic}
+                        </span>
+                      ))}
+                  </div>
+                </div>
+              )}
+
+              {/* IMPROVING areas */}
+              {focusAreas.filter(fa => fa.status === 'IMPROVING').length > 0 && (
+                <div>
+                  <p className="text-sm font-semibold text-amber-700 mb-2 flex items-center gap-1">
+                    <span className="w-2 h-2 bg-amber-500 rounded-full"></span>
+                    Getting Better
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {focusAreas
+                      .filter(fa => fa.status === 'IMPROVING')
+                      .slice(0, 6) // Show max 6 to avoid clutter
+                      .map(fa => (
+                        <span
+                          key={`${fa.subject}-${fa.topic}`}
+                          className="bg-amber-100 text-amber-800 px-3 py-1.5 rounded-lg text-sm font-medium border border-amber-200"
+                        >
+                          {fa.subject}: {fa.topic}
+                        </span>
+                      ))}
+                    {focusAreas.filter(fa => fa.status === 'IMPROVING').length > 6 && (
+                      <span className="text-amber-600 text-sm self-center">
+                        +{focusAreas.filter(fa => fa.status === 'IMPROVING').length - 6} more
+                      </span>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              <p className="text-xs text-blue-600 mt-4">
+                Recommended games are prioritized based on these focus areas
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Challenge Cards */}
         <div className="grid md:grid-cols-2 gap-6 mb-8">
